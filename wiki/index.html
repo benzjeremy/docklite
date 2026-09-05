@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docklite Wiki · Offizielle Dokumentation & Guide</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="wiki.css">
+</head>
+<body>
+
+  <div class="wiki-layout">
+    <aside class="sidebar">
+      <a href="../" style="display:flex; align-items:center; gap:0.5rem; font-weight:700; font-size:1.1rem; color:#fff; margin-bottom:1.5rem;">
+        <img src="../favicon.svg" width="24" height="24" alt="Docklite"> Docklite
+      </a>
+
+      <h3>Überblick</h3>
+      <a href="#einfuehrung" class="active">Einführung</a>
+      <a href="#architektur">Architektur & Socket</a>
+      <a href="#installation">Installation & Setup</a>
+
+      <h3>Bedienung</h3>
+      <a href="#dashboard">Dashboard & Monitoring</a>
+      <a href="#logs">Log-Viewer & Streaming</a>
+      <a href="#actions">Container Steuerung</a>
+
+      <h3>Entwickler</h3>
+      <a href="#api">REST API Referenz</a>
+      <a href="#systemd">Systemd Service Setup</a>
+      <a href="#security">Sicherheitsarchitektur</a>
+    </aside>
+
+    <main class="content">
+      <h1>📖 Offizielles Docklite Wiki</h1>
+      <p>
+        Willkommen in der Dokumentation für <strong>Docklite</strong> – die radikal schlanke, sichere Alternative zu Portainer in Go und Astro.
+      </p>
+
+      <h2 id="einfuehrung">1. Einführung</h2>
+      <p>
+        Docklite wurde entwickelt, um den immensen Ressourcenverbrauch von Portainer auf Servern, Raspberry Pis und Homelabs zu eliminieren. Während Portainer 150 bis über 300 MB Arbeitsspeicher beansprucht, benötigt Docklite lediglich <strong>10 bis 15 MB RAM</strong> und liefert dennoch alle essentiellen Funktionen:
+      </p>
+      <ul>
+        <li>Echtzeit-Monitoring von CPU-, RAM-, Disk- und Netzwerk-Verbrauch</li>
+        <li>Container starten, stoppen, neustarten, pausieren und inspizieren</li>
+        <li>Live-Log-Streaming direkt aus dem Docker-Multiplexing-Stream</li>
+        <li>Vollständige HTTP REST API und SSE-Live-Events</li>
+      </ul>
+
+      <h2 id="architektur">2. Architektur & Docker-Socket</h2>
+      <p>
+        Docklite benötigt keine Container-in-Container-Konstrukte oder externe Datenbanken. Die Go-Binary kommuniziert direkt über den lokalen Docker-Socket:
+      </p>
+      <ul>
+        <li><strong>Linux:</strong> Unix Domain Socket unter <code>/var/run/docker.sock</code></li>
+        <li><strong>Windows:</strong> Named Pipe unter <code>//./pipe/docker_engine</code></li>
+      </ul>
+      <p>
+        Das gesamte Astro-Frontend wird beim Build in statisches HTML/CSS/JS übersetzt und via <code>embed.FS</code> vollständig in die ausführbare Go-Datei eingebunden.
+      </p>
+
+      <h2 id="installation">3. Installation & Setup</h2>
+      <h3>Linux</h3>
+      <pre>curl -sSL https://github.com/benzjeremy/docklite/releases/download/v1.0/docklite-v1.0-linux-amd64.tar.gz | tar -xz
+./docklite</pre>
+
+      <h3>Windows</h3>
+      <p>Lade <code>docklite-v1.0-windows-amd64.zip</code> aus den Releases herunter, entpacke das Archiv und starte <code>docklite.exe</code>.</p>
+
+      <h3>Go Install</h3>
+      <pre>go install github.com/benzjeremy/docklite@v1.0</pre>
+
+      <h2 id="api">4. REST API Referenz</h2>
+      <p>Alle API-Routen sind versioniert unter dem Präfix <code>/api/v1/</code>:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Methode</th>
+            <th>Endpunkt</th>
+            <th>Beschreibung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/v1/ping</code></td>
+            <td>Prüft Docker-Socket Erreichbarkeit und Status</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/v1/system</code></td>
+            <td>Liefert NCPU, Gesamtspeicher und Engine-Version</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/v1/containers?all=true&stats=true</code></td>
+            <td>Liefert alle Container mit berechneten Stats</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/v1/containers/{id}/stats</code></td>
+            <td>Gibt CPU %, Mem MB & %, Net und Disk I/O zurück</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/v1/containers/{id}/logs?tail=150</code></td>
+            <td>Demuxte Stdout/Stderr Logs</td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><code>/api/v1/containers/{id}/{action}</code></td>
+            <td>Aktionen: <code>start</code>, <code>stop</code>, <code>restart</code>, <code>pause</code>, <code>unpause</code></td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/v1/live</code></td>
+            <td>Server-Sent Events (SSE) Stream aller Container alle 2 Sekunden</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="systemd">5. Systemd Service Setup (Linux)</h2>
+      <p>Erstelle die Datei <code>/etc/systemd/system/docklite.service</code>:</p>
+      <pre>[Unit]
+Description=Docklite - Lightweight Docker Monitor
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/bin/docklite --port 8080
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target</pre>
+      <p>Aktivieren mit:</p>
+      <pre>sudo systemctl daemon-reload
+sudo systemctl enable --now docklite</pre>
+
+      <h2 id="security">6. Sicherheitsarchitektur</h2>
+      <p>
+        Docklite implementiert strikte Sicherheitsrichtlinien gemäß Jeremy Benz' Coding Standards:
+      </p>
+      <ul>
+        <li><strong>Anti-DNS-Rebinding:</strong> Der HTTP-Host-Header wird validiert. Fremde Domainnamen werden mit HTTP 403 abgewiesen.</li>
+        <li><strong>Anti-CSRF:</strong> Mutierende POST-Requests validieren Origin- und Referer-Header.</li>
+        <li><strong>Strikte Security-Header:</strong> Content Security Policy (CSP), <code>X-Frame-Options: DENY</code>, <code>X-Content-Type-Options: nosniff</code>.</li>
+        <li><strong>Optionale Token-Authentifizierung:</strong> Mittels <code>--token &lt;token&gt;</code> wird jeder API-Request autorisiert.</li>
+      </ul>
+    </main>
+  </div>
+
+</body>
+</html>

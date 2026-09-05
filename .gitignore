@@ -1,0 +1,9 @@
+node_modules/
+frontend/
+dist_bin/
+release_assets/
+docklite
+docklite.exe
+*.tar.gz
+*.zip
+.DS_Store
