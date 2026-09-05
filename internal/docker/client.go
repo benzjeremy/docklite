@@ -1,6 +1,7 @@
 package docker
 
 import (
+	"bufio"
 	"bytes"
 	"context"
 	"encoding/binary"
@@ -9,6 +10,7 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"sync"
@@ -352,3 +354,111 @@ func (c *Client) PruneSystem(ctx context.Context) (map[string]interface{}, error
 		"images_pruned":     iPrune,
 	}, nil
 }
+
+// ContainerTop lists the running processes in the specified container.
+func (c *Client) ContainerTop(ctx context.Context, id string) (map[string]interface{}, error) {
+	resp, err := c.doRequest(ctx, http.MethodGet, fmt.Sprintf("/containers/%s/top", id), nil)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		bodyBytes, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("top failed (%d): %s", resp.StatusCode, string(bodyBytes))
+	}
+
+	var result map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// UpdateContainer updates container resource configurations and restart policy.
+func (c *Client) UpdateContainer(ctx context.Context, id string, updateConfig map[string]interface{}) (map[string]interface{}, error) {
+	bodyBytes, err := json.Marshal(updateConfig)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := c.doRequest(ctx, http.MethodPost, fmt.Sprintf("/containers/%s/update", id), bytes.NewReader(bodyBytes))
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		respBytes, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("update failed (%d): %s", resp.StatusCode, string(respBytes))
+	}
+
+	var res map[string]interface{}
+	_ = json.NewDecoder(resp.Body).Decode(&res)
+	return res, nil
+}
+
+// PullImage pulls a Docker image from registry and returns summary logs.
+func (c *Client) PullImage(ctx context.Context, image string, tag string) (string, error) {
+	if tag == "" {
+		tag = "latest"
+	}
+	path := fmt.Sprintf("/images/create?fromImage=%s&tag=%s", url.QueryEscape(image), url.QueryEscape(tag))
+	resp, err := c.doRequest(ctx, http.MethodPost, path, nil)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		bodyBytes, _ := io.ReadAll(resp.Body)
+		return "", fmt.Errorf("pull failed (%d): %s", resp.StatusCode, string(bodyBytes))
+	}
+
+	var output strings.Builder
+	scanner := bufio.NewScanner(resp.Body)
+	for scanner.Scan() {
+		var status map[string]interface{}
+		if err := json.Unmarshal(scanner.Bytes(), &status); err == nil {
+			if s, ok := status["status"].(string); ok {
+				if id, okID := status["id"].(string); okID {
+					output.WriteString(fmt.Sprintf("[%s] %s\n", id, s))
+				} else {
+					output.WriteString(fmt.Sprintf("%s\n", s))
+				}
+			}
+		}
+	}
+	return output.String(), nil
+}
+
+// ListVolumes returns all Docker volumes.
+func (c *Client) ListVolumes(ctx context.Context) (map[string]interface{}, error) {
+	resp, err := c.doRequest(ctx, http.MethodGet, "/volumes", nil)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var res map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+// ListNetworks returns all Docker networks.
+func (c *Client) ListNetworks(ctx context.Context) ([]map[string]interface{}, error) {
+	resp, err := c.doRequest(ctx, http.MethodGet, "/networks", nil)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var res []map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+

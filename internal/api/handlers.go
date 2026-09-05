@@ -3,7 +3,9 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 	"sync"
@@ -257,6 +259,120 @@ func (s *Server) handleSystemPrune(w http.ResponseWriter, r *http.Request) {
 		"result":  res,
 		"message": "System prune executed successfully",
 	})
+}
+
+var safeImageRegex = regexp.MustCompile(`^[a-zA-Z0-9_./:-]+$`)
+
+func (s *Server) handleContainerTop(w http.ResponseWriter, r *http.Request) {
+	path := strings.TrimPrefix(r.URL.Path, "/api/v1/containers/")
+	id := strings.TrimSuffix(path, "/top")
+	if id == "" {
+		s.writeError(w, http.StatusBadRequest, "Missing container ID")
+		return
+	}
+
+	ctx := r.Context()
+	top, err := s.docker.ContainerTop(ctx, id)
+	if err != nil {
+		s.writeError(w, http.StatusInternalServerError, fmt.Sprintf("Failed to fetch container processes: %v", err))
+		return
+	}
+
+	s.writeJSON(w, http.StatusOK, top)
+}
+
+func (s *Server) handleContainerUpdate(w http.ResponseWriter, r *http.Request) {
+	path := strings.TrimPrefix(r.URL.Path, "/api/v1/containers/")
+	id := strings.TrimSuffix(path, "/update")
+	if id == "" {
+		s.writeError(w, http.StatusBadRequest, "Missing container ID")
+		return
+	}
+
+	// Limit request body to 64KB for security
+	var updateConfig map[string]interface{}
+	if err := json.NewDecoder(io.LimitReader(r.Body, 64*1024)).Decode(&updateConfig); err != nil {
+		s.writeError(w, http.StatusBadRequest, fmt.Sprintf("Invalid JSON payload: %v", err))
+		return
+	}
+
+	ctx := r.Context()
+	res, err := s.docker.UpdateContainer(ctx, id, updateConfig)
+	if err != nil {
+		s.writeError(w, http.StatusInternalServerError, fmt.Sprintf("Container update failed: %v", err))
+		return
+	}
+
+	s.writeJSON(w, http.StatusOK, map[string]interface{}{
+		"success": true,
+		"result":  res,
+		"message": "Container updated successfully",
+	})
+}
+
+func (s *Server) handleImagePull(w http.ResponseWriter, r *http.Request) {
+	var payload struct {
+		Image string `json:"image"`
+		Tag   string `json:"tag"`
+	}
+
+	if r.Header.Get("Content-Type") == "application/json" {
+		_ = json.NewDecoder(io.LimitReader(r.Body, 16*1024)).Decode(&payload)
+	}
+	if payload.Image == "" {
+		payload.Image = r.URL.Query().Get("image")
+	}
+	if payload.Tag == "" {
+		payload.Tag = r.URL.Query().Get("tag")
+	}
+	if payload.Tag == "" {
+		payload.Tag = "latest"
+	}
+
+	if payload.Image == "" {
+		s.writeError(w, http.StatusBadRequest, "Missing image name")
+		return
+	}
+
+	if !safeImageRegex.MatchString(payload.Image) || !safeImageRegex.MatchString(payload.Tag) {
+		s.writeError(w, http.StatusBadRequest, "Invalid image name or tag format")
+		return
+	}
+
+	ctx := r.Context()
+	output, err := s.docker.PullImage(ctx, payload.Image, payload.Tag)
+	if err != nil {
+		s.writeError(w, http.StatusInternalServerError, fmt.Sprintf("Image pull failed: %v", err))
+		return
+	}
+
+	s.writeJSON(w, http.StatusOK, map[string]interface{}{
+		"success": true,
+		"image":   payload.Image,
+		"tag":     payload.Tag,
+		"output":  output,
+		"message": fmt.Sprintf("Image %s:%s pulled successfully", payload.Image, payload.Tag),
+	})
+}
+
+func (s *Server) handleVolumes(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	vols, err := s.docker.ListVolumes(ctx)
+	if err != nil {
+		s.writeError(w, http.StatusInternalServerError, fmt.Sprintf("Failed to list volumes: %v", err))
+		return
+	}
+	s.writeJSON(w, http.StatusOK, vols)
+}
+
+func (s *Server) handleNetworks(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	nets, err := s.docker.ListNetworks(ctx)
+	if err != nil {
+		s.writeError(w, http.StatusInternalServerError, fmt.Sprintf("Failed to list networks: %v", err))
+		return
+	}
+	s.writeJSON(w, http.StatusOK, nets)
 }
 
 // handleLiveSSE streams real-time container lists and stats every 2 seconds via Server-Sent Events.

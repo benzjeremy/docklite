@@ -815,11 +815,160 @@
       text-decoration: underline;
     }
 
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: 4rem 2rem;
+    /* Enhanced Inspect Tabs & Cards */
+    .inspect-tabs {
+      display: flex;
+      gap: 0.4rem;
+      padding: 0.75rem 1.75rem;
+      background: rgba(10, 16, 28, 0.9);
+      border-bottom: 1px solid var(--card-border);
+      overflow-x: auto;
+    }
+
+    .inspect-tab {
+      background: transparent;
+      border: 1px solid transparent;
       color: var(--text-muted);
+      padding: 0.4rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .inspect-tab:hover {
+      color: #fff;
+      background: rgba(30, 41, 59, 0.5);
+    }
+
+    .inspect-tab.active {
+      background: #1e293b;
+      color: #38bdf8;
+      border-color: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+    }
+
+    .inspect-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1rem;
+    }
+
+    .inspect-card {
+      background: #090e18;
+      border: 1px solid #1a273e;
+      border-radius: 12px;
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .inspect-card-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      border-bottom: 1px solid #141f33;
+      padding-bottom: 0.5rem;
+    }
+
+    .kv-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    .kv-table td {
+      padding: 0.4rem 0.6rem;
+      border-bottom: 1px solid #111a2c;
+    }
+
+    .kv-table td.key {
+      color: #94a3b8;
+      width: 35%;
+      font-weight: 500;
+    }
+
+    .kv-table td.val {
+      color: #f1f5f9;
+      font-family: var(--font-mono);
+      word-break: break-all;
+    }
+
+    /* Structured Colorized Logs */
+    .terminal-log-viewer {
+      background: #03060a;
+      border-radius: 0;
+      padding: 0.75rem 1rem;
+      color: #e2e8f0;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.6;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .log-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+
+    .log-line:hover {
+      background: rgba(30, 41, 59, 0.4);
+    }
+
+    .log-ts {
+      color: #38bdf8;
+      font-size: 0.72rem;
+      flex-shrink: 0;
+      user-select: none;
+      opacity: 0.8;
+    }
+
+    .log-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .log-badge-info { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .log-badge-warn { background: rgba(245, 158, 11, 0.15); color: #fde047; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .log-badge-error { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .log-badge-debug { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+    .log-msg {
+      flex: 1;
+      word-break: break-all;
+      white-space: pre-wrap;
+    }
+
+    .log-msg-error { color: #fca5a5; font-weight: 500; }
+    .log-msg-warn { color: #fde047; }
+
+    /* Quick Preset link */
+    .quick-pull-preset {
+      color: #38bdf8;
+      text-decoration: none;
+      border-bottom: 1px dotted #38bdf8;
+      cursor: pointer;
+    }
+    .quick-pull-preset:hover {
+      color: #fff;
     }
   </style>
 </head>
@@ -833,7 +982,7 @@
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
       </div>
       <div class="brand-text">
-        <h1>Docklite <span style="font-size:0.7rem; background:#1e293b; padding:0.15rem 0.45rem; border-radius:4px; color:#38bdf8; font-weight:700;">v1.1</span></h1>
+        <h1>Docklite <span style="font-size:0.7rem; background:#1e293b; padding:0.15rem 0.45rem; border-radius:4px; color:#38bdf8; font-weight:700;">v1.2</span></h1>
         <span>Ultra-lightweight Docker Daemon Monitor</span>
       </div>
     </a>
@@ -849,9 +998,19 @@
         🧹 Prune
       </button>
 
+      <button class="btn btn-sm" id="btnOpenPullModal" title="Docker Image herunterladen (Pull)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="8 17 12 21 16 17"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path></svg>
+        📥 Pull Image
+      </button>
+
       <button class="btn btn-sm" id="btnImages" title="Lokale Docker Images">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
         Images
+      </button>
+
+      <button class="btn btn-sm" id="btnVolumes" title="Docker Volumes & Netzwerke">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+        Volumes
       </button>
 
       <button class="btn btn-sm" id="btnApiDocs" title="REST API Dokumentation">
@@ -954,41 +1113,73 @@
     </section>
   </main>
 
-  <!-- Live Logs Modal -->
+  <!-- Live Logs Modal (Colorized, Filterable, Downloadable) -->
   <div class="modal-overlay" id="logsModal">
-    <div class="modal-window">
+    <div class="modal-window" style="max-width: 1080px;">
       <div class="modal-header">
         <div class="modal-title">
           📜 Logs: <span id="logsContainerName" style="color:var(--accent);">-</span>
         </div>
-        <div style="display:flex; gap:0.5rem; align-items:center;">
+        <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+          <div class="search-box" style="min-width:200px; padding:0.25rem 0.6rem;">
+            <input type="text" id="logsSearchInput" placeholder="Filter Logs (z.B. error)..." style="font-size:0.78rem;" />
+          </div>
           <select id="logsTailSelect" class="btn btn-sm" style="background:#131b2e; border:1px solid #23314d; color:#fff;">
             <option value="50">50 Zeilen</option>
             <option value="150" selected>150 Zeilen</option>
             <option value="300">300 Zeilen</option>
             <option value="1000">1000 Zeilen</option>
           </select>
-          <button class="btn btn-sm" id="btnCopyLogs">📋 Kopieren</button>
+          <label style="display:flex; align-items:center; gap:0.35rem; font-size:0.78rem; color:var(--text-muted); cursor:pointer;">
+            <input type="checkbox" id="logsAutoScroll" checked /> Auto-Scroll
+          </label>
+          <button class="btn btn-sm" id="btnDownloadLogs" title="Logs als .log Datei herunterladen">📥 Download</button>
+          <button class="btn btn-sm" id="btnCopyLogs" title="In Zwischenablage kopieren">📋 Kopieren</button>
           <button class="btn btn-sm btn-danger" id="btnCloseLogs">✕ Schließen</button>
         </div>
       </div>
-      <div class="modal-body">
-        <pre class="terminal-output" id="logsOutput">Lade Logs...</pre>
+      <div id="logsMetaBar" style="padding:0.4rem 1.75rem; background:#080c14; border-bottom:1px solid #162235; font-size:0.75rem; color:#94a3b8; display:flex; justify-content:space-between; align-items:center;">
+        <span id="logsLineCount">0 Zeilen</span>
+        <div style="display:flex; gap:0.4rem;">
+          <button class="btn btn-sm" id="btnFilterAllLogs" style="padding:0.15rem 0.55rem; font-size:0.72rem;">Alle</button>
+          <button class="btn btn-sm btn-danger" id="btnFilterErrorLogs" style="padding:0.15rem 0.55rem; font-size:0.72rem;">Nur Errors</button>
+          <button class="btn btn-sm btn-warning" id="btnFilterWarnLogs" style="padding:0.15rem 0.55rem; font-size:0.72rem;">Nur Warnungen</button>
+        </div>
+      </div>
+      <div class="modal-body" style="padding:0; display:flex; flex-direction:column; height:500px;">
+        <div id="logsViewer" class="terminal-log-viewer">
+          <div style="padding:1rem; color:var(--text-muted);">Lade Container Logs...</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Inspect Modal -->
+  <!-- Interactive Structured Inspect Modal (Replaces raw JSON) -->
   <div class="modal-overlay" id="inspectModal">
-    <div class="modal-window">
+    <div class="modal-window" style="max-width: 1040px;">
       <div class="modal-header">
-        <div class="modal-title">
+        <div class="modal-title" style="display:flex; align-items:center; gap:0.6rem;">
           🔍 Inspect: <span id="inspectContainerName" style="color:var(--accent);">-</span>
+          <span id="inspectStateBadge" class="state-pill state-running">running</span>
         </div>
-        <button class="btn btn-sm btn-danger" id="btnCloseInspect">✕ Schließen</button>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <button class="btn btn-sm" id="btnCopyInspectJson" title="Rohdaten als JSON kopieren">📋 JSON kopieren</button>
+          <button class="btn btn-sm btn-danger" id="btnCloseInspect">✕ Schließen</button>
+        </div>
       </div>
-      <div class="modal-body">
-        <pre class="terminal-output" id="inspectOutput">Lade JSON...</pre>
+
+      <div class="inspect-tabs">
+        <button class="inspect-tab active" data-tab="overview">📋 Übersicht & Details</button>
+        <button class="inspect-tab" data-tab="network">🌐 Netzwerk & Ports</button>
+        <button class="inspect-tab" data-tab="mounts">💾 Volumes & Mounts</button>
+        <button class="inspect-tab" data-tab="env">⚙️ Umgebung (Env)</button>
+        <button class="inspect-tab" data-tab="processes">⚡ Prozesse (Top)</button>
+        <button class="inspect-tab" data-tab="update">🛡️ Update & Policy</button>
+        <button class="inspect-tab" data-tab="raw">📄 Raw JSON</button>
+      </div>
+
+      <div class="modal-body" id="inspectTabContent" style="min-height:380px;">
+        <div style="color:var(--text-muted); text-align:center; padding:3rem;">Lade Container Details...</div>
       </div>
     </div>
   </div>
@@ -1000,7 +1191,10 @@
         <div class="modal-title">
           📦 Lokale Docker Images & Speicher
         </div>
-        <button class="btn btn-sm btn-danger" id="btnCloseImages">✕ Schließen</button>
+        <div style="display:flex; gap:0.5rem;">
+          <button class="btn btn-sm btn-primary" id="btnQuickPullFromImagesModal">📥 Image herunterladen (Pull)</button>
+          <button class="btn btn-sm btn-danger" id="btnCloseImages">✕ Schließen</button>
+        </div>
       </div>
       <div class="modal-body">
         <div class="table-responsive active">
@@ -1023,12 +1217,100 @@
     </div>
   </div>
 
-  <!-- API Docs Modal -->
+  <!-- Docker Pull Image Modal -->
+  <div class="modal-overlay" id="pullImageModal">
+    <div class="modal-window" style="max-width: 600px;">
+      <div class="modal-header">
+        <div class="modal-title">📥 Docker Image herunterladen (Pull)</div>
+        <button class="btn btn-sm btn-danger" id="btnClosePullImage">✕</button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:1.15rem;">
+        <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+          Lädt offizielle oder Registry-Images direkt über die Docker-Socket Schnittstelle herunter – blitzschnell und ohne Overhead.
+        </p>
+
+        <div style="display:flex; gap:0.75rem;">
+          <div style="flex:2;">
+            <label style="font-size:0.75rem; color:#94a3b8; display:block; margin-bottom:0.3rem;">Image Name (z.B. nginx, redis, postgres)</label>
+            <input type="text" id="pullImageInput" placeholder="z.B. nginx" style="width:100%; background:#080c14; border:1px solid #1e293b; color:#fff; padding:0.5rem 0.8rem; border-radius:8px; font-family:var(--font-mono); font-size:0.85rem; outline:none;" />
+          </div>
+          <div style="flex:1;">
+            <label style="font-size:0.75rem; color:#94a3b8; display:block; margin-bottom:0.3rem;">Tag</label>
+            <input type="text" id="pullTagInput" value="latest" placeholder="latest" style="width:100%; background:#080c14; border:1px solid #1e293b; color:#fff; padding:0.5rem 0.8rem; border-radius:8px; font-family:var(--font-mono); font-size:0.85rem; outline:none;" />
+          </div>
+        </div>
+
+        <div style="display:flex; gap:0.4rem; align-items:center; flex-wrap:wrap; font-size:0.75rem; color:var(--text-muted);">
+          <span>Schnellauswahl:</span>
+          <span class="quick-pull-preset" data-img="nginx" data-tag="alpine">nginx:alpine</span> ·
+          <span class="quick-pull-preset" data-img="redis" data-tag="alpine">redis:alpine</span> ·
+          <span class="quick-pull-preset" data-img="postgres" data-tag="alpine">postgres:alpine</span> ·
+          <span class="quick-pull-preset" data-img="alpine" data-tag="latest">alpine:latest</span>
+        </div>
+
+        <button class="btn btn-primary" id="btnExecutePull" style="justify-content:center; padding:0.65rem;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="8 17 12 21 16 17"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path></svg>
+          Image jetzt herunterladen
+        </button>
+
+        <div id="pullProgressBox" style="display:none; max-height:220px; overflow-y:auto; background:#03060a; border:1px solid #182338; border-radius:8px; padding:0.75rem 1rem; font-family:var(--font-mono); font-size:0.75rem; color:#cbd5e1; white-space:pre-wrap; line-height:1.5;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Docker Volumes & Networks Modal -->
+  <div class="modal-overlay" id="volumesModal">
+    <div class="modal-window" style="max-width: 960px;">
+      <div class="modal-header">
+        <div class="modal-title">💾 Docker Volumes & 🌐 Netzwerke</div>
+        <button class="btn btn-sm btn-danger" id="btnCloseVolumes">✕ Schließen</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex; gap:0.5rem; margin-bottom:1.15rem;">
+          <button class="btn btn-sm active" id="btnTabVol">💾 Volumes (<span id="volCount">0</span>)</button>
+          <button class="btn btn-sm" id="btnTabNet">🌐 Netzwerke (<span id="netCount">0</span>)</button>
+        </div>
+        <div id="volContainer" class="table-responsive active">
+          <table>
+            <thead>
+              <tr>
+                <th>Volume Name</th>
+                <th>Driver</th>
+                <th>Scope</th>
+                <th>Mountpoint (Host)</th>
+              </tr>
+            </thead>
+            <tbody id="volumesTableBody">
+              <!-- JS -->
+            </tbody>
+          </table>
+        </div>
+        <div id="netContainer" class="table-responsive" style="display:none;">
+          <table>
+            <thead>
+              <tr>
+                <th>Netzwerk Name</th>
+                <th>ID</th>
+                <th>Driver</th>
+                <th>Scope</th>
+                <th>Subnetz / Gateway</th>
+              </tr>
+            </thead>
+            <tbody id="networksTableBody">
+              <!-- JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API Docs Modal (v1.2) -->
   <div class="modal-overlay" id="apiDocsModal">
-    <div class="modal-window">
+    <div class="modal-window" style="max-width: 920px;">
       <div class="modal-header">
         <div class="modal-title">
-          ⚡ Docklite REST API Referenz (v1.1)
+          ⚡ Docklite REST API Referenz (v1.2)
         </div>
         <button class="btn btn-sm btn-danger" id="btnCloseApiDocs">✕ Schließen</button>
       </div>
@@ -1050,12 +1332,20 @@
             <div style="color:var(--text-muted); margin-top:0.25rem;">Container-Liste inklusive Live CPU% und Memory</div>
           </div>
           <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
-            <strong style="color:var(--info);">GET /api/v1/containers/&#123;id&#125;/stats</strong>
-            <div style="color:var(--text-muted); margin-top:0.25rem;">Echtzeit-Ressourcenverbrauch (CPU%, Mem, I/O)</div>
+            <strong style="color:var(--info);">GET /api/v1/containers/&#123;id&#125;</strong>
+            <div style="color:var(--text-muted); margin-top:0.25rem;">Container Inspect (Netzwerk, Mounts, Env, Limits)</div>
+          </div>
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+            <strong style="color:var(--info);">GET /api/v1/containers/&#123;id&#125;/top</strong>
+            <div style="color:var(--text-muted); margin-top:0.25rem;">Laufende Linux-Prozesse (PID, User, CPU, CMD) im Container</div>
+          </div>
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+            <strong style="color:var(--warning);">POST /api/v1/containers/&#123;id&#125;/update</strong>
+            <div style="color:var(--text-muted); margin-top:0.25rem;">Ressourcen-Limits und Restart-Policy aktualisieren</div>
           </div>
           <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
             <strong style="color:var(--info);">GET /api/v1/containers/&#123;id&#125;/logs?tail=150</strong>
-            <div style="color:var(--text-muted); margin-top:0.25rem;">Demuxte Stdout & Stderr Logs</div>
+            <div style="color:var(--text-muted); margin-top:0.25rem;">Demuxte Stdout & Stderr Logs mit Timestamps</div>
           </div>
           <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
             <strong style="color:var(--success);">POST /api/v1/containers/&#123;id&#125;/start|stop|restart|pause|unpause</strong>
@@ -1066,8 +1356,16 @@
             <div style="color:var(--text-muted); margin-top:0.25rem;">Container dauerhaft aus Docker entfernen</div>
           </div>
           <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+            <strong style="color:var(--success);">POST /api/v1/images/pull</strong>
+            <div style="color:var(--text-muted); margin-top:0.25rem;">Image aus Docker Registry herunterladen</div>
+          </div>
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
             <strong style="color:var(--danger);">DELETE /api/v1/images/&#123;id&#125;?force=true</strong>
             <div style="color:var(--text-muted); margin-top:0.25rem;">Docker Image löschen</div>
+          </div>
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+            <strong style="color:var(--info);">GET /api/v1/volumes | /api/v1/networks</strong>
+            <div style="color:var(--text-muted); margin-top:0.25rem;">Docker Volumes und Netzwerke inspizieren</div>
           </div>
           <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
             <strong style="color:var(--warning);">POST /api/v1/system/prune</strong>

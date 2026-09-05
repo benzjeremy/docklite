@@ -53,6 +53,30 @@ func (s *Server) registerRoutes() {
 		s.writeError(w, http.StatusMethodNotAllowed, "DELETE or POST required")
 	})
 
+	s.mux.HandleFunc("/api/v1/images/pull", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			s.handleImagePull(w, r)
+			return
+		}
+		s.writeError(w, http.StatusMethodNotAllowed, "POST required")
+	})
+
+	s.mux.HandleFunc("/api/v1/volumes", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			s.handleVolumes(w, r)
+			return
+		}
+		s.writeError(w, http.StatusMethodNotAllowed, "GET required")
+	})
+
+	s.mux.HandleFunc("/api/v1/networks", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			s.handleNetworks(w, r)
+			return
+		}
+		s.writeError(w, http.StatusMethodNotAllowed, "GET required")
+	})
+
 	s.mux.HandleFunc("/api/v1/system/prune", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
 			s.handleSystemPrune(w, r)
@@ -107,6 +131,20 @@ func (s *Server) registerRoutes() {
 					return
 				}
 				s.writeError(w, http.StatusMethodNotAllowed, "POST or DELETE required")
+				return
+			case "top":
+				if r.Method == http.MethodGet {
+					s.handleContainerTop(w, r)
+					return
+				}
+				s.writeError(w, http.StatusMethodNotAllowed, "GET required for top")
+				return
+			case "update":
+				if r.Method == http.MethodPost {
+					s.handleContainerUpdate(w, r)
+					return
+				}
+				s.writeError(w, http.StatusMethodNotAllowed, "POST required for update")
 				return
 			case "start", "stop", "restart", "pause", "unpause":
 				if r.Method == http.MethodPost {
