@@ -1,0 +1,18 @@
+# Binaries & build artifacts
+docklite
+docklite.exe
+dist_bin/
+release_assets/
+*.tar.gz
+*.zip
+
+# Frontend build artifacts
+frontend/node_modules/
+frontend/.astro/
+frontend/dist/
+
+# OS & Editor
+.DS_Store
+.vscode/
+.idea/
+*.swp
