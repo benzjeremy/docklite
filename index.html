@@ -33,8 +33,9 @@
       <span style="font-size:0.75rem; color:#38bdf8; font-family:var(--font-mono); background:#111a2c; padding:0.15rem 0.45rem; border-radius:4px; margin-left:0.5rem;">v1.2.1</span>
     </a>
     <nav>
-      <a href="#features" data-i18n-features>Features</a>
-      <a href="#vergleich" data-i18n-compare>Vergleich</a>
+      <a href="#features">Features</a>
+      <a href="#vergleich">Vergleich</a>
+      <a href="#about">Über das Projekt</a>
       <a href="wiki/">Wiki & Doku</a>
       <a href="https://github.com/benzjeremy/docklite" target="_blank" rel="noopener">GitHub</a>
       <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.2.1" class="btn btn-accent">Download v1.2.1</a>
@@ -45,14 +46,13 @@
   <div data-lang="de" class="visible">
     <main>
       <section class="hero">
-        <div class="hero-badge" style="display:inline-flex; flex-wrap:wrap; gap:0.5rem; align-items:center; justify-content:center;">
-          <span>⚡ Nativ in Go & Astro</span>
-          <span>·</span>
-          <a href="https://github.com/avelino/awesome-go#devops-tools" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none; font-weight:700;">★ Aufgenommen in Awesome Go (#6665)</a>
-          <span>·</span>
-          <span style="color:#38bdf8; font-family:var(--font-mono);">v1.2.1 [Patch · DevOps]</span>
-          <span>·</span>
-          <span>GPL-3.0</span>
+        <div class="hero-badges">
+          <span class="hero-badge release-badge">🚀 v1.2.1 [Patch · DevOps]</span>
+          <a href="https://github.com/avelino/awesome-go#devops-tools" target="_blank" rel="noopener" class="hero-badge awesome-badge" title="Aufgenommen in Awesome Go (#6665)">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="badge-star"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            Aufgenommen in <strong>Awesome Go</strong> (#6665)
+          </a>
+          <span class="hero-badge license-pill">GPL-3.0</span>
         </div>
         <h1>Die radikal schlanke <br><span class="gradient-text">Portainer-Alternative</span></h1>
         <p>
@@ -192,6 +192,65 @@ docklite --port 8080</div>
           </div>
         </div>
       </div>
+
+      <!-- About & Credits Section (German) -->
+      <section class="about-section" id="about">
+        <div class="about-layout-grid">
+          <!-- Mitwirkende -->
+          <div class="about-info-box">
+            <h3 class="about-box-title">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="box-ic"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+              Mitwirkende & Autoren
+            </h3>
+            <div class="author-card">
+              <div class="author-avatar">JB</div>
+              <div class="author-details">
+                <div class="author-name">Jeremy Benz</div>
+                <div class="author-handles">
+                  <a href="https://github.com/benzjeremy" target="_blank" rel="noopener">@benzjeremy</a> &bull; 
+                  <a href="https://github.com/jbenz1706" target="_blank" rel="noopener">@jbenz1706</a>
+                </div>
+                <div class="author-role">Projektgründer & Lead Developer</div>
+              </div>
+            </div>
+            <div class="ai-assist-box">
+              <span class="ai-label">AI Assistenten (Pair Programming):</span>
+              <div class="ai-chips">
+                <span class="ai-chip">Google Antigravity</span>
+                <span class="ai-chip">Claude Code</span>
+              </div>
+            </div>
+            <div class="copyright-line">&copy; 2026 Jeremy Benz</div>
+          </div>
+
+          <!-- Lizenz -->
+          <div class="about-info-box">
+            <h3 class="about-box-title">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="box-ic"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+              Freie & Open Source Software
+            </h3>
+            <p class="license-text">
+              Dieses Projekt steht unter der <strong>GNU General Public License, Version 3 (GPL-3.0)</strong>.
+              Sie garantiert jedem Nutzer die Freiheit, das Programm frei auszuführen, den Code zu studieren, anzupassen und weiterzuverbreiten.
+            </p>
+            <div class="license-links">
+              <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank" rel="noopener" class="license-cta">
+                Offizielle Lizenzseite auf GitHub einsehen &rarr;
+              </a>
+            </div>
+            <div class="ext-links-row">
+              <a href="https://github.com/benzjeremy/docklite" target="_blank" rel="noopener" class="link-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                <span>GitHub Quellcode</span>
+              </a>
+              <a href="https://github.com/benzjeremy/docklite/releases" target="_blank" rel="noopener" class="link-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                <span>Alle Releases</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -199,14 +258,13 @@ docklite --port 8080</div>
   <div data-lang="en">
     <main>
       <section class="hero">
-        <div class="hero-badge" style="display:inline-flex; flex-wrap:wrap; gap:0.5rem; align-items:center; justify-content:center;">
-          <span>⚡ Pure Go & Astro</span>
-          <span>·</span>
-          <a href="https://github.com/avelino/awesome-go#devops-tools" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none; font-weight:700;">★ Featured in Awesome Go (#6665)</a>
-          <span>·</span>
-          <span style="color:#38bdf8; font-family:var(--font-mono);">v1.2.1 [Patch · DevOps]</span>
-          <span>·</span>
-          <span>GPL-3.0</span>
+        <div class="hero-badges">
+          <span class="hero-badge release-badge">🚀 v1.2.1 [Patch · DevOps]</span>
+          <a href="https://github.com/avelino/awesome-go#devops-tools" target="_blank" rel="noopener" class="hero-badge awesome-badge" title="Featured in Awesome Go (#6665)">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="badge-star"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            Featured in <strong>Awesome Go</strong> (#6665)
+          </a>
+          <span class="hero-badge license-pill">GPL-3.0</span>
         </div>
         <h1>Radically Ultra-lightweight <br><span class="gradient-text">Portainer Alternative</span></h1>
         <p>
@@ -346,6 +404,65 @@ docklite --port 8080</div>
           </div>
         </div>
       </div>
+
+      <!-- About & Credits Section (English) -->
+      <section class="about-section">
+        <div class="about-layout-grid">
+          <!-- Contributors -->
+          <div class="about-info-box">
+            <h3 class="about-box-title">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="box-ic"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+              Contributors & Authors
+            </h3>
+            <div class="author-card">
+              <div class="author-avatar">JB</div>
+              <div class="author-details">
+                <div class="author-name">Jeremy Benz</div>
+                <div class="author-handles">
+                  <a href="https://github.com/benzjeremy" target="_blank" rel="noopener">@benzjeremy</a> &bull; 
+                  <a href="https://github.com/jbenz1706" target="_blank" rel="noopener">@jbenz1706</a>
+                </div>
+                <div class="author-role">Project Founder & Lead Developer</div>
+              </div>
+            </div>
+            <div class="ai-assist-box">
+              <span class="ai-label">AI Assistants (Pair Programming):</span>
+              <div class="ai-chips">
+                <span class="ai-chip">Google Antigravity</span>
+                <span class="ai-chip">Claude Code</span>
+              </div>
+            </div>
+            <div class="copyright-line">&copy; 2026 Jeremy Benz</div>
+          </div>
+
+          <!-- License -->
+          <div class="about-info-box">
+            <h3 class="about-box-title">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="box-ic"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+              Free & Open Source Software
+            </h3>
+            <p class="license-text">
+              This project is licensed under the <strong>GNU General Public License, Version 3 (GPL-3.0)</strong>.
+              It guarantees everyone the freedom to run, study, modify, and redistribute the software.
+            </p>
+            <div class="license-links">
+              <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank" rel="noopener" class="license-cta">
+                View official license on GitHub &rarr;
+              </a>
+            </div>
+            <div class="ext-links-row">
+              <a href="https://github.com/benzjeremy/docklite" target="_blank" rel="noopener" class="link-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                <span>GitHub Source</span>
+              </a>
+              <a href="https://github.com/benzjeremy/docklite/releases" target="_blank" rel="noopener" class="link-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                <span>All Releases</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -354,6 +471,7 @@ docklite --port 8080</div>
       <strong>Docklite</strong> · Entwickelt von <a href="https://github.com/benzjeremy" target="_blank" rel="noopener">Jeremy Benz (@benzjeremy)</a> · Open Source unter <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank" rel="noopener">GPL-3.0</a>
     </p>
     <p style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted);">
+      <a href="#about">Mitwirkende & Autoren</a> · 
       <a href="wiki/">Wiki & Doku</a> · 
       <a href="https://github.com/benzjeremy/docklite/releases" target="_blank" rel="noopener">Releases & Changelog</a> · 
       <a href="https://github.com/benzjeremy/docklite/issues" target="_blank" rel="noopener">Issues</a> · 
