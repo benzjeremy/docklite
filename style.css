@@ -424,6 +424,13 @@ footer a {
   background: rgba(79, 172, 254, 0.12);
   color: #60a5fa;
   border: 1px solid rgba(79, 172, 254, 0.25);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.license-pill:hover {
+  background: rgba(79, 172, 254, 0.22);
+  transform: translateY(-1px);
 }
 
 /* About / Credits / License Section */
