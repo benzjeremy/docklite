@@ -1,9 +1,11 @@
 # ⚡ Docklite
 
-[![Go Version](https://img.shields.io/badge/Go-1.27-00ADD8?style=flat&logo=go)](https://golang.org)
-[![Astro](https://img.shields.io/badge/Astro-7.3-FF5D01?style=flat&logo=astro)](https://astro.build)
+[![Go Reference](https://pkg.go.dev/badge/github.com/benzjeremy/docklite.svg)](https://pkg.go.dev/github.com/benzjeremy/docklite)
+[![Go Report Card](https://goreportcard.com/badge/github.com/benzjeremy/docklite.svg)](https://goreportcard.com/report/github.com/benzjeremy/docklite)
+[![CI](https://github.com/benzjeremy/docklite/actions/workflows/ci.yml/badge.svg)](https://github.com/benzjeremy/docklite/actions)
+[![Coverage](https://codecov.io/gh/benzjeremy/docklite/branch/main/graph/badge.svg)](https://app.codecov.io/gh/benzjeremy/docklite)
+[![Release](https://img.shields.io/badge/Release-Latest-emerald)](https://github.com/benzjeremy/docklite/releases/latest)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
-[![Release](https://img.shields.io/badge/Release-v1.0-emerald)](https://github.com/benzjeremy/docklite/releases)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-lightgrey)](#installation)
 
 > **Die radikal schlanke, blitzschnelle Portainer-Alternative in Go & Astro.**  
@@ -23,7 +25,7 @@ Portainer ist für einfache Server- und Homelab-Setups maßlos überdimensionier
 - ⚡ **Single Standalone Binary:** Die komplette Astro-Weboberfläche ist per `go:embed` fest in der Go-Binary einkompiliert. Keine externen Node.js- oder Webserver-Abhängigkeiten!
 - ⚡ **Direkter Docker-Socket:** Kommuniziert nativ über HTTP-over-Unix-Socket (`/var/run/docker.sock`) auf Linux oder Named Pipe (`//./pipe/docker_engine`) auf Windows.
 - ⚡ **Echtzeit-Monitoring:** Live CPU %, Memory (mit cgroup v1/v2 Cache-Bereinigung), Netzwerk Rx/Tx und Block-I/O via Server-Sent Events (SSE).
-- ⚡ **Volle Kontrolle:** Starten, Stoppen, Neustarten, Pausieren, Live-Logs und JSON-Inspect auf Knopfdruck.
+- ⚡ **Volle Kontrolle:** Starten, Stoppen, Neustarten, Pausieren, Löschen, Live-Logs und interaktiver Inspector auf Knopfdruck.
 - ⚡ **REST API:** Entwicklerfreundliche Endpunkte für eigene Automatisierungs-Skripte und Monitoring-Tools.
 - 🛡️ **Security by Design:** Host-Header-Validierung (Anti-DNS-Rebinding), Anti-CSRF, strikte CSP- & Security-Header, optionales Token (`--token`).
 
@@ -33,21 +35,16 @@ Portainer ist für einfache Server- und Homelab-Setups maßlos überdimensionier
 
 ### 1. Vorkompilierte Binary herunterladen (Linux / Windows)
 
-Lade die passende Datei von der [Releases-Seite](https://github.com/benzjeremy/docklite/releases) herunter:
+Lade die passende Datei direkt von der [Releases-Seite (Latest)](https://github.com/benzjeremy/docklite/releases/latest) herunter:
+
+- **Linux (AMD64):** `docklite-*-linux-amd64.tar.gz` herunterladen, entpacken und `./docklite` ausführen.
+- **Windows (AMD64):** `docklite-*-windows-amd64.zip` herunterladen, entpacken und `docklite.exe` starten.
+
+### 2. Installation via Go (Immer die neueste Version)
 
 ```bash
-# Linux (AMD64)
-curl -sSL https://github.com/benzjeremy/docklite/releases/download/v1.0/docklite-v1.0-linux-amd64.tar.gz | tar -xz
-./docklite
-```
-
-Unter Windows einfach `docklite-v1.0-windows-amd64.zip` entpacken und `docklite.exe` starten.
-
-### 2. Installation via Go
-
-```bash
-go install github.com/benzjeremy/docklite@v1.0
-docklite
+go install github.com/benzjeremy/docklite@latest
+docklite --port 8080
 ```
 
 Öffne anschließend [http://localhost:8080](http://localhost:8080) in deinem Browser!
