@@ -4,182 +4,393 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Docklite · Ultra-lightweight Docker Monitor (Portainer Alternative)</title>
-  <meta name="description" content="Die radikal schlanke Portainer-Alternative in Go und Astro. Eine einzige Standalone-Binary, direkte docker.sock Kommunikation und ca. 10 MB RAM.">
+  <meta name="description" content="Die radikal schlanke Portainer-Alternative in Go und Astro. Eine einzige Standalone-Binary, direkte docker.sock Kommunikation und ca. 10–15 MB RAM.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Docklite · Ultra-lightweight Docker Monitor">
+  <meta property="og:description" content="Radikal schlanke Portainer-Alternative in Go und Astro. Single-Binary, direkte docker.sock Kommunikation, ~12 MB RAM.">
+  <meta property="og:url" content="https://benzjeremy.github.io/docklite/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Docklite · Ultra-lightweight Docker Monitor">
+  <meta name="twitter:description" content="Die radikal schlanke Portainer-Alternative in Go & Astro. Single-Binary, live SSE Metriken.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!-- Top Ecosystem Bar & Language Switcher -->
+  <div class="ecosystem-bar">
+    <a href="https://benzjeremy.github.io/">← benzjeremy.github.io</a>
+    <div class="lang-switch">
+      <button type="button" class="lang-btn active" onclick="setLang('de')">DE</button>
+      <button type="button" class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+
   <header>
     <a href="#" class="logo-area">
       <img src="favicon.svg" alt="Docklite Logo" class="logo-icon">
       <span class="logo-title">Docklite</span>
+      <span style="font-size:0.75rem; color:#38bdf8; font-family:var(--font-mono); background:#111a2c; padding:0.15rem 0.45rem; border-radius:4px; margin-left:0.5rem;">v1.2.1</span>
     </a>
     <nav>
-      <a href="#features">Features</a>
-      <a href="#vergleich">Vergleich</a>
+      <a href="#features" data-i18n-features>Features</a>
+      <a href="#vergleich" data-i18n-compare>Vergleich</a>
       <a href="wiki/">Wiki & Doku</a>
-      <a href="https://github.com/benzjeremy/docklite" target="_blank">GitHub</a>
-      <a href="https://github.com/benzjeremy/docklite/releases/latest" class="btn btn-accent">Download Latest Release</a>
+      <a href="https://github.com/benzjeremy/docklite" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.2.1" class="btn btn-accent">Download v1.2.1</a>
     </nav>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="hero-badge" style="display:inline-flex; flex-wrap:wrap; gap:0.5rem; align-items:center; justify-content:center;">
-        <span>⚡ Nativ in Go & Astro</span>
-        <span>·</span>
-        <a href="https://github.com/avelino/awesome-go#devops-tools" target="_blank" style="color:var(--accent); text-decoration:none; font-weight:700;">★ Aufgenommen in Awesome Go (#6665)</a>
-        <span>·</span>
-        <span>GPL-3.0</span>
-      </div>
-      <h1>Die radikal schlanke <br><span class="gradient-text">Portainer-Alternative</span></h1>
-      <p>
-        Keine Lust mehr auf 250 MB RAM-Verbrauch, schwere Datenbanken und träge Interfaces, nur um kurz Ressourcen und Logs zu prüfen? Docklite wiegt unter 15 MB RAM, startet in Millisekunden und redet direkt mit deinem Docker-Socket.
-      </p>
-      <div class="hero-cta">
-        <a href="https://github.com/benzjeremy/docklite/releases/latest" class="btn btn-accent">⬇️ Latest Release herunterladen</a>
-        <a href="wiki/" class="btn">📖 Wiki & Schnellstart</a>
-        <a href="https://github.com/benzjeremy/docklite" class="btn" target="_blank">⭐ Auf GitHub ansehen</a>
-      </div>
-    </section>
+  <!-- DEUTSCH -->
+  <div data-lang="de" class="visible">
+    <main>
+      <section class="hero">
+        <div class="hero-badge" style="display:inline-flex; flex-wrap:wrap; gap:0.5rem; align-items:center; justify-content:center;">
+          <span>⚡ Nativ in Go & Astro</span>
+          <span>·</span>
+          <a href="https://github.com/avelino/awesome-go#devops-tools" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none; font-weight:700;">★ Aufgenommen in Awesome Go (#6665)</a>
+          <span>·</span>
+          <span style="color:#38bdf8; font-family:var(--font-mono);">v1.2.1 [Patch · DevOps]</span>
+          <span>·</span>
+          <span>GPL-3.0</span>
+        </div>
+        <h1>Die radikal schlanke <br><span class="gradient-text">Portainer-Alternative</span></h1>
+        <p>
+          Keine Lust mehr auf 250 MB RAM-Verbrauch, schwere Datenbanken und träge Interfaces, nur um kurz Ressourcen und Logs zu prüfen? Docklite wiegt unter 15 MB RAM, startet in Millisekunden und redet direkt mit deinem Docker-Socket.
+        </p>
+        <div class="hero-cta">
+          <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.2.1" class="btn btn-accent">⬇️ Release v1.2.1 herunterladen</a>
+          <a href="wiki/" class="btn">📖 Wiki & Schnellstart</a>
+          <a href="https://github.com/benzjeremy/docklite" class="btn" target="_blank" rel="noopener">⭐ Auf GitHub ansehen</a>
+        </div>
+      </section>
 
-    <div class="container-main">
-      <!-- Quick Install Box -->
-      <div class="section-title">
-        <h2>In 5 Sekunden startklar</h2>
-        <p>Ein Befehl genügt – keine Container-im-Container-Schachtelung notwendig.</p>
-      </div>
-      <div class="code-box">
-        # Per Go installieren (immer die neueste Version):<br>
-        go install github.com/benzjeremy/docklite@latest<br><br>
-        # Standalone-Binary starten (Web-UI auf Port 8080):<br>
-        docklite --port 8080<br><br>
-        # Oder vorkompilierte Binaries für Linux & Windows herunterladen:<br>
-        # https://github.com/benzjeremy/docklite/releases/latest
-      </div>
+      <div class="container-main">
+        <!-- Quick Install Box -->
+        <div class="section-title">
+          <h2>In 5 Sekunden startklar</h2>
+          <p>Ein Befehl genügt – keine Container-im-Container-Schachtelung notwendig.</p>
+        </div>
+        <div class="code-box-container">
+          <button type="button" class="copy-btn" onclick="copyInstallCmd(this)">📋 Kopieren</button>
+          <div class="code-box" id="dockliteInstallCmd">
+# Per Go installieren (immer die neueste Version):
+go install github.com/benzjeremy/docklite@latest
 
-      <!-- Comparison Section -->
-      <div class="section-title" id="vergleich">
-        <h2>Portainer vs. Docklite im direkten Vergleich</h2>
-        <p>Warum weniger oft um Welten mehr ist.</p>
-      </div>
-
-      <div class="comparison-card">
-        <table>
-          <thead>
-            <tr>
-              <th>Kriterium</th>
-              <th class="col-docklite">⚡ Docklite (Latest)</th>
-              <th class="col-portainer">🐢 Portainer CE</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>RAM-Verbrauch im Leerlauf</strong></td>
-              <td class="col-docklite"><strong>ca. 10 – 15 MB RAM</strong></td>
-              <td class="col-portainer">150 – 300+ MB RAM</td>
-            </tr>
-            <tr>
-              <td><strong>Architektur & Auslieferung</strong></td>
-              <td><strong>1 Standalone Go Binary</strong> (Astro Frontend einkompiliert)</td>
-              <td>Schweres Container-Image mit eigener Datenbank (BoltDB)</td>
-            </tr>
-            <tr>
-              <td><strong>Socket-Kommunikation</strong></td>
-              <td><strong>Direkt über /var/run/docker.sock</strong> oder Windows Pipe</td>
-              <td>Komplexer API-Proxy-Layer</td>
-            </tr>
-            <tr>
-              <td><strong>Echtzeit-Aktualisierung</strong></td>
-              <td><strong>Server-Sent Events (SSE)</strong> ohne Polling-Overhead</td>
-              <td>Manuelles Nachladen / Schwerfälliges Polling</td>
-            </tr>
-            <tr>
-              <td><strong>Sicherheit</strong></td>
-              <td>Anti-DNS-Rebinding, Anti-CSRF, CSP, Token-Auth</td>
-              <td>Oft ungesicherte Standard-Installationen</td>
-            </tr>
-            <tr>
-              <td><strong>Startzeit</strong></td>
-              <td><strong>&lt; 50 Millisekunden</strong></td>
-              <td>15 – 30 Sekunden Container-Boot</td>
-            </tr>
-            <tr>
-              <td><strong>Plattformen</strong></td>
-              <td>Linux & Windows nativ</td>
-              <td>Linux-fokussiert</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Features Section -->
-      <div class="section-title" id="features">
-        <h2>Features & Kernkompetenzen</h2>
-        <p>Genau das, was Entwickler und Sysadmins im Alltag wirklich brauchen.</p>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="icon">📊</div>
-          <h3>Echte Live-Ressourcen</h3>
-          <p>Exakte CPU-Auslastung und bereinigter Arbeitsspeicher (cgroup v1 cache / v2 inactive_file), Netzwerk I/O (Rx/Tx) und Block I/O in Echtzeit via SSE.</p>
+# Standalone-Binary starten (Web-UI auf Port 8080):
+docklite --port 8080</div>
         </div>
 
-        <div class="feature-card">
-          <div class="icon">🔍</div>
-          <h3>Interaktiver Inspector (Tabs)</h3>
-          <p>Strukturierte Übersicht statt unlesbarem JSON: Netzwerk & klickbare Host-Ports, gemountete Volumes, Environment-Variablen mit Schnellsuche & Copy, Top-Prozesse und RestartPolicy.</p>
+        <!-- Comparison Section -->
+        <div class="section-title" id="vergleich">
+          <h2>Portainer vs. Docklite im direkten Vergleich</h2>
+          <p>Warum weniger oft um Welten mehr ist.</p>
         </div>
 
-        <div class="feature-card">
-          <div class="icon">📜</div>
-          <h3>Colorierter Log-Viewer</h3>
-          <p>Live-Log-Streaming mit formatierten Zeitstempeln, Log-Level Badges ([ERROR], [WARN], [INFO]), Stichwort-Suchfilter und 1-Klick-Download als .log-Datei.</p>
+        <div class="comparison-card">
+          <table>
+            <thead>
+              <tr>
+                <th>Kriterium</th>
+                <th class="col-docklite">⚡ Docklite v1.2.1</th>
+                <th class="col-portainer">🐢 Portainer CE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>RAM-Verbrauch im Leerlauf</strong></td>
+                <td class="col-docklite"><strong>ca. 10 – 15 MB RAM</strong></td>
+                <td class="col-portainer">150 – 300+ MB RAM</td>
+              </tr>
+              <tr>
+                <td><strong>Architektur & Auslieferung</strong></td>
+                <td><strong>1 Standalone Go Binary</strong> (Astro Frontend einkompiliert)</td>
+                <td>Schweres Container-Image mit eigener Datenbank (BoltDB)</td>
+              </tr>
+              <tr>
+                <td><strong>Socket-Kommunikation</strong></td>
+                <td><strong>Direkt über /var/run/docker.sock</strong> oder Windows Pipe</td>
+                <td>Komplexer API-Proxy-Layer</td>
+              </tr>
+              <tr>
+                <td><strong>Echtzeit-Aktualisierung</strong></td>
+                <td><strong>Server-Sent Events (SSE)</strong> ohne Polling-Overhead</td>
+                <td>Manuelles Nachladen / Schwerfälliges Polling</td>
+              </tr>
+              <tr>
+                <td><strong>Sicherheit</strong></td>
+                <td>Anti-DNS-Rebinding, Anti-CSRF, CSP, Token-Auth</td>
+                <td>Oft ungesicherte Standard-Installationen</td>
+              </tr>
+              <tr>
+                <td><strong>Startzeit</strong></td>
+                <td><strong>&lt; 50 Millisekunden</strong></td>
+                <td>15 – 30 Sekunden Container-Boot</td>
+              </tr>
+              <tr>
+                <td><strong>Plattformen</strong></td>
+                <td>Linux & Windows nativ</td>
+                <td>Linux-fokussiert</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div class="feature-card">
-          <div class="icon">🕹️</div>
-          <h3>Container Lifecycle</h3>
-          <p>Container mit einem Klick starten, stoppen, neustarten, pausieren oder sicher löschen (inklusive Force-Option) – blitzschnell und ohne Latenz.</p>
+        <!-- Features Section -->
+        <div class="section-title" id="features">
+          <h2>Features & Kernkompetenzen</h2>
+          <p>Genau das, was Entwickler und Sysadmins im Alltag wirklich brauchen.</p>
         </div>
 
-        <div class="feature-card">
-          <div class="icon">📥</div>
-          <h3>Image-Manager & Pull</h3>
-          <p>Neues Image direkt über den Docker-Socket herunterladen inklusive Schnellauswahl gängiger Images und Live-Download-Progress. Nicht mehr benötigte Images per Klick entfernen.</p>
-        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="icon">📊</div>
+            <h3>Echte Live-Ressourcen</h3>
+            <p>Exakte CPU-Auslastung und bereinigter Arbeitsspeicher (cgroup v1 cache / v2 inactive_file), Netzwerk I/O (Rx/Tx) und Block I/O in Echtzeit via SSE.</p>
+          </div>
 
-        <div class="feature-card">
-          <div class="icon">💾</div>
-          <h3>Volumes & Netzwerke</h3>
-          <p>Transparenter Einblick in alle lokalen Docker-Volumes (Mountpoint, Driver, Scope) und Bridge-/Overlay-Netzwerke mit IP-Bereichen und Gateways.</p>
-        </div>
+          <div class="feature-card">
+            <div class="icon">🔍</div>
+            <h3>Interaktiver Inspector (Tabs)</h3>
+            <p>Strukturierte Übersicht statt unlesbarem JSON: Netzwerk & klickbare Host-Ports, gemountete Volumes, Environment-Variablen mit Schnellsuche & Copy, Top-Prozesse und RestartPolicy.</p>
+          </div>
 
-        <div class="feature-card">
-          <div class="icon">📡</div>
-          <h3>Vollwertige REST API</h3>
-          <p>Jede Funktion steht als dokumentierte JSON REST-API zur Verfügung. Perfekt für eigene Automatisierungs-Skripte, Dashboards oder Health-Checks.</p>
-        </div>
+          <div class="feature-card">
+            <div class="icon">📜</div>
+            <h3>Colorierter Log-Viewer</h3>
+            <p>Live-Log-Streaming mit formatierten Zeitstempeln, Log-Level Badges ([ERROR], [WARN], [INFO]), Stichwort-Suchfilter und 1-Klick-Download als .log-Datei.</p>
+          </div>
 
-        <div class="feature-card">
-          <div class="icon">🛡️</div>
-          <h3>Security by Design</h3>
-          <p>Gebaut nach strikten Sicherheitsstandards: Anti-DNS-Rebinding, Origin/Referer CSRF-Schutz, strikte Content-Security-Policy (CSP) und optionale Token-Authentifizierung.</p>
+          <div class="feature-card">
+            <div class="icon">🕹️</div>
+            <h3>Container Lifecycle</h3>
+            <p>Container mit einem Klick starten, stoppen, neustarten, pausieren oder sicher löschen (inklusive Force-Option) – blitzschnell und ohne Latenz.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon">📥</div>
+            <h3>Image-Manager & Pull</h3>
+            <p>Neues Image direkt über den Docker-Socket herunterladen inklusive Schnellauswahl gängiger Images und Live-Download-Progress. Nicht mehr benötigte Images per Klick entfernen.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon">💾</div>
+            <h3>Volumes & Netzwerke</h3>
+            <p>Transparenter Einblick in alle lokalen Docker-Volumes (Mountpoint, Driver, Scope) und Bridge-/Overlay-Netzwerke mit IP-Bereichen und Gateways.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon">📡</div>
+            <h3>Vollwertige REST API</h3>
+            <p>Jede Funktion steht als dokumentierte JSON REST-API zur Verfügung. Perfekt für eigene Automatisierungs-Skripte, Dashboards oder Health-Checks.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon">🛡️</div>
+            <h3>Security by Design</h3>
+            <p>Gebaut nach strikten Sicherheitsstandards: Anti-DNS-Rebinding, Origin/Referer CSRF-Schutz, strikte Content-Security-Policy (CSP) und optionale Token-Authentifizierung.</p>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
+
+  <!-- ENGLISH -->
+  <div data-lang="en">
+    <main>
+      <section class="hero">
+        <div class="hero-badge" style="display:inline-flex; flex-wrap:wrap; gap:0.5rem; align-items:center; justify-content:center;">
+          <span>⚡ Pure Go & Astro</span>
+          <span>·</span>
+          <a href="https://github.com/avelino/awesome-go#devops-tools" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none; font-weight:700;">★ Featured in Awesome Go (#6665)</a>
+          <span>·</span>
+          <span style="color:#38bdf8; font-family:var(--font-mono);">v1.2.1 [Patch · DevOps]</span>
+          <span>·</span>
+          <span>GPL-3.0</span>
+        </div>
+        <h1>Radically Ultra-lightweight <br><span class="gradient-text">Portainer Alternative</span></h1>
+        <p>
+          Tired of container monitors eating 250+ MB RAM, heavy database setups, and sluggish web interfaces just to check logs and resource usage? Docklite stays below 15 MB RAM, boots in milliseconds, and speaks directly to your Docker socket.
+        </p>
+        <div class="hero-cta">
+          <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.2.1" class="btn btn-accent">⬇️ Download Release v1.2.1</a>
+          <a href="wiki/" class="btn">📖 Wiki & Quickstart</a>
+          <a href="https://github.com/benzjeremy/docklite" class="btn" target="_blank" rel="noopener">⭐ View on GitHub</a>
+        </div>
+      </section>
+
+      <div class="container-main">
+        <!-- Quick Install Box -->
+        <div class="section-title">
+          <h2>Ready in 5 seconds</h2>
+          <p>A single command is all it takes – no container-in-container nesting required.</p>
+        </div>
+        <div class="code-box-container">
+          <button type="button" class="copy-btn" onclick="copyInstallCmd(this)">📋 Copy</button>
+          <div class="code-box">
+# Install via Go (always gets the latest release):
+go install github.com/benzjeremy/docklite@latest
+
+# Launch standalone binary (Web UI on port 8080):
+docklite --port 8080</div>
+        </div>
+
+        <!-- Comparison Section -->
+        <div class="section-title">
+          <h2>Portainer vs. Docklite Comparison</h2>
+          <p>Why doing one thing well beats monolithic bloat.</p>
+        </div>
+
+        <div class="comparison-card">
+          <table>
+            <thead>
+              <tr>
+                <th>Criterion</th>
+                <th class="col-docklite">⚡ Docklite v1.2.1</th>
+                <th class="col-portainer">🐢 Portainer CE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Idle RAM Footprint</strong></td>
+                <td class="col-docklite"><strong>~10 – 15 MB RAM</strong></td>
+                <td class="col-portainer">150 – 300+ MB RAM</td>
+              </tr>
+              <tr>
+                <td><strong>Architecture & Delivery</strong></td>
+                <td><strong>Single Standalone Go Binary</strong> (Astro embedded)</td>
+                <td>Heavy container image with embedded BoltDB</td>
+              </tr>
+              <tr>
+                <td><strong>Socket Communication</strong></td>
+                <td><strong>Direct /var/run/docker.sock</strong> or Windows Named Pipe</td>
+                <td>Complex API proxy layer</td>
+              </tr>
+              <tr>
+                <td><strong>Real-Time Updates</strong></td>
+                <td><strong>Server-Sent Events (SSE)</strong> without polling overhead</td>
+                <td>Manual reload / heavy polling</td>
+              </tr>
+              <tr>
+                <td><strong>Security Hardening</strong></td>
+                <td>Anti-DNS-Rebinding, Anti-CSRF, CSP, Token-Auth</td>
+                <td>Often insecure default deployments</td>
+              </tr>
+              <tr>
+                <td><strong>Startup Time</strong></td>
+                <td><strong>&lt; 50 milliseconds</strong></td>
+                <td>15 – 30 seconds container boot</td>
+              </tr>
+              <tr>
+                <td><strong>Platforms</strong></td>
+                <td>Linux & Windows native</td>
+                <td>Primarily Linux-focused</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Features Section -->
+        <div class="section-title">
+          <h2>Features & Capabilities</h2>
+          <p>Everything developers and system operators need on a day-to-day basis.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="icon">📊</div>
+            <h3>Real-Time Telemetry</h3>
+            <p>Accurate CPU and sanitized RAM (cgroup v1 cache / v2 inactive_file), live network I/O (Rx/Tx), and disk I/O streamed via Server-Sent Events.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon">🔍</div>
+            <h3>Interactive Inspector</h3>
+            <p>Tabbed view instead of raw JSON: Network & clickable host ports, mounted volumes, searchable environment variables with 1-click copy, and top processes.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon">📜</div>
+            <h3>Colorized Log Streaming</h3>
+            <p>Live stdout/stderr stream with formatted timestamps, log level badges ([ERROR], [WARN], [INFO]), keyword search, and 1-click .log file download.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon">🕹️</div>
+            <h3>Container Lifecycle</h3>
+            <p>Start, stop, restart, pause, or remove containers (with force option) in milliseconds without page reload.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon">📥</div>
+            <h3>Image Pull & Prune</h3>
+            <p>Pull container images directly through the Docker socket with quick picks for popular images, real-time download status, and 1-click system prune.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon">💾</div>
+            <h3>Volumes & Networks</h3>
+            <p>Inspect local volumes (mountpoint, driver, scope) and bridge/overlay networks with IP subnets and gateways.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon">📡</div>
+            <h3>Full REST API</h3>
+            <p>Every dashboard action is backed by a clean JSON REST API (v1). Ideal for automation scripts, custom monitoring, or health checks.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon">🛡️</div>
+            <h3>Security by Design</h3>
+            <p>Built according to strict security guidelines: Anti-DNS-Rebinding, Origin/Referer CSRF protection, CSP, and optional token authentication.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 
   <footer>
     <p>
-      <strong>Docklite</strong> · Entwickelt von <a href="https://github.com/benzjeremy" target="_blank">Jeremy Benz (@benzjeremy)</a> · Open Source unter <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank">GPL-3.0</a>
+      <strong>Docklite</strong> · Entwickelt von <a href="https://github.com/benzjeremy" target="_blank" rel="noopener">Jeremy Benz (@benzjeremy)</a> · Open Source unter <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank" rel="noopener">GPL-3.0</a>
     </p>
-    <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-muted);">
-      Zurück zum Hauptprofil: <a href="https://benzjeremy.github.io/">benzjeremy.github.io</a>
+    <p style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted);">
+      <a href="wiki/">Wiki & Doku</a> · 
+      <a href="https://github.com/benzjeremy/docklite/releases" target="_blank" rel="noopener">Releases & Changelog</a> · 
+      <a href="https://github.com/benzjeremy/docklite/issues" target="_blank" rel="noopener">Issues</a> · 
+      <a href="https://benzjeremy.github.io/impressum.html">Impressum</a> · 
+      <a href="https://benzjeremy.github.io/datenschutz.html">Datenschutz</a> · 
+      <a href="https://benzjeremy.github.io/">benzjeremy.github.io</a>
     </p>
   </footer>
 
+  <script>
+    function copyInstallCmd(btn) {
+      const code = "go install github.com/benzjeremy/docklite@latest\ndocklite --port 8080";
+      navigator.clipboard.writeText(code).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = '✓ Kopiert!';
+        setTimeout(() => { btn.textContent = orig; }, 2000);
+      });
+    }
+
+    function setLang(lang) {
+      document.querySelectorAll('[data-lang]').forEach(el => {
+        el.classList.toggle('visible', el.getAttribute('data-lang') === lang);
+      });
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+      });
+      document.documentElement.lang = lang;
+      try { localStorage.setItem('pref_lang', lang); } catch(e) {}
+    }
+
+    // Restore language preference
+    try {
+      const saved = localStorage.getItem('pref_lang');
+      if (saved && (saved === 'de' || saved === 'en')) {
+        setLang(saved);
+      }
+    } catch(e) {}
+  </script>
 </body>
 </html>
