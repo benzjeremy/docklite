@@ -61,15 +61,24 @@
       </p>
 
       <h2 id="installation">3. Installation & Setup</h2>
-      <h3>Linux</h3>
-      <pre>curl -sSL https://github.com/benzjeremy/docklite/releases/download/v1.0/docklite-v1.0-linux-amd64.tar.gz | tar -xz
-./docklite</pre>
+      <p>Docklite wird als eigenständige, statische Binary ohne externe Laufzeitabhängigkeiten bereitgestellt.</p>
 
-      <h3>Windows</h3>
-      <p>Lade <code>docklite-v1.0-windows-amd64.zip</code> aus den Releases herunter, entpacke das Archiv und starte <code>docklite.exe</code>.</p>
+      <h3>Empfohlen: Go Install (Automatisch Latest)</h3>
+      <pre>go install github.com/benzjeremy/docklite@latest
+docklite --port 8080</pre>
 
-      <h3>Go Install</h3>
-      <pre>go install github.com/benzjeremy/docklite@v1.0</pre>
+      <h3>Vorkompilierte Binaries (Latest Release)</h3>
+      <p>
+        Alle vorkompilierten Archive für Linux (AMD64) und Windows (AMD64) stehen im GitHub Repository unter <a href="https://github.com/benzjeremy/docklite/releases/latest" target="_blank" style="color:var(--accent);"><strong>Releases (Latest)</strong></a> bereit.
+      </p>
+
+      <h4>Linux Standalone</h4>
+      <pre># Auspacken und starten:
+tar -xzf docklite-*-linux-amd64.tar.gz
+./docklite --port 8080</pre>
+
+      <h4>Windows Standalone</h4>
+      <p>Lade <code>docklite-*-windows-amd64.zip</code> herunter, entpacke das Archiv und führe <code>docklite.exe</code> in der PowerShell oder per Doppelklick aus.</p>
 
       <h2 id="api">4. REST API Referenz</h2>
       <p>Alle API-Routen sind versioniert unter dem Präfix <code>/api/v1/</code>:</p>
@@ -105,8 +114,13 @@
           </tr>
           <tr>
             <td><code>GET</code></td>
+            <td><code>/api/v1/containers/{id}/top</code></td>
+            <td>Gibt laufende Linux-Prozesse (PID, User, Time, CMD) des Containers zurück</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
             <td><code>/api/v1/containers/{id}/logs?tail=150</code></td>
-            <td>Demuxte Stdout/Stderr Logs</td>
+            <td>Demuxte Stdout/Stderr Logs mit Timestamp-Parsing</td>
           </tr>
           <tr>
             <td><code>POST</code></td>
@@ -114,9 +128,39 @@
             <td>Aktionen: <code>start</code>, <code>stop</code>, <code>restart</code>, <code>pause</code>, <code>unpause</code></td>
           </tr>
           <tr>
+            <td><code>POST</code></td>
+            <td><code>/api/v1/containers/{id}/update</code></td>
+            <td>Aktualisiert Container-Konfiguration (z. B. RestartPolicy)</td>
+          </tr>
+          <tr>
+            <td><code>DELETE</code></td>
+            <td><code>/api/v1/containers/{id}?force=true</code></td>
+            <td>Entfernt einen Container (optional mit Force)</td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><code>/api/v1/images/pull</code></td>
+            <td>Zieht ein Image aus der Registry (inkl. Live-Progress-Stream)</td>
+          </tr>
+          <tr>
+            <td><code>DELETE</code></td>
+            <td><code>/api/v1/images/{id}?force=true</code></td>
+            <td>Löscht ein lokales Docker Image</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/v1/volumes</code></td>
+            <td>Listet alle lokalen Docker Volumes auf</td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/v1/networks</code></td>
+            <td>Listet alle Docker Netzwerke inklusive Subnetzen & Gateways auf</td>
+          </tr>
+          <tr>
             <td><code>GET</code></td>
             <td><code>/api/v1/live</code></td>
-            <td>Server-Sent Events (SSE) Stream aller Container alle 2 Sekunden</td>
+            <td>Server-Sent Events (SSE) Stream aller Container-Metriken in Echtzeit</td>
           </tr>
         </tbody>
       </table>

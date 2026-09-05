@@ -20,19 +20,19 @@
       <a href="#vergleich">Vergleich</a>
       <a href="wiki/">Wiki & Doku</a>
       <a href="https://github.com/benzjeremy/docklite" target="_blank">GitHub</a>
-      <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.0" class="btn btn-accent">Download v1.0</a>
+      <a href="https://github.com/benzjeremy/docklite/releases/latest" class="btn btn-accent">Download Latest Release</a>
     </nav>
   </header>
 
   <main>
     <section class="hero">
-      <div class="hero-badge">⚡ Nativ in Go & Astro · Open Source (GPL-3.0)</div>
+      <div class="hero-badge">⚡ Nativ in Go & Astro · Open Source (GPL-3.0) · Latest Release</div>
       <h1>Die radikal schlanke <br><span class="gradient-text">Portainer-Alternative</span></h1>
       <p>
         Keine Lust mehr auf 250 MB RAM-Verbrauch, schwere Datenbanken und träge Interfaces, nur um kurz Ressourcen und Logs zu prüfen? Docklite wiegt unter 15 MB RAM, startet in Millisekunden und redet direkt mit deinem Docker-Socket.
       </p>
       <div class="hero-cta">
-        <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.2" class="btn btn-accent">⬇️ Release v1.2 herunterladen</a>
+        <a href="https://github.com/benzjeremy/docklite/releases/latest" class="btn btn-accent">⬇️ Latest Release herunterladen</a>
         <a href="wiki/" class="btn">📖 Wiki & Schnellstart</a>
         <a href="https://github.com/benzjeremy/docklite" class="btn" target="_blank">⭐ Auf GitHub ansehen</a>
       </div>
@@ -45,11 +45,12 @@
         <p>Ein Befehl genügt – keine Container-im-Container-Schachtelung notwendig.</p>
       </div>
       <div class="code-box">
-        # Linux (AMD64) direkt ausführen:<br>
-        curl -sSL https://github.com/benzjeremy/docklite/releases/download/v1.2/docklite-v1.2-linux-amd64.tar.gz | tar -xz<br>
-        ./docklite<br><br>
-        # Oder via Go installieren:<br>
-        go install github.com/benzjeremy/docklite@latest
+        # Per Go installieren (immer die neueste Version):<br>
+        go install github.com/benzjeremy/docklite@latest<br><br>
+        # Standalone-Binary starten (Web-UI auf Port 8080):<br>
+        docklite --port 8080<br><br>
+        # Oder vorkompilierte Binaries für Linux & Windows herunterladen:<br>
+        # https://github.com/benzjeremy/docklite/releases/latest
       </div>
 
       <!-- Comparison Section -->
@@ -63,7 +64,7 @@
           <thead>
             <tr>
               <th>Kriterium</th>
-              <th class="col-docklite">⚡ Docklite (v1.0)</th>
+              <th class="col-docklite">⚡ Docklite (Latest)</th>
               <th class="col-portainer">🐢 Portainer CE</th>
             </tr>
           </thead>
@@ -117,37 +118,49 @@
         <div class="feature-card">
           <div class="icon">📊</div>
           <h3>Echte Live-Ressourcen</h3>
-          <p>Exakte CPU-Auslastung und bereinigter Arbeitsspeicher (cgroup v1 cache / v2 inactive_file), Netzwerk I/O (Rx/Tx) und Block I/O in Echtzeit.</p>
+          <p>Exakte CPU-Auslastung und bereinigter Arbeitsspeicher (cgroup v1 cache / v2 inactive_file), Netzwerk I/O (Rx/Tx) und Block I/O in Echtzeit via SSE.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon">🔍</div>
+          <h3>Interaktiver Inspector (Tabs)</h3>
+          <p>Strukturierte Übersicht statt unlesbarem JSON: Netzwerk & klickbare Host-Ports, gemountete Volumes, Environment-Variablen mit Schnellsuche & Copy, Top-Prozesse und RestartPolicy.</p>
         </div>
 
         <div class="feature-card">
           <div class="icon">📜</div>
-          <h3>Integrierter Log-Viewer</h3>
-          <p>Schnelles Betrachten von stdout und stderr mit automatischem Demuxing der Docker-Stream-Header, Tail-Filter und Kopierfunktion.</p>
+          <h3>Colorierter Log-Viewer</h3>
+          <p>Live-Log-Streaming mit formatierten Zeitstempeln, Log-Level Badges ([ERROR], [WARN], [INFO]), Stichwort-Suchfilter und 1-Klick-Download als .log-Datei.</p>
         </div>
 
         <div class="feature-card">
           <div class="icon">🕹️</div>
-          <h3>Container Lifecycle Management</h3>
-          <p>Container mit einem Klick starten, stoppen, neustarten oder pausieren – inklusive sauberem Shutdown-Timeout.</p>
+          <h3>Container Lifecycle</h3>
+          <p>Container mit einem Klick starten, stoppen, neustarten, pausieren oder sicher löschen (inklusive Force-Option) – blitzschnell und ohne Latenz.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon">📥</div>
+          <h3>Image-Manager & Pull</h3>
+          <p>Neues Image direkt über den Docker-Socket herunterladen inklusive Schnellauswahl gängiger Images und Live-Download-Progress. Nicht mehr benötigte Images per Klick entfernen.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon">💾</div>
+          <h3>Volumes & Netzwerke</h3>
+          <p>Transparenter Einblick in alle lokalen Docker-Volumes (Mountpoint, Driver, Scope) und Bridge-/Overlay-Netzwerke mit IP-Bereichen und Gateways.</p>
         </div>
 
         <div class="feature-card">
           <div class="icon">📡</div>
           <h3>Vollwertige REST API</h3>
-          <p>Jede Funktion steht als dokumentierte JSON REST-API zur Verfügung. Perfekt für eigene Skripte, Dashboards oder Health-Checks.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="icon">🔍</div>
-          <h3>Deep Container Inspect</h3>
-          <p>Untersuche Umgebungsvariablen, Port-Forwardings, Mount-Volumes und Netzwerkkonfigurationen auf einen Blick im JSON-Modal.</p>
+          <p>Jede Funktion steht als dokumentierte JSON REST-API zur Verfügung. Perfekt für eigene Automatisierungs-Skripte, Dashboards oder Health-Checks.</p>
         </div>
 
         <div class="feature-card">
           <div class="icon">🛡️</div>
           <h3>Security by Design</h3>
-          <p>Gebaut nach strikten Sicherheitsstandards: Kein offener Port ins Netz ohne Authentifizierung, strikte Host-Header-Checks und CSRF-Schutz.</p>
+          <p>Gebaut nach strikten Sicherheitsstandards: Anti-DNS-Rebinding, Origin/Referer CSRF-Schutz, strikte Content-Security-Policy (CSP) und optionale Token-Authentifizierung.</p>
         </div>
       </div>
     </div>
@@ -158,7 +171,7 @@
       <strong>Docklite</strong> · Entwickelt von <a href="https://github.com/benzjeremy" target="_blank">Jeremy Benz (@benzjeremy)</a> · Open Source unter <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank">GPL-3.0</a>
     </p>
     <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-muted);">
-      Zurück zum Hauptprofil: <a href="https://benzjeremy.github.io/">benzjeremy.github.io</a> · <a href="https://benzjeremy.github.io/details">Details & Persona</a>
+      Zurück zum Hauptprofil: <a href="https://benzjeremy.github.io/">benzjeremy.github.io</a>
     </p>
   </footer>
 
