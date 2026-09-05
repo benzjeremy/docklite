@@ -288,3 +288,67 @@ func (c *Client) ListImages(ctx context.Context) ([]ImageSummary, error) {
 	}
 	return images, nil
 }
+
+// RemoveContainer deletes a container from Docker.
+func (c *Client) RemoveContainer(ctx context.Context, id string, force bool) error {
+	path := fmt.Sprintf("/containers/%s?v=1", id)
+	if force {
+		path += "&force=1"
+	}
+	resp, err := c.doRequest(ctx, http.MethodDelete, path, nil)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		bodyBytes, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("remove container failed (%d): %s", resp.StatusCode, string(bodyBytes))
+	}
+	return nil
+}
+
+// RemoveImage deletes a Docker image.
+func (c *Client) RemoveImage(ctx context.Context, id string, force bool) error {
+	path := fmt.Sprintf("/images/%s", id)
+	if force {
+		path += "?force=1"
+	}
+	resp, err := c.doRequest(ctx, http.MethodDelete, path, nil)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		bodyBytes, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("remove image failed (%d): %s", resp.StatusCode, string(bodyBytes))
+	}
+	return nil
+}
+
+// PruneSystem cleans up stopped containers and unused images.
+func (c *Client) PruneSystem(ctx context.Context) (map[string]interface{}, error) {
+	cResp, err := c.doRequest(ctx, http.MethodPost, "/containers/prune", nil)
+	if err != nil {
+		return nil, fmt.Errorf("containers prune failed: %w", err)
+	}
+	defer cResp.Body.Close()
+
+	var cPrune map[string]interface{}
+	_ = json.NewDecoder(cResp.Body).Decode(&cPrune)
+
+	iResp, err := c.doRequest(ctx, http.MethodPost, "/images/prune", nil)
+	if err != nil {
+		return nil, fmt.Errorf("images prune failed: %w", err)
+	}
+	defer iResp.Body.Close()
+
+	var iPrune map[string]interface{}
+	_ = json.NewDecoder(iResp.Body).Decode(&iPrune)
+
+	return map[string]interface{}{
+		"containers_pruned": cPrune,
+		"images_pruned":     iPrune,
+	}, nil
+}

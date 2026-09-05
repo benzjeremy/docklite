@@ -202,6 +202,63 @@ func (s *Server) handleImages(w http.ResponseWriter, r *http.Request) {
 	s.writeJSON(w, http.StatusOK, images)
 }
 
+func (s *Server) handleContainerDelete(w http.ResponseWriter, r *http.Request) {
+	id := extractID(r.URL.Path, "/api/v1/containers/")
+	if id == "" {
+		s.writeError(w, http.StatusBadRequest, "Missing container ID")
+		return
+	}
+
+	force := r.URL.Query().Get("force") == "true"
+	ctx := r.Context()
+	if err := s.docker.RemoveContainer(ctx, id, force); err != nil {
+		s.writeError(w, http.StatusInternalServerError, fmt.Sprintf("Failed to remove container: %v", err))
+		return
+	}
+
+	s.writeJSON(w, http.StatusOK, map[string]interface{}{
+		"success": true,
+		"id":      id,
+		"message": fmt.Sprintf("Container %s deleted successfully", id),
+	})
+}
+
+func (s *Server) handleImageDelete(w http.ResponseWriter, r *http.Request) {
+	id := extractID(r.URL.Path, "/api/v1/images/")
+	if id == "" {
+		s.writeError(w, http.StatusBadRequest, "Missing image ID")
+		return
+	}
+
+	force := r.URL.Query().Get("force") == "true"
+	ctx := r.Context()
+	if err := s.docker.RemoveImage(ctx, id, force); err != nil {
+		s.writeError(w, http.StatusInternalServerError, fmt.Sprintf("Failed to remove image: %v", err))
+		return
+	}
+
+	s.writeJSON(w, http.StatusOK, map[string]interface{}{
+		"success": true,
+		"id":      id,
+		"message": fmt.Sprintf("Image %s deleted successfully", id),
+	})
+}
+
+func (s *Server) handleSystemPrune(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	res, err := s.docker.PruneSystem(ctx)
+	if err != nil {
+		s.writeError(w, http.StatusInternalServerError, fmt.Sprintf("System prune failed: %v", err))
+		return
+	}
+
+	s.writeJSON(w, http.StatusOK, map[string]interface{}{
+		"success": true,
+		"result":  res,
+		"message": "System prune executed successfully",
+	})
+}
+
 // handleLiveSSE streams real-time container lists and stats every 2 seconds via Server-Sent Events.
 func (s *Server) handleLiveSSE(w http.ResponseWriter, r *http.Request) {
 	flusher, ok := w.(http.Flusher)

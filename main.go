@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	Version = "v1.0"
+	Version = "v1.1"
 	Banner  = `
   ⚡ DOCKLITE %s
   Ultra-lightweight Docker Resource Monitor & Dashboard

@@ -37,7 +37,30 @@ func (s *Server) registerRoutes() {
 	s.mux.HandleFunc("/api/v1/ping", s.handlePing)
 	s.mux.HandleFunc("/api/v1/version", s.handleVersion)
 	s.mux.HandleFunc("/api/v1/system", s.handleSystem)
-	s.mux.HandleFunc("/api/v1/images", s.handleImages)
+	s.mux.HandleFunc("/api/v1/images", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			s.handleImages(w, r)
+			return
+		}
+		s.writeError(w, http.StatusMethodNotAllowed, "Method not allowed")
+	})
+
+	s.mux.HandleFunc("/api/v1/images/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodDelete || r.Method == http.MethodPost {
+			s.handleImageDelete(w, r)
+			return
+		}
+		s.writeError(w, http.StatusMethodNotAllowed, "DELETE or POST required")
+	})
+
+	s.mux.HandleFunc("/api/v1/system/prune", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			s.handleSystemPrune(w, r)
+			return
+		}
+		s.writeError(w, http.StatusMethodNotAllowed, "POST required")
+	})
+
 	s.mux.HandleFunc("/api/v1/live", s.handleLiveSSE)
 
 	// Container dispatch
@@ -58,6 +81,10 @@ func (s *Server) registerRoutes() {
 				s.handleContainerInspect(w, r)
 				return
 			}
+			if r.Method == http.MethodDelete {
+				s.handleContainerDelete(w, r)
+				return
+			}
 			s.writeError(w, http.StatusMethodNotAllowed, "Method not allowed")
 			return
 		}
@@ -74,6 +101,13 @@ func (s *Server) registerRoutes() {
 					s.handleContainerLogs(w, r)
 					return
 				}
+			case "remove", "delete":
+				if r.Method == http.MethodPost || r.Method == http.MethodDelete {
+					s.handleContainerDelete(w, r)
+					return
+				}
+				s.writeError(w, http.StatusMethodNotAllowed, "POST or DELETE required")
+				return
 			case "start", "stop", "restart", "pause", "unpause":
 				if r.Method == http.MethodPost {
 					s.handleContainerAction(w, r)

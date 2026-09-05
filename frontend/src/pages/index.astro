@@ -1,6 +1,6 @@
 ---
-// Docklite - Ultra-lightweight Docker Resource Monitor & Dashboard
-// Designed for high performance and zero memory bloat.
+// Docklite v1.1 - Ultra-lightweight Docker Resource Monitor & Dashboard
+// Designed for high performance, zero memory bloat, and sleek modern aesthetics.
 ---
 
 <!DOCTYPE html>
@@ -10,27 +10,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Docklite · Lightweight Docker Monitor</title>
   <meta name="description" content="Ultra-lightweight Portainer alternative in Go and Astro. Real-time Docker resource monitoring directly from docker.sock." />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f2fe' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='7' width='20' height='14' rx='2' ry='2'></rect><path d='M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16'></path></svg>" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f2fe' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='13 2 3 14 12 14 11 22 21 10 12 10 13 2'></polygon></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #07090e;
-      --card-bg: rgba(15, 21, 32, 0.85);
-      --card-border: #1e293b;
-      --card-hover: rgba(26, 36, 56, 0.95);
-      --text: #f1f5f9;
+      --bg: #06090e;
+      --card-bg: rgba(13, 19, 33, 0.85);
+      --card-border: rgba(30, 41, 59, 0.7);
+      --card-hover-border: #38bdf8;
+      --text: #f8fafc;
       --text-muted: #94a3b8;
       --accent: #00f2fe;
       --accent-glow: rgba(0, 242, 254, 0.25);
-      --accent-secondary: #4facfe;
+      --accent-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
       --success: #10b981;
       --success-glow: rgba(16, 185, 129, 0.25);
       --warning: #f59e0b;
       --danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.25);
       --info: #38bdf8;
-      --terminal-bg: #05070a;
+      --terminal-bg: #03060a;
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'Fira Code', monospace;
     }
@@ -44,8 +45,8 @@
     body {
       background: var(--bg);
       background-image: 
-        radial-gradient(at 0% 0%, rgba(0, 242, 254, 0.04) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(79, 172, 254, 0.04) 0px, transparent 50%);
+        radial-gradient(circle at 10% 10%, rgba(0, 242, 254, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(79, 172, 254, 0.05) 0%, transparent 40%);
       color: var(--text);
       font-family: var(--font-sans);
       min-height: 100vh;
@@ -54,14 +55,15 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* Modern Styled Header */
     header {
-      background: rgba(11, 15, 25, 0.85);
-      backdrop-filter: blur(12px);
+      background: rgba(10, 15, 26, 0.85);
+      backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--card-border);
       position: sticky;
       top: 0;
       z-index: 50;
-      padding: 0.85rem 1.75rem;
+      padding: 0.85rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -71,32 +73,38 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.85rem;
       text-decoration: none;
       color: inherit;
     }
 
     .brand-logo {
-      width: 38px;
-      height: 38px;
-      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-      border-radius: 10px;
+      width: 42px;
+      height: 42px;
+      background: var(--accent-gradient);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #05070a;
-      font-weight: 800;
-      font-size: 1.25rem;
-      box-shadow: 0 0 16px var(--accent-glow);
+      color: #040810;
+      box-shadow: 0 0 20px var(--accent-glow);
+      transition: transform 0.2s ease;
+    }
+
+    .brand:hover .brand-logo {
+      transform: scale(1.05);
     }
 
     .brand-text h1 {
-      font-size: 1.15rem;
-      font-weight: 700;
+      font-size: 1.25rem;
+      font-weight: 800;
       letter-spacing: -0.02em;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      background: linear-gradient(135deg, #fff 40%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .brand-text span {
@@ -108,86 +116,83 @@
     .badge-live {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.2rem 0.55rem;
+      gap: 0.45rem;
+      padding: 0.25rem 0.65rem;
       background: rgba(16, 185, 129, 0.12);
       border: 1px solid rgba(16, 185, 129, 0.3);
       border-radius: 9999px;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--success);
     }
 
-    .badge-live .pulse-dot {
-      width: 6px;
-      height: 6px;
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
       background: var(--success);
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--success);
+      box-shadow: 0 0 10px var(--success);
       animation: pulse 2s infinite ease-in-out;
     }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
+      50% { opacity: 0.4; transform: scale(0.8); }
     }
 
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.6rem;
     }
 
+    /* Sleek Cyber Button System (Replaces HTML 1995 buttons) */
     .btn {
-      background: #162032;
-      color: var(--text);
-      border: 1px solid var(--card-border);
-      padding: 0.45rem 0.85rem;
+      background: #131b2e;
+      color: #f1f5f9;
+      border: 1px solid #23314d;
+      padding: 0.45rem 0.9rem;
       border-radius: 8px;
       font-size: 0.85rem;
-      font-weight: 500;
+      font-weight: 600;
+      font-family: var(--font-sans);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 0.45rem;
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       text-decoration: none;
+      user-select: none;
+    }
+
+    .btn svg {
+      flex-shrink: 0;
     }
 
     .btn:hover {
-      background: #1f2d47;
-      border-color: #334155;
+      background: #1c2742;
+      border-color: #3b82f6;
       color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:active {
+      transform: translateY(0);
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-      color: #07090e;
+      background: var(--accent-gradient);
+      color: #040810;
       border: none;
-      font-weight: 600;
+      font-weight: 700;
+      box-shadow: 0 2px 14px var(--accent-glow);
     }
 
     .btn-primary:hover {
-      box-shadow: 0 0 16px var(--accent-glow);
-      filter: brightness(1.08);
+      filter: brightness(1.1);
+      box-shadow: 0 4px 20px var(--accent-glow);
       color: #000;
-    }
-
-    .btn-sm {
-      padding: 0.25rem 0.55rem;
-      font-size: 0.75rem;
-      border-radius: 6px;
-    }
-
-    .btn-danger {
-      background: rgba(239, 68, 68, 0.15);
-      border-color: rgba(239, 68, 68, 0.35);
-      color: #fca5a5;
-    }
-
-    .btn-danger:hover {
-      background: rgba(239, 68, 68, 0.3);
-      color: #fff;
     }
 
     .btn-success {
@@ -198,54 +203,105 @@
 
     .btn-success:hover {
       background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #fff;
+      box-shadow: 0 0 12px var(--success-glow);
+    }
+
+    .btn-warning {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.35);
+      color: #fcd34d;
+    }
+
+    .btn-warning:hover {
+      background: rgba(245, 158, 11, 0.3);
+      border-color: var(--warning);
       color: #fff;
     }
 
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+      color: #fff;
+      box-shadow: 0 0 12px var(--danger-glow);
+    }
+
+    .btn-sm {
+      padding: 0.3rem 0.65rem;
+      font-size: 0.78rem;
+      border-radius: 6px;
+    }
+
+    /* Main Container */
     main {
       flex: 1;
-      max-width: 1440px;
+      max-width: 1480px;
       width: 100%;
       margin: 0 auto;
-      padding: 1.75rem;
+      padding: 1.75rem 2rem;
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
     }
 
+    /* Top Stats Overview */
     .stats-overview {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.15rem;
     }
 
     .stat-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
+      border-radius: 14px;
+      padding: 1.15rem 1.4rem;
       display: flex;
       flex-direction: column;
       gap: 0.4rem;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
       transition: transform 0.2s, border-color 0.2s;
     }
 
     .stat-card:hover {
-      border-color: #334155;
+      border-color: rgba(56, 189, 248, 0.5);
       transform: translateY(-2px);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-gradient);
+      opacity: 0.4;
     }
 
     .stat-card .label {
       font-size: 0.75rem;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
     .stat-card .value {
-      font-size: 1.65rem;
-      font-weight: 700;
+      font-size: 1.8rem;
+      font-weight: 800;
       color: #fff;
       display: flex;
       align-items: baseline;
@@ -253,10 +309,11 @@
     }
 
     .stat-card .subtext {
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
     }
 
+    /* Controls Bar */
     .controls-bar {
       display: flex;
       align-items: center;
@@ -264,53 +321,65 @@
       flex-wrap: wrap;
       gap: 1rem;
       background: var(--card-bg);
-      padding: 0.85rem 1.25rem;
+      padding: 0.9rem 1.4rem;
       border: 1px solid var(--card-border);
-      border-radius: 12px;
+      border-radius: 14px;
+      backdrop-filter: blur(12px);
     }
 
     .filter-tabs {
       display: flex;
-      gap: 0.4rem;
-      background: #090e17;
-      padding: 0.25rem;
-      border-radius: 8px;
-      border: 1px solid #1a2333;
+      gap: 0.35rem;
+      background: #080c14;
+      padding: 0.3rem;
+      border-radius: 10px;
+      border: 1px solid #192233;
     }
 
     .filter-tab {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      padding: 0.35rem 0.75rem;
-      font-size: 0.8rem;
-      font-weight: 500;
-      border-radius: 6px;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: 7px;
       cursor: pointer;
       transition: all 0.2s;
     }
 
+    .filter-tab:hover {
+      color: #fff;
+    }
+
     .filter-tab.active {
       background: #1e293b;
-      color: #fff;
+      color: #38bdf8;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
     .search-box {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      background: #090e17;
-      border: 1px solid #1a2333;
-      padding: 0.4rem 0.85rem;
-      border-radius: 8px;
-      min-width: 280px;
+      gap: 0.6rem;
+      background: #080c14;
+      border: 1px solid #1e293b;
+      padding: 0.45rem 0.9rem;
+      border-radius: 10px;
+      min-width: 320px;
+      transition: border-color 0.2s;
+    }
+
+    .search-box:focus-within {
+      border-color: #38bdf8;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
     }
 
     .search-box input {
       background: transparent;
       border: none;
       color: #fff;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       outline: none;
       width: 100%;
     }
@@ -325,61 +394,68 @@
       gap: 0.35rem;
     }
 
-    /* Container Grid */
+    /* Container Grid Cards */
     .container-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+      gap: 1.35rem;
     }
 
     .container-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 1.25rem;
+      border-radius: 16px;
+      padding: 1.35rem;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      backdrop-filter: blur(8px);
-      transition: all 0.25s ease;
+      gap: 1.15rem;
+      backdrop-filter: blur(12px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
+      overflow: hidden;
     }
 
     .container-card:hover {
-      border-color: #3b82f6;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+      border-color: var(--card-hover-border);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
       transform: translateY(-2px);
     }
 
     .container-card.running {
-      border-left: 4px solid var(--success);
+      border-left: 5px solid var(--success);
     }
 
     .container-card.exited, .container-card.stopped {
-      border-left: 4px solid var(--danger);
-      opacity: 0.85;
+      border-left: 5px solid var(--danger);
+      opacity: 0.88;
     }
 
     .container-card.paused {
-      border-left: 4px solid var(--warning);
+      border-left: 5px solid var(--warning);
     }
 
     .card-header {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 0.75rem;
+      gap: 0.85rem;
     }
 
     .container-title {
       display: flex;
       flex-direction: column;
-      gap: 0.2rem;
+      gap: 0.25rem;
       overflow: hidden;
     }
 
+    .container-name-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
     .container-name {
-      font-size: 1.05rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: #fff;
       white-space: nowrap;
@@ -387,78 +463,96 @@
       text-overflow: ellipsis;
     }
 
+    .id-pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      background: #151f33;
+      border: 1px solid #233352;
+      color: #93c5fd;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+    }
+
     .container-image {
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
       font-family: var(--font-mono);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
     }
 
     .state-pill {
-      font-size: 0.7rem;
-      font-weight: 600;
+      font-size: 0.72rem;
+      font-weight: 700;
       text-transform: uppercase;
-      padding: 0.2rem 0.55rem;
+      padding: 0.25rem 0.65rem;
       border-radius: 9999px;
-      white-space: nowrap;
+      letter-spacing: 0.04em;
     }
 
     .state-running {
       background: rgba(16, 185, 129, 0.15);
-      color: var(--success);
-      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
     }
 
     .state-exited, .state-stopped {
       background: rgba(239, 68, 68, 0.15);
-      color: var(--danger);
-      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.35);
     }
 
     .state-paused {
       background: rgba(245, 158, 11, 0.15);
-      color: var(--warning);
-      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.35);
     }
 
+    /* Upgraded Live Telemetry Section */
     .metrics-section {
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-      background: rgba(8, 12, 20, 0.65);
-      border: 1px solid #162032;
-      border-radius: 8px;
-      padding: 0.75rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      background: rgba(8, 12, 22, 0.8);
+      border: 1px solid #182338;
+      border-radius: 12px;
+      padding: 0.9rem;
     }
 
-    .metric-row {
+    .metric-card {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.35rem;
     }
 
-    .metric-info {
+    .metric-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-size: 0.75rem;
     }
 
-    .metric-info span.name {
+    .metric-head .name {
       color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
     }
 
-    .metric-info span.val {
+    .metric-head .val {
       font-family: var(--font-mono);
-      font-weight: 500;
-      color: #e2e8f0;
+      font-weight: 600;
+      color: #f1f5f9;
     }
 
     .progress-track {
-      height: 6px;
-      background: #1e293b;
+      height: 7px;
+      background: #172033;
       border-radius: 9999px;
       overflow: hidden;
       position: relative;
@@ -467,7 +561,7 @@
     .progress-fill {
       height: 100%;
       border-radius: 9999px;
-      transition: width 0.4s ease, background-color 0.4s ease;
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .progress-cpu {
@@ -475,74 +569,125 @@
     }
 
     .progress-mem {
-      background: linear-gradient(90deg, #10b981, #059669);
+      background: linear-gradient(90deg, #10b981, #06b6d4);
     }
 
     .io-stats {
+      grid-column: 1 / -1;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.5rem;
-      padding-top: 0.35rem;
-      border-top: 1px dashed #1e293b;
-      font-size: 0.7rem;
-      color: var(--text-muted);
+      padding-top: 0.6rem;
+      border-top: 1px dashed #1c2a42;
+      font-size: 0.75rem;
     }
 
     .io-item {
       display: flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.35rem;
       font-family: var(--font-mono);
+      color: #94a3b8;
     }
 
+    .io-item strong {
+      color: #e2e8f0;
+    }
+
+    /* Port Badges */
     .ports-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.35rem;
-      min-height: 24px;
+      gap: 0.4rem;
+      min-height: 26px;
     }
 
     .port-badge {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
-      background: #172236;
-      border: 1px solid #25334c;
+      font-size: 0.75rem;
+      background: #111a2c;
+      border: 1px solid #20304f;
       color: #93c5fd;
-      padding: 0.15rem 0.45rem;
-      border-radius: 4px;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
       text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
       transition: all 0.2s;
     }
 
     .port-badge:hover {
       background: #1e3a8a;
+      border-color: #3b82f6;
       color: #fff;
+      transform: translateY(-1px);
     }
 
+    /* Card Action Toolbar */
     .card-actions {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 0.5rem;
-      padding-top: 0.5rem;
+      padding-top: 0.65rem;
       border-top: 1px solid var(--card-border);
     }
 
     .action-group {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.4rem;
     }
 
-    /* Modal Styles */
+    /* Table View */
+    .table-responsive {
+      overflow-x: auto;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      display: none;
+      backdrop-filter: blur(12px);
+    }
+
+    .table-responsive.active {
+      display: block;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 0.95rem 1.15rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--card-border);
+      background: rgba(8, 12, 22, 0.7);
+    }
+
+    td {
+      padding: 0.95rem 1.15rem;
+      border-bottom: 1px solid #141f33;
+      vertical-align: middle;
+    }
+
+    tr:hover td {
+      background: rgba(26, 36, 56, 0.4);
+    }
+
+    /* Modal System */
     .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(6px);
+      background: rgba(3, 6, 12, 0.8);
+      backdrop-filter: blur(8px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -555,64 +700,110 @@
     }
 
     .modal-window {
-      background: #0c111a;
-      border: 1px solid #233148;
-      border-radius: 14px;
+      background: #0b111c;
+      border: 1px solid #23334d;
+      border-radius: 16px;
       width: 100%;
-      max-width: 900px;
+      max-width: 920px;
       max-height: 85vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
       overflow: hidden;
+      animation: modalIn 0.2s ease-out;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.96) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     .modal-header {
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid #1e293b;
+      padding: 1.15rem 1.75rem;
+      border-bottom: 1px solid #1a2538;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
     .modal-title {
-      font-size: 1.1rem;
-      font-weight: 600;
+      font-size: 1.15rem;
+      font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
     }
 
     .modal-body {
-      padding: 1.25rem 1.5rem;
+      padding: 1.5rem 1.75rem;
       overflow-y: auto;
       flex: 1;
     }
 
     .terminal-output {
       background: var(--terminal-bg);
-      border: 1px solid #1b2536;
-      border-radius: 8px;
-      padding: 1rem;
-      color: #d1d5db;
+      border: 1px solid #152033;
+      border-radius: 10px;
+      padding: 1.15rem;
+      color: #e2e8f0;
       font-family: var(--font-mono);
-      font-size: 0.8rem;
-      line-height: 1.5;
+      font-size: 0.82rem;
+      line-height: 1.6;
       white-space: pre-wrap;
       overflow-x: auto;
       height: 480px;
       overflow-y: scroll;
     }
 
+    /* In-App Toast Notification System */
+    #toastContainer {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      pointer-events: none;
+    }
+
+    .toast {
+      pointer-events: auto;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 0.85rem 1.25rem;
+      color: #fff;
+      font-size: 0.88rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      animation: toastIn 0.25s ease-out;
+      min-width: 280px;
+      max-width: 400px;
+    }
+
+    .toast-success { border-color: var(--success); }
+    .toast-error { border-color: var(--danger); }
+    .toast-info { border-color: var(--info); }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Footer */
     footer {
       border-top: 1px solid var(--card-border);
       padding: 1.25rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
-      background: rgba(11, 15, 25, 0.5);
+      background: rgba(8, 12, 20, 0.6);
     }
 
     footer a {
@@ -630,59 +821,19 @@
       padding: 4rem 2rem;
       color: var(--text-muted);
     }
-
-    .empty-state svg {
-      width: 48px;
-      height: 48px;
-      margin-bottom: 1rem;
-      stroke: #475569;
-    }
-
-    /* Table view */
-    .table-responsive {
-      overflow-x: auto;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      display: none;
-    }
-
-    .table-responsive.active {
-      display: block;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-    }
-
-    th {
-      text-align: left;
-      padding: 0.85rem 1rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      border-bottom: 1px solid var(--card-border);
-      background: rgba(8, 12, 20, 0.6);
-    }
-
-    td {
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid #162032;
-      vertical-align: middle;
-    }
-
-    tr:hover td {
-      background: rgba(30, 41, 59, 0.3);
-    }
   </style>
 </head>
 <body>
+  <!-- Toast Container -->
+  <div id="toastContainer"></div>
+
   <header>
     <a href="/" class="brand">
-      <div class="brand-logo">⚡</div>
+      <div class="brand-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+      </div>
       <div class="brand-text">
-        <h1>Docklite</h1>
+        <h1>Docklite <span style="font-size:0.7rem; background:#1e293b; padding:0.15rem 0.45rem; border-radius:4px; color:#38bdf8; font-weight:700;">v1.1</span></h1>
         <span>Ultra-lightweight Docker Daemon Monitor</span>
       </div>
     </a>
@@ -693,16 +844,24 @@
         <span id="liveText">Live (SSE)</span>
       </span>
 
-      <button class="btn btn-sm" id="btnImages" title="Docker Images">
-        📦 Images
+      <button class="btn btn-sm btn-warning" id="btnPruneSystem" title="Ungenutzte Container & Dangling Images bereinigen">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        🧹 Prune
       </button>
 
-      <button class="btn btn-sm" id="btnApiDocs" title="REST API Reference">
-        ⚡ API Docs
+      <button class="btn btn-sm" id="btnImages" title="Lokale Docker Images">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+        Images
       </button>
 
-      <button class="btn btn-sm btn-primary" id="btnRefresh" title="Aktualisieren">
-        🔄 Refresh
+      <button class="btn btn-sm" id="btnApiDocs" title="REST API Dokumentation">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+        API Docs
+      </button>
+
+      <button class="btn btn-sm btn-primary" id="btnRefresh" title="Jetzt aktualisieren">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+        Refresh
       </button>
     </div>
   </header>
@@ -711,25 +870,37 @@
     <!-- Top System Metrics Cards -->
     <section class="stats-overview">
       <div class="stat-card">
-        <div class="label">Container Gesamt</div>
+        <div class="label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+          Container Gesamt
+        </div>
         <div class="value" id="statContainersTotal">0</div>
         <div class="subtext" id="statContainersBreakdown">0 running · 0 stopped</div>
       </div>
 
       <div class="stat-card">
-        <div class="label">Docker Engine</div>
+        <div class="label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          Docker Engine
+        </div>
         <div class="value" id="statDockerVersion">-</div>
         <div class="subtext" id="statDockerOS">Direct docker.sock</div>
       </div>
 
       <div class="stat-card">
-        <div class="label">Host CPUs & Memory</div>
+        <div class="label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="15" x2="23" y2="15"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="15" x2="4" y2="15"></line></svg>
+          Host CPU & Memory
+        </div>
         <div class="value" id="statCpuMem">-</div>
         <div class="subtext" id="statHostInfo">-</div>
       </div>
 
       <div class="stat-card">
-        <div class="label">Images auf Host</div>
+        <div class="label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+          Images auf Host
+        </div>
         <div class="value" id="statImagesTotal">0</div>
         <div class="subtext">Lokal gecacht</div>
       </div>
@@ -758,7 +929,6 @@
     <!-- Containers Grid Container -->
     <section class="container-grid" id="containersGrid">
       <div class="empty-state" style="grid-column: 1/-1;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
         <p>Lade Docker Container über Socket...</p>
       </div>
     </section>
@@ -792,7 +962,7 @@
           📜 Logs: <span id="logsContainerName" style="color:var(--accent);">-</span>
         </div>
         <div style="display:flex; gap:0.5rem; align-items:center;">
-          <select id="logsTailSelect" class="btn btn-sm" style="background:#162032; border:1px solid #2a374f; color:#fff;">
+          <select id="logsTailSelect" class="btn btn-sm" style="background:#131b2e; border:1px solid #23314d; color:#fff;">
             <option value="50">50 Zeilen</option>
             <option value="150" selected>150 Zeilen</option>
             <option value="300">300 Zeilen</option>
@@ -828,7 +998,7 @@
     <div class="modal-window">
       <div class="modal-header">
         <div class="modal-title">
-          📦 Lokale Docker Images
+          📦 Lokale Docker Images & Speicher
         </div>
         <button class="btn btn-sm btn-danger" id="btnCloseImages">✕ Schließen</button>
       </div>
@@ -841,6 +1011,7 @@
                 <th>Image ID</th>
                 <th>Größe</th>
                 <th>Erstellt</th>
+                <th>Aktion</th>
               </tr>
             </thead>
             <tbody id="imagesTableBody">
@@ -857,7 +1028,7 @@
     <div class="modal-window">
       <div class="modal-header">
         <div class="modal-title">
-          ⚡ Docklite REST API Referenz
+          ⚡ Docklite REST API Referenz (v1.1)
         </div>
         <button class="btn btn-sm btn-danger" id="btnCloseApiDocs">✕ Schließen</button>
       </div>
@@ -866,34 +1037,63 @@
           Docklite bietet eine direkte, blitzschnelle HTTP REST API für Automatisierung, Dashboards und Scripts.
         </p>
         <div style="display:flex; flex-direction:column; gap:0.75rem; font-family:var(--font-mono); font-size:0.8rem;">
-          <div style="background:#05070a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
             <strong style="color:var(--info);">GET /api/v1/ping</strong>
             <div style="color:var(--text-muted); margin-top:0.25rem;">Health-Check & Docker-Socket Erreichbarkeit</div>
           </div>
-          <div style="background:#05070a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
             <strong style="color:var(--info);">GET /api/v1/system</strong>
             <div style="color:var(--text-muted); margin-top:0.25rem;">Host System-Informationen, CPU-Kerne, Memory</div>
           </div>
-          <div style="background:#05070a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
             <strong style="color:var(--info);">GET /api/v1/containers?all=true&stats=true</strong>
             <div style="color:var(--text-muted); margin-top:0.25rem;">Container-Liste inklusive Live CPU% und Memory</div>
           </div>
-          <div style="background:#05070a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
             <strong style="color:var(--info);">GET /api/v1/containers/&#123;id&#125;/stats</strong>
             <div style="color:var(--text-muted); margin-top:0.25rem;">Echtzeit-Ressourcenverbrauch (CPU%, Mem, I/O)</div>
           </div>
-          <div style="background:#05070a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
             <strong style="color:var(--info);">GET /api/v1/containers/&#123;id&#125;/logs?tail=150</strong>
             <div style="color:var(--text-muted); margin-top:0.25rem;">Demuxte Stdout & Stderr Logs</div>
           </div>
-          <div style="background:#05070a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
             <strong style="color:var(--success);">POST /api/v1/containers/&#123;id&#125;/start|stop|restart|pause|unpause</strong>
             <div style="color:var(--text-muted); margin-top:0.25rem;">Container-Lifecycle Steuerung</div>
           </div>
-          <div style="background:#05070a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+            <strong style="color:var(--danger);">DELETE /api/v1/containers/&#123;id&#125;?force=true</strong>
+            <div style="color:var(--text-muted); margin-top:0.25rem;">Container dauerhaft aus Docker entfernen</div>
+          </div>
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+            <strong style="color:var(--danger);">DELETE /api/v1/images/&#123;id&#125;?force=true</strong>
+            <div style="color:var(--text-muted); margin-top:0.25rem;">Docker Image löschen</div>
+          </div>
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
+            <strong style="color:var(--warning);">POST /api/v1/system/prune</strong>
+            <div style="color:var(--text-muted); margin-top:0.25rem;">Ungenutzte Container und Dangling Images bereinigen</div>
+          </div>
+          <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
             <strong style="color:var(--accent);">GET /api/v1/live</strong>
             <div style="color:var(--text-muted); margin-top:0.25rem;">Server-Sent Events (SSE) Live Stream aller Container & Stats alle 2s</div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Styled Confirmation Dialog Modal (Replaces native confirm/alert) -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-window" style="max-width: 480px;">
+      <div class="modal-header">
+        <div class="modal-title" id="confirmTitle">⚠️ Bestätigung erforderlich</div>
+        <button class="btn btn-sm btn-danger" id="btnCancelConfirm">✕</button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:1.25rem;">
+        <p id="confirmMessage" style="font-size:0.95rem; color:#cbd5e1; line-height:1.5;">Möchtest du diese Aktion wirklich ausführen?</p>
+        <div style="display:flex; justify-content:flex-end; gap:0.65rem;">
+          <button class="btn btn-sm" id="btnCancelConfirmAction">Abbrechen</button>
+          <button class="btn btn-sm btn-danger" id="btnExecuteConfirmAction">Bestätigen</button>
         </div>
       </div>
     </div>
