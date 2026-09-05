@@ -314,19 +314,42 @@ function renderContainers() {
     return `
       <tr>
         <td><span class="state-pill state-${c.state}">${c.state}</span></td>
-        <td><strong>${c.name}</strong><br><span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">${c.short_id}</span></td>
-        <td style="font-family:var(--font-mono); font-size:0.75rem; color:#93c5fd;">${c.image}</td>
-        <td style="font-family:var(--font-mono); font-weight:600;">${cpuPercent}</td>
-        <td style="font-family:var(--font-mono); font-weight:600;">${memText}</td>
-        <td>${(c.ports || []).map(p => p.PublicPort ? (p.PublicPort + ':' + p.PrivatePort) : p.PrivatePort).join(', ') || '-'}</td>
         <td>
-          <div style="display:flex; gap:0.4rem;">
+          <div style="display:flex; align-items:center; gap:0.4rem;">
+            <span class="pulse-dot" style="background:${isRunning ? 'var(--success)' : 'var(--danger)'}; width:6px; height:6px;"></span>
+            <strong style="font-size:0.95rem; color:#fff;">${c.name}</strong>
+          </div>
+          <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted);">${c.short_id}</span>
+        </td>
+        <td><span style="font-family:var(--font-mono); font-size:0.75rem; background:#111a2c; padding:0.2rem 0.5rem; border-radius:4px; border:1px solid #20304f; color:#93c5fd;">${c.image}</span></td>
+        <td><span style="font-family:var(--font-mono); font-weight:700; color:${stats.cpu_percent > 80 ? 'var(--danger)' : stats.cpu_percent > 40 ? 'var(--warning)' : '#38bdf8'};">${cpuPercent}</span></td>
+        <td><span style="font-family:var(--font-mono); font-weight:700; color:#34d399;">${memText}</span></td>
+        <td>${(c.ports || []).map(p => {
+          const pt = p.PublicPort ? (p.PublicPort + ':' + p.PrivatePort) : p.PrivatePort;
+          return `<span class="port-badge" style="font-size:0.72rem; padding:0.15rem 0.4rem;">${pt}</span>`;
+        }).join(' ') || '<span style="color:var(--text-muted); font-size:0.75rem;">-</span>'}</td>
+        <td>
+          <div style="display:flex; gap:0.35rem; align-items:center;">
             ${isRunning ? 
-              `<button class="btn btn-sm btn-danger" onclick="triggerAction('${c.id}', 'stop', '${c.name}')">Stop</button>` :
-              `<button class="btn btn-sm btn-success" onclick="triggerAction('${c.id}', 'start', '${c.name}')">Start</button>`
+              `<button class="btn btn-sm btn-danger" onclick="triggerAction('${c.id}', 'stop', '${c.name}')" title="Container stoppen">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"></rect></svg>
+                Stop
+              </button>` :
+              `<button class="btn btn-sm btn-success" onclick="triggerAction('${c.id}', 'start', '${c.name}')" title="Container starten">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Start
+              </button>`
             }
-            <button class="btn btn-sm" onclick="openLogs('${c.id}', '${c.name}')">Logs</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteContainer('${c.id}', '${c.name}')">Löschen</button>
+            <button class="btn btn-sm" onclick="openLogs('${c.id}', '${c.name}')" title="Logs anzeigen">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg>
+              Logs
+            </button>
+            <button class="btn btn-sm" onclick="openInspect('${c.id}', '${c.name}')" title="JSON Details">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="deleteContainer('${c.id}', '${c.name}')" title="Löschen">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            </button>
           </div>
         </td>
       </tr>
