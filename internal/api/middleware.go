@@ -69,7 +69,7 @@ func (s *Server) securityMiddleware(next http.Handler) http.Handler {
 
 func (s *Server) isHostAllowed(host string) bool {
 	// Standard local hostnames
-	if host == "localhost" || host == "127.0.0.1" || host == "::1" || host == "0.0.0.0" {
+	if host == "localhost" || host == "127.0.0.1" || host == "::1" {
 		return true
 	}
 	for _, allowed := range s.config.AllowedHosts {
