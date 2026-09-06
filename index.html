@@ -32,7 +32,8 @@
       <span class="logo-title">Docklite</span>
       <span style="font-size:0.75rem; color:#38bdf8; font-family:var(--font-mono); background:#111a2c; padding:0.15rem 0.45rem; border-radius:4px; margin-left:0.5rem;">v1.2.1</span>
     </a>
-    <nav>
+    <button class="mobile-toggle" id="mobile-toggle" aria-label="Menü umschalten" aria-expanded="false">☰</button>
+    <nav id="main-nav">
       <a href="#features">Features</a>
       <a href="#vergleich">Vergleich</a>
       <a href="#about">Über das Projekt</a>
@@ -509,6 +510,35 @@ docklite --port 8080</div>
         setLang(saved);
       }
     } catch(e) {}
+
+    // Mobile Navigation Toggle
+    const mobileToggle = document.getElementById('mobile-toggle');
+    const mainNav = document.getElementById('main-nav');
+    if (mobileToggle && mainNav) {
+      mobileToggle.addEventListener('click', () => {
+        const isOpen = mainNav.classList.toggle('open');
+        mobileToggle.setAttribute('aria-expanded', isOpen);
+        mobileToggle.innerHTML = isOpen ? '✕' : '☰';
+      });
+
+      mainNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          if (mainNav.classList.contains('open')) {
+            mainNav.classList.remove('open');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+            mobileToggle.innerHTML = '☰';
+          }
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (mainNav.classList.contains('open') && !mainNav.contains(e.target) && !mobileToggle.contains(e.target)) {
+          mainNav.classList.remove('open');
+          mobileToggle.setAttribute('aria-expanded', 'false');
+          mobileToggle.innerHTML = '☰';
+        }
+      });
+    }
   </script>
 </body>
 </html>
