@@ -3,542 +3,488 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Docklite · Ultra-lightweight Docker Monitor (Portainer Alternative)</title>
-  <meta name="description" content="Die radikal schlanke Portainer-Alternative in Go und Astro. Eine einzige Standalone-Binary, direkte docker.sock Kommunikation und ca. 10–15 MB RAM.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self';" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>docklite · Schlanke Portainer-Alternative in Go &amp; Astro · v1.2.1</title>
+  <meta name="description" content="Offizielle Website für docklite: Die radikal schlanke Portainer-Alternative in Go und Astro. Standalone Single-Binary, direkte docker.sock Kommunikation, ~12 MB RAM und Awesome-Go gelistet.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Docklite · Ultra-lightweight Docker Monitor">
-  <meta property="og:description" content="Radikal schlanke Portainer-Alternative in Go und Astro. Single-Binary, direkte docker.sock Kommunikation, ~12 MB RAM.">
+  <meta property="og:title" content="docklite · Schlanke Portainer-Alternative in Go &amp; Astro">
+  <meta property="og:description" content="Single-Binary Docker Management in Go & Astro. Direkte docker.sock Kommunikation, ~12 MB RAM und Live SSE Metriken.">
   <meta property="og:url" content="https://benzjeremy.github.io/docklite/">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Docklite · Ultra-lightweight Docker Monitor">
-  <meta name="twitter:description" content="Die radikal schlanke Portainer-Alternative in Go & Astro. Single-Binary, live SSE Metriken.">
+  <meta name="twitter:title" content="docklite · Go Docker Monitor">
+  <meta name="twitter:description" content="Radikal schlanke Portainer-Alternative in Go & Astro. ~12 MB RAM und direkte Unix-Socket Kontrolle.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Top Ecosystem Bar & Language Switcher -->
-  <div class="ecosystem-bar">
-    <a href="https://benzjeremy.github.io/">← benzjeremy.github.io</a>
-    <div class="lang-switch">
-      <button type="button" class="lang-btn active" onclick="setLang('de')">DE</button>
-      <button type="button" class="lang-btn" onclick="setLang('en')">EN</button>
-    </div>
-  </div>
+  <!-- Site Navigation -->
+  <header class="site-header">
+    <div class="nav-container">
+      <div class="nav-left">
+        <a href="https://benzjeremy.github.io/" class="back-root-btn">
+          <span>← benzjeremy.github.io</span>
+        </a>
+        <a href="index.html" class="brand-link">
+          <img src="favicon.svg" alt="docklite" class="brand-logo" width="36" height="36">
+          <div class="brand-info">
+            <span class="brand-name">docklite</span>
+            <span class="brand-ver">v1.2.1</span>
+          </div>
+        </a>
+      </div>
 
-  <header>
-    <a href="#" class="logo-area">
-      <img src="favicon.svg" alt="Docklite Logo" class="logo-icon">
-      <span class="logo-title">Docklite</span>
-      <span style="font-size:0.75rem; color:#38bdf8; font-family:var(--font-mono); background:#111a2c; padding:0.15rem 0.45rem; border-radius:4px; margin-left:0.5rem;">v1.2.1</span>
-    </a>
-    <button class="mobile-toggle" id="mobile-toggle" aria-label="Menü umschalten" aria-expanded="false">☰</button>
-    <nav id="main-nav">
-      <a href="#features">Features</a>
-      <a href="#vergleich">Vergleich</a>
-      <a href="#about">Über das Projekt</a>
-      <a href="wiki/">Wiki & Doku</a>
-      <a href="https://github.com/benzjeremy/docklite" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.2.1" class="btn btn-accent">Download v1.2.1</a>
-    </nav>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Menü öffnen/schließen" aria-expanded="false">☰</button>
+
+      <nav class="main-nav" id="main-nav">
+        <a href="#features">
+          <span class="lang-de">Features</span>
+          <span class="lang-en" style="display:none;">Features</span>
+        </a>
+        <a href="#vergleich">
+          <span class="lang-de">Vergleich</span>
+          <span class="lang-en" style="display:none;">Comparison</span>
+        </a>
+        <a href="#architektur">
+          <span class="lang-de">Architektur</span>
+          <span class="lang-en" style="display:none;">Architecture</span>
+        </a>
+        <a href="#install">
+          <span class="lang-de">Installation</span>
+          <span class="lang-en" style="display:none;">Install</span>
+        </a>
+        <a href="wiki/">
+          <span class="lang-de">Wiki &amp; Doku</span>
+          <span class="lang-en" style="display:none;">Wiki &amp; Docs</span>
+        </a>
+
+        <div class="lang-switch" role="group" aria-label="Sprachauswahl">
+          <button type="button" class="lang-btn active" id="btn-lang-de" onclick="setLang('de')">DE</button>
+          <button type="button" class="lang-btn" id="btn-lang-en" onclick="setLang('en')">EN</button>
+        </div>
+
+        <a href="https://github.com/benzjeremy/docklite" target="_blank" rel="noopener noreferrer" class="btn-card highlight">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          <span>GitHub</span>
+        </a>
+      </nav>
+    </div>
   </header>
 
-  <!-- DEUTSCH -->
-  <div data-lang="de" class="visible">
-    <main>
-      <section class="hero">
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-container">
+        
         <div class="hero-badges">
-          <span class="hero-badge release-badge">🚀 v1.2.1 [Patch · DevOps]</span>
-          <a href="https://github.com/avelino/awesome-go#devops-tools" target="_blank" rel="noopener" class="hero-badge awesome-badge" title="Aufgenommen in Awesome Go (#6665)">
-            <svg viewBox="0 0 24 24" fill="currentColor" class="badge-star"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-            Aufgenommen in <strong>Awesome Go</strong> (#6665)
+          <span class="hero-badge release-badge">🚀 Release v1.2.1 [DevOps]</span>
+          <a href="https://github.com/avelino/awesome-go#devops-tools" target="_blank" rel="noopener noreferrer" class="hero-badge awesome-badge" title="Gelistet in Awesome-Go (#6665 - DevOps Tools)">
+            ★ In Awesome-Go gelistet (#6665)
           </a>
-          <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank" rel="noopener" class="hero-badge license-pill" title="Lizenz: GNU General Public License v3.0 (GPL-3.0)">GPL-3.0</a>
-        </div>
-        <h1>Die radikal schlanke <br><span class="gradient-text">Portainer-Alternative</span></h1>
-        <p>
-          Keine Lust mehr auf 250 MB RAM-Verbrauch, schwere Datenbanken und träge Interfaces, nur um kurz Ressourcen und Logs zu prüfen? Docklite wiegt unter 15 MB RAM, startet in Millisekunden und redet direkt mit deinem Docker-Socket.
-        </p>
-        <div class="hero-cta">
-          <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.2.1" class="btn btn-accent">⬇️ Release v1.2.1 herunterladen</a>
-          <a href="wiki/" class="btn">📖 Wiki & Schnellstart</a>
-          <a href="https://github.com/benzjeremy/docklite" class="btn" target="_blank" rel="noopener">⭐ Auf GitHub ansehen</a>
-        </div>
-      </section>
-
-      <div class="container-main">
-        <!-- Quick Install Box -->
-        <div class="section-title">
-          <h2>In 5 Sekunden startklar</h2>
-          <p>Ein Befehl genügt – keine Container-im-Container-Schachtelung notwendig.</p>
-        </div>
-        <div class="code-box-container">
-          <button type="button" class="copy-btn" onclick="copyInstallCmd(this)">📋 Kopieren</button>
-          <div class="code-box" id="dockliteInstallCmd">
-# Per Go installieren (immer die neueste Version):
-go install github.com/benzjeremy/docklite@latest
-
-# Standalone-Binary starten (Web-UI auf Port 8080):
-docklite --port 8080</div>
+          <span class="hero-badge perf-badge">⚡ ~10–15 MB RAM · Single Binary</span>
+          <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="hero-badge license-pill">GNU GPL-3.0</a>
         </div>
 
-        <!-- Comparison Section -->
-        <div class="section-title" id="vergleich">
-          <h2>Portainer vs. Docklite im direkten Vergleich</h2>
-          <p>Warum weniger oft um Welten mehr ist.</p>
+        <div data-lang="de" class="visible">
+          <h1 class="hero-title">
+            Die radikal schlanke<br>
+            <span class="gradient-text">Portainer-Alternative in Go.</span>
+          </h1>
+          <p class="hero-subtitle">
+            Schluss mit 250 MB RAM-Verschwendung, trägen Webinterfaces und komplexer Container-im-Container-Schachtelung. <strong>docklite</strong> ist ein kompaktes Single-Binary Dashboard in <strong>Go &amp; Astro</strong>: Direkte <code>docker.sock</code> Unix-Streaming-Kommunikation, Live SSE-Metriken und sofortige Container-Kontrolle.
+          </p>
         </div>
 
-        <div class="comparison-card">
-          <table>
+        <div data-lang="en">
+          <h1 class="hero-title">
+            The Radically Lightweight<br>
+            <span class="gradient-text">Portainer Alternative in Go.</span>
+          </h1>
+          <p class="hero-subtitle">
+            Say goodbye to 250 MB RAM overhead, sluggish web UIs, and container-inside-container nests. <strong>docklite</strong> is a compact standalone binary built in <strong>Go &amp; Astro</strong>: Direct <code>docker.sock</code> Unix streaming, live SSE metrics, and instant container management.
+          </p>
+        </div>
+
+        <!-- Download Action CTAs -->
+        <div class="hero-cta-group" id="download">
+          <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.2.1" target="_blank" rel="noopener noreferrer" class="btn-primary">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+            <div>
+              <span class="btn-main-text">Download für Linux</span>
+              <span class="btn-sub-text">v1.2.1 x86_64 (.tar.gz)</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.2.1" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+            <div>
+              <span class="btn-main-text">Download für Windows</span>
+              <span class="btn-sub-text">v1.2.1 x86_64 (.zip)</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Quick Go Command -->
+        <div class="quick-install-box">
+          <span class="cmd-label">Go Toolchain:</span>
+          <code class="cmd-code" id="goInstallCmd">go install github.com/benzjeremy/docklite@latest</code>
+          <button type="button" class="copy-cmd-btn" id="copy-cmd-btn" onclick="copyInstallCmd()">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+            <span id="copyBtnText">Kopieren</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ARCHITEKTUR & BENCHMARKS SPOTLIGHT -->
+    <section class="benchmarks-section" id="architektur">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-tag">
+            <span class="lang-de">Effizienz &amp; Kennzahlen</span>
+            <span class="lang-en" style="display:none;">Efficiency &amp; Metrics</span>
+          </span>
+          <h2 class="section-title">
+            <span class="lang-de">Ressourceneffizienz ohne Kompromisse</span>
+            <span class="lang-en" style="display:none;">Resource Efficiency Without Compromise</span>
+          </h2>
+          <p class="section-sub">
+            <span class="lang-de">Docklite verbindet sich direkt mit der Docker-Engine über den lokalen Unix-Socket. Keine Zwischenschichten, minimale Latenz.</span>
+            <span class="lang-en" style="display:none;">Docklite connects directly to your Docker engine via local Unix socket. Zero middleware, minimal latency.</span>
+          </p>
+        </div>
+
+        <div class="benchmarks-grid">
+          <div class="benchmark-card">
+            <div class="benchmark-stat">~12 MB</div>
+            <div class="benchmark-label">RAM-Verbrauch im Betrieb</div>
+            <div class="benchmark-desc">Über 95% weniger Speicherverbrauch im Vergleich zu Portainer (~250 MB) oder Docker Desktop (~1,5 GB).</div>
+          </div>
+
+          <div class="benchmark-card">
+            <div class="benchmark-stat">&lt; 50 ms</div>
+            <div class="benchmark-label">Kaltstartzeit</div>
+            <div class="benchmark-desc">Single Standalone Binary startet augenblicklich und öffnet die Weboberfläche ohne Boot-Verzögerung.</div>
+          </div>
+
+          <div class="benchmark-card">
+            <div class="benchmark-stat">0 MB</div>
+            <div class="benchmark-label">Externe Cloud-Abhängigkeit</div>
+            <div class="benchmark-desc">Kein erzwungener Login, keine Telemetrie-Pakete, keine externen Datenbanken. Vollständig autark.</div>
+          </div>
+
+          <div class="benchmark-card">
+            <div class="benchmark-stat">100%</div>
+            <div class="benchmark-label">Direkte Socket-Kontrolle</div>
+            <div class="benchmark-desc">Echtzeit-SSE-Streaming direkt aus <code>/var/run/docker.sock</code> ohne REST-Overhead.</div>
+          </div>
+        </div>
+
+        <!-- Portainer vs Docklite Vergleichstabelle -->
+        <div class="comparison-card" id="vergleich">
+          <table class="comparison-table">
             <thead>
               <tr>
                 <th>Kriterium</th>
-                <th class="col-docklite">⚡ Docklite v1.2.1</th>
+                <th class="col-docklite">⚡ docklite v1.2.1</th>
                 <th class="col-portainer">🐢 Portainer CE</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>RAM-Verbrauch im Leerlauf</strong></td>
-                <td class="col-docklite"><strong>ca. 10 – 15 MB RAM</strong></td>
-                <td class="col-portainer">150 – 300+ MB RAM</td>
+                <td><strong>RAM-Verbrauch</strong></td>
+                <td class="col-docklite">ca. 10–15 MB RAM</td>
+                <td class="col-portainer">ca. 200–350 MB RAM</td>
               </tr>
               <tr>
-                <td><strong>Architektur & Auslieferung</strong></td>
-                <td><strong>1 Standalone Go Binary</strong> (Astro Frontend einkompiliert)</td>
-                <td>Schweres Container-Image mit eigener Datenbank (BoltDB)</td>
+                <td><strong>Binary / Image Größe</strong></td>
+                <td class="col-docklite">ca. 16 MB Standalone Binary</td>
+                <td class="col-portainer">ca. 280 MB Docker Image</td>
+              </tr>
+              <tr>
+                <td><strong>Installation</strong></td>
+                <td class="col-docklite">1 Befehl (Standalone Binary oder <code>go install</code>)</td>
+                <td class="col-portainer">Docker-Compose / Container-im-Container</td>
               </tr>
               <tr>
                 <td><strong>Socket-Kommunikation</strong></td>
-                <td><strong>Direkt über /var/run/docker.sock</strong> oder Windows Pipe</td>
-                <td>Komplexer API-Proxy-Layer</td>
+                <td class="col-docklite">Direkter Unix-Socket Stream mit SSE</td>
+                <td class="col-portainer">REST-API Abfrageschleifen</td>
               </tr>
               <tr>
-                <td><strong>Echtzeit-Aktualisierung</strong></td>
-                <td><strong>Server-Sent Events (SSE)</strong> ohne Polling-Overhead</td>
-                <td>Manuelles Nachladen / Schwerfälliges Polling</td>
-              </tr>
-              <tr>
-                <td><strong>Sicherheit</strong></td>
-                <td>Anti-DNS-Rebinding, Anti-CSRF, CSP, Token-Auth</td>
-                <td>Oft ungesicherte Standard-Installationen</td>
-              </tr>
-              <tr>
-                <td><strong>Startzeit</strong></td>
-                <td><strong>&lt; 50 Millisekunden</strong></td>
-                <td>15 – 30 Sekunden Container-Boot</td>
-              </tr>
-              <tr>
-                <td><strong>Plattformen</strong></td>
-                <td>Linux & Windows nativ</td>
-                <td>Linux-fokussiert</td>
+                <td><strong>Lizenz</strong></td>
+                <td class="col-docklite">GNU GPL-3.0 (100% Freie Software)</td>
+                <td class="col-portainer">Z2L / Business-Tier Beschränkungen</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- Features Section -->
-        <div class="section-title" id="features">
-          <h2>Features & Kernkompetenzen</h2>
-          <p>Genau das, was Entwickler und Sysadmins im Alltag wirklich brauchen.</p>
+      </div>
+    </section>
+
+    <!-- KEY FEATURES GRID -->
+    <section class="features-section" id="features">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-tag">
+            <span class="lang-de">Funktionsumfang</span>
+            <span class="lang-en" style="display:none;">Features</span>
+          </span>
+          <h2 class="section-title">
+            <span class="lang-de">Präzise Werkzeuge für Entwickler &amp; DevOps</span>
+            <span class="lang-en" style="display:none;">Precision Tools for Developers &amp; DevOps</span>
+          </h2>
+          <p class="section-sub">
+            <span class="lang-de">Alles Wesentliche, um Container zu monitoren, Logs zu analysieren und Ressourcen zu schonen.</span>
+            <span class="lang-en" style="display:none;">Everything you need to observe containers, inspect logs, and reclaim memory.</span>
+          </p>
         </div>
 
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="icon">📊</div>
-            <h3>Echte Live-Ressourcen</h3>
-            <p>Exakte CPU-Auslastung und bereinigter Arbeitsspeicher (cgroup v1 cache / v2 inactive_file), Netzwerk I/O (Rx/Tx) und Block I/O in Echtzeit via SSE.</p>
+        <div class="feature-grid">
+          <!-- 1 -->
+          <article class="feature-card">
+            <div class="f-card-icon">⚡</div>
+            <h3>Direkter Unix-Socket Stream</h3>
+            <p>Spricht nativ mit <code>/var/run/docker.sock</code> (Linux) oder der Named Pipe (Windows). Keine Zwischenserver, keine Latenz.</p>
+          </article>
+
+          <!-- 2 -->
+          <article class="feature-card">
+            <div class="f-card-icon">📊</div>
+            <h3>Echtzeit SSE-Metriken</h3>
+            <p>CPU-, RAM-, Netzwerk- und I/O-Statistiken werden per Server-Sent Events (SSE) verlustfrei und ressourcensparend in den Browser gestreamt.</p>
+          </article>
+
+          <!-- 3 -->
+          <article class="feature-card">
+            <div class="f-card-icon">🎮</div>
+            <h3>Volle Lifecycle-Kontrolle</h3>
+            <p>Starte, stoppe, pausiere oder starte Container neu mit einem Klick. Automatischer Prune-Modus entfernt verwaiste Container und Images.</p>
+          </article>
+
+          <!-- 4 -->
+          <article class="feature-card">
+            <div class="f-card-icon">📜</div>
+            <h3>Live Log-Viewer</h3>
+            <p>Echtzeit-Logstreaming mit Farbhervorhebung, Filterung und Autoscroll direkt im Webbrowser ohne Terminal-Blockaden.</p>
+          </article>
+
+          <!-- 5 -->
+          <article class="feature-card">
+            <div class="f-card-icon">📦</div>
+            <h3>Single Standalone Binary</h3>
+            <p>Backend in Go und Frontend in Astro sind in einer einzigen, statisch gelinkten Binary gebündelt. Keine externen Node.js Abhängigkeiten.</p>
+          </article>
+
+          <!-- 6 -->
+          <article class="feature-card">
+            <div class="f-card-icon">🏆</div>
+            <h3>Awesome-Go Auszeichnung</h3>
+            <p>Offiziell gelistet in der kuratierten Sammlung <a href="https://github.com/avelino/awesome-go#devops-tools" target="_blank" rel="noopener noreferrer">Awesome-Go</a> in der Kategorie <em>DevOps Tools</em>.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSTALLATION SECTION -->
+    <section class="install-section" id="install">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-tag">
+            <span class="lang-de">Setup</span>
+            <span class="lang-en" style="display:none;">Setup</span>
+          </span>
+          <h2 class="section-title">
+            <span class="lang-de">In 5 Sekunden betriebsbereit</span>
+            <span class="lang-en" style="display:none;">Ready in 5 Seconds</span>
+          </h2>
+          <p class="section-sub">
+            <span class="lang-de">Wähle dein Betriebssystem oder nutze die Go Toolchain.</span>
+            <span class="lang-en" style="display:none;">Select your operating system or install via the Go toolchain.</span>
+          </p>
+        </div>
+
+        <div class="install-grid">
+          <!-- Linux Card -->
+          <div class="install-card">
+            <div>
+              <div class="inst-card-header">
+                <span style="font-size: 24px;">🐧</span>
+                <h3>Linux (x86_64)</h3>
+              </div>
+              <p class="inst-desc">Tarball herunterladen, Berechtigungen setzen und Web-UI auf Wunschport starten:</p>
+              <pre class="inst-pre"><code>tar -xzf docklite-*-linux.tar.gz
+chmod +x docklite
+./docklite --port 8080</code></pre>
+            </div>
+            <div>
+              <a href="https://github.com/benzjeremy/docklite/releases/latest" target="_blank" rel="noopener noreferrer" class="btn-sm">
+                Linux Tarball (Latest) herunterladen →
+              </a>
+            </div>
           </div>
 
-          <div class="feature-card">
-            <div class="icon">🔍</div>
-            <h3>Interaktiver Inspector (Tabs)</h3>
-            <p>Strukturierte Übersicht statt unlesbarem JSON: Netzwerk & klickbare Host-Ports, gemountete Volumes, Environment-Variablen mit Schnellsuche & Copy, Top-Prozesse und RestartPolicy.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="icon">📜</div>
-            <h3>Colorierter Log-Viewer</h3>
-            <p>Live-Log-Streaming mit formatierten Zeitstempeln, Log-Level Badges ([ERROR], [WARN], [INFO]), Stichwort-Suchfilter und 1-Klick-Download als .log-Datei.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="icon">🕹️</div>
-            <h3>Container Lifecycle</h3>
-            <p>Container mit einem Klick starten, stoppen, neustarten, pausieren oder sicher löschen (inklusive Force-Option) – blitzschnell und ohne Latenz.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="icon">📥</div>
-            <h3>Image-Manager & Pull</h3>
-            <p>Neues Image direkt über den Docker-Socket herunterladen inklusive Schnellauswahl gängiger Images und Live-Download-Progress. Nicht mehr benötigte Images per Klick entfernen.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="icon">💾</div>
-            <h3>Volumes & Netzwerke</h3>
-            <p>Transparenter Einblick in alle lokalen Docker-Volumes (Mountpoint, Driver, Scope) und Bridge-/Overlay-Netzwerke mit IP-Bereichen und Gateways.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="icon">📡</div>
-            <h3>Vollwertige REST API</h3>
-            <p>Jede Funktion steht als dokumentierte JSON REST-API zur Verfügung. Perfekt für eigene Automatisierungs-Skripte, Dashboards oder Health-Checks.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="icon">🛡️</div>
-            <h3>Security by Design</h3>
-            <p>Gebaut nach strikten Sicherheitsstandards: Anti-DNS-Rebinding, Origin/Referer CSRF-Schutz, strikte Content-Security-Policy (CSP) und optionale Token-Authentifizierung.</p>
+          <!-- Windows Card -->
+          <div class="install-card">
+            <div>
+              <div class="inst-card-header">
+                <span style="font-size: 24px;">🪟</span>
+                <h3>Windows (x86_64)</h3>
+              </div>
+              <p class="inst-desc">ZIP-Archiv entpacken und direkt ausführen (verbindet sich mit Docker Desktop Engine):</p>
+              <pre class="inst-pre"><code>1. docklite-*-windows.zip entpacken
+2. docklite.exe ausführen
+3. Browser öffnen auf http://localhost:8080</code></pre>
+            </div>
+            <div>
+              <a href="https://github.com/benzjeremy/docklite/releases/latest" target="_blank" rel="noopener noreferrer" class="btn-sm">
+                Windows ZIP (Latest) herunterladen →
+              </a>
+            </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- About & Credits Section (German) -->
-      <section class="about-section" id="about">
+    <!-- ABOUT & CREDITS SECTION -->
+    <section class="about-section" id="about">
+      <div class="section-container">
         <div class="about-layout-grid">
+          
           <!-- Mitwirkende -->
           <div class="about-info-box">
-            <h3 class="about-box-title">
-              <svg viewBox="0 0 24 24" fill="currentColor" class="box-ic"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-              Mitwirkende & Autoren
-            </h3>
-            <div class="author-card">
-              <div class="author-avatar">JB</div>
-              <div class="author-details">
-                <div class="author-name">Jeremy Benz</div>
-                <div class="author-handles">
-                  <a href="https://github.com/benzjeremy" target="_blank" rel="noopener">@benzjeremy</a> &bull; 
-                  <a href="https://github.com/jbenz1706" target="_blank" rel="noopener">@jbenz1706</a>
+            <div>
+              <h3 class="about-box-title">👥 Mitwirkende &amp; Autoren</h3>
+              <div class="author-card">
+                <div class="author-avatar">JB</div>
+                <div>
+                  <div class="author-name">Jeremy Benz</div>
+                  <div class="author-handles">
+                    <a href="https://github.com/benzjeremy" target="_blank" rel="noopener noreferrer">@benzjeremy</a> &bull; 
+                    <a href="https://github.com/jbenz1706" target="_blank" rel="noopener noreferrer">@jbenz1706</a>
+                  </div>
+                  <div class="author-role">Projektgründer &amp; Lead Systems Developer</div>
                 </div>
-                <div class="author-role">Projektgründer & Lead Developer</div>
+              </div>
+
+              <div class="ai-assist-box">
+                <span class="ai-label">AI Pair Programming:</span>
+                <div class="ai-chips">
+                  <span class="ai-chip">Google Antigravity</span>
+                  <span class="ai-chip">Claude Code</span>
+                </div>
               </div>
             </div>
-            <div class="ai-assist-box">
-              <span class="ai-label">AI Assistenten (Pair Programming):</span>
-              <div class="ai-chips">
-                <span class="ai-chip">Google Antigravity</span>
-                <span class="ai-chip">Claude Code</span>
-              </div>
+
+            <div style="font-size: 12px; color: var(--text-muted); padding-top: 14px; border-top: 1px solid var(--border-subtle);">
+              © 2026 Jeremy Benz · Nordrhein-Westfalen, Deutschland
             </div>
-            <div class="copyright-line">&copy; 2026 Jeremy Benz</div>
           </div>
 
-          <!-- Lizenz -->
+          <!-- Lizenz & Sicherheit -->
           <div class="about-info-box">
-            <h3 class="about-box-title">
-              <svg viewBox="0 0 24 24" fill="currentColor" class="box-ic"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-              Freie & Open Source Software
-            </h3>
-            <p class="license-text">
-              Dieses Projekt steht unter der <strong>GNU General Public License, Version 3 (GPL-3.0)</strong>.
-              Sie garantiert jedem Nutzer die Freiheit, das Programm frei auszuführen, den Code zu studieren, anzupassen und weiterzuverbreiten.
-            </p>
-            <div class="license-links">
-              <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank" rel="noopener" class="license-cta">
-                Offizielle Lizenzseite auf GitHub einsehen &rarr;
+            <div>
+              <h3 class="about-box-title">⚖️ Freie Software (GNU GPL-3.0)</h3>
+              <p class="license-text">
+                Dieses Projekt steht unter der <strong>GNU General Public License v3.0 (GPL-3.0)</strong>. Sie garantiert jedem Nutzer die Freiheit, das Programm auszuführen, den Quellcode zu studieren, anzupassen und weiterzuverbreiten.
+              </p>
+              <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="license-cta">
+                Offizielle Lizenzdatei auf GitHub einsehen →
               </a>
             </div>
-            <div class="ext-links-row">
-              <a href="https://github.com/benzjeremy/docklite" target="_blank" rel="noopener" class="link-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-                <span>GitHub Quellcode</span>
+
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <a href="https://github.com/benzjeremy/docklite" target="_blank" rel="noopener noreferrer" class="btn-card">
+                <span>Quellcode auf GitHub</span>
               </a>
-              <a href="https://github.com/benzjeremy/docklite/releases" target="_blank" rel="noopener" class="link-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
-                <span>Alle Releases</span>
+              <a href="https://benzjeremy.github.io/kontakt.html" class="btn-card highlight">
+                <span>Sicherheitslücke melden</span>
               </a>
             </div>
           </div>
-        </div>
-      </section>
-    </main>
-  </div>
 
-  <!-- ENGLISH -->
-  <div data-lang="en">
-    <main>
-      <section class="hero">
-        <div class="hero-badges">
-          <span class="hero-badge release-badge">🚀 v1.2.1 [Patch · DevOps]</span>
-          <a href="https://github.com/avelino/awesome-go#devops-tools" target="_blank" rel="noopener" class="hero-badge awesome-badge" title="Featured in Awesome Go (#6665)">
-            <svg viewBox="0 0 24 24" fill="currentColor" class="badge-star"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-            Featured in <strong>Awesome Go</strong> (#6665)
-          </a>
-          <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank" rel="noopener" class="hero-badge license-pill" title="License: GNU General Public License v3.0 (GPL-3.0)">GPL-3.0</a>
-        </div>
-        <h1>Radically Ultra-lightweight <br><span class="gradient-text">Portainer Alternative</span></h1>
-        <p>
-          Tired of container monitors eating 250+ MB RAM, heavy database setups, and sluggish web interfaces just to check logs and resource usage? Docklite stays below 15 MB RAM, boots in milliseconds, and speaks directly to your Docker socket.
-        </p>
-        <div class="hero-cta">
-          <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.2.1" class="btn btn-accent">⬇️ Download Release v1.2.1</a>
-          <a href="wiki/" class="btn">📖 Wiki & Quickstart</a>
-          <a href="https://github.com/benzjeremy/docklite" class="btn" target="_blank" rel="noopener">⭐ View on GitHub</a>
-        </div>
-      </section>
-
-      <div class="container-main">
-        <!-- Quick Install Box -->
-        <div class="section-title">
-          <h2>Ready in 5 seconds</h2>
-          <p>A single command is all it takes – no container-in-container nesting required.</p>
-        </div>
-        <div class="code-box-container">
-          <button type="button" class="copy-btn" onclick="copyInstallCmd(this)">📋 Copy</button>
-          <div class="code-box">
-# Install via Go (always gets the latest release):
-go install github.com/benzjeremy/docklite@latest
-
-# Launch standalone binary (Web UI on port 8080):
-docklite --port 8080</div>
-        </div>
-
-        <!-- Comparison Section -->
-        <div class="section-title">
-          <h2>Portainer vs. Docklite Comparison</h2>
-          <p>Why doing one thing well beats monolithic bloat.</p>
-        </div>
-
-        <div class="comparison-card">
-          <table>
-            <thead>
-              <tr>
-                <th>Criterion</th>
-                <th class="col-docklite">⚡ Docklite v1.2.1</th>
-                <th class="col-portainer">🐢 Portainer CE</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Idle RAM Footprint</strong></td>
-                <td class="col-docklite"><strong>~10 – 15 MB RAM</strong></td>
-                <td class="col-portainer">150 – 300+ MB RAM</td>
-              </tr>
-              <tr>
-                <td><strong>Architecture & Delivery</strong></td>
-                <td><strong>Single Standalone Go Binary</strong> (Astro embedded)</td>
-                <td>Heavy container image with embedded BoltDB</td>
-              </tr>
-              <tr>
-                <td><strong>Socket Communication</strong></td>
-                <td><strong>Direct /var/run/docker.sock</strong> or Windows Named Pipe</td>
-                <td>Complex API proxy layer</td>
-              </tr>
-              <tr>
-                <td><strong>Real-Time Updates</strong></td>
-                <td><strong>Server-Sent Events (SSE)</strong> without polling overhead</td>
-                <td>Manual reload / heavy polling</td>
-              </tr>
-              <tr>
-                <td><strong>Security Hardening</strong></td>
-                <td>Anti-DNS-Rebinding, Anti-CSRF, CSP, Token-Auth</td>
-                <td>Often insecure default deployments</td>
-              </tr>
-              <tr>
-                <td><strong>Startup Time</strong></td>
-                <td><strong>&lt; 50 milliseconds</strong></td>
-                <td>15 – 30 seconds container boot</td>
-              </tr>
-              <tr>
-                <td><strong>Platforms</strong></td>
-                <td>Linux & Windows native</td>
-                <td>Primarily Linux-focused</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Features Section -->
-        <div class="section-title">
-          <h2>Features & Capabilities</h2>
-          <p>Everything developers and system operators need on a day-to-day basis.</p>
-        </div>
-
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="icon">📊</div>
-            <h3>Real-Time Telemetry</h3>
-            <p>Accurate CPU and sanitized RAM (cgroup v1 cache / v2 inactive_file), live network I/O (Rx/Tx), and disk I/O streamed via Server-Sent Events.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="icon">🔍</div>
-            <h3>Interactive Inspector</h3>
-            <p>Tabbed view instead of raw JSON: Network & clickable host ports, mounted volumes, searchable environment variables with 1-click copy, and top processes.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="icon">📜</div>
-            <h3>Colorized Log Streaming</h3>
-            <p>Live stdout/stderr stream with formatted timestamps, log level badges ([ERROR], [WARN], [INFO]), keyword search, and 1-click .log file download.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="icon">🕹️</div>
-            <h3>Container Lifecycle</h3>
-            <p>Start, stop, restart, pause, or remove containers (with force option) in milliseconds without page reload.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="icon">📥</div>
-            <h3>Image Pull & Prune</h3>
-            <p>Pull container images directly through the Docker socket with quick picks for popular images, real-time download status, and 1-click system prune.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="icon">💾</div>
-            <h3>Volumes & Networks</h3>
-            <p>Inspect local volumes (mountpoint, driver, scope) and bridge/overlay networks with IP subnets and gateways.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="icon">📡</div>
-            <h3>Full REST API</h3>
-            <p>Every dashboard action is backed by a clean JSON REST API (v1). Ideal for automation scripts, custom monitoring, or health checks.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="icon">🛡️</div>
-            <h3>Security by Design</h3>
-            <p>Built according to strict security guidelines: Anti-DNS-Rebinding, Origin/Referer CSRF protection, CSP, and optional token authentication.</p>
-          </div>
         </div>
       </div>
+    </section>
+  </main>
 
-      <!-- About & Credits Section (English) -->
-      <section class="about-section">
-        <div class="about-layout-grid">
-          <!-- Contributors -->
-          <div class="about-info-box">
-            <h3 class="about-box-title">
-              <svg viewBox="0 0 24 24" fill="currentColor" class="box-ic"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-              Contributors & Authors
-            </h3>
-            <div class="author-card">
-              <div class="author-avatar">JB</div>
-              <div class="author-details">
-                <div class="author-name">Jeremy Benz</div>
-                <div class="author-handles">
-                  <a href="https://github.com/benzjeremy" target="_blank" rel="noopener">@benzjeremy</a> &bull; 
-                  <a href="https://github.com/jbenz1706" target="_blank" rel="noopener">@jbenz1706</a>
-                </div>
-                <div class="author-role">Project Founder & Lead Developer</div>
-              </div>
-            </div>
-            <div class="ai-assist-box">
-              <span class="ai-label">AI Assistants (Pair Programming):</span>
-              <div class="ai-chips">
-                <span class="ai-chip">Google Antigravity</span>
-                <span class="ai-chip">Claude Code</span>
-              </div>
-            </div>
-            <div class="copyright-line">&copy; 2026 Jeremy Benz</div>
-          </div>
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <img src="favicon.svg" alt="docklite Logo" width="24" height="24">
+        <span>docklite · Entwickelt von Jeremy Benz · GNU GPL-3.0 Lizenz</span>
+      </div>
 
-          <!-- License -->
-          <div class="about-info-box">
-            <h3 class="about-box-title">
-              <svg viewBox="0 0 24 24" fill="currentColor" class="box-ic"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-              Free & Open Source Software
-            </h3>
-            <p class="license-text">
-              This project is licensed under the <strong>GNU General Public License, Version 3 (GPL-3.0)</strong>.
-              It guarantees everyone the freedom to run, study, modify, and redistribute the software.
-            </p>
-            <div class="license-links">
-              <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank" rel="noopener" class="license-cta">
-                View official license on GitHub &rarr;
-              </a>
-            </div>
-            <div class="ext-links-row">
-              <a href="https://github.com/benzjeremy/docklite" target="_blank" rel="noopener" class="link-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-                <span>GitHub Source</span>
-              </a>
-              <a href="https://github.com/benzjeremy/docklite/releases" target="_blank" rel="noopener" class="link-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
-                <span>All Releases</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <footer>
-    <p>
-      <strong>Docklite</strong> · Entwickelt von <a href="https://github.com/benzjeremy" target="_blank" rel="noopener">Jeremy Benz (@benzjeremy)</a> · Open Source unter <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank" rel="noopener">GPL-3.0</a>
-    </p>
-    <p style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted);">
-      <a href="#about">Mitwirkende & Autoren</a> · 
-      <a href="wiki/">Wiki & Doku</a> · 
-      <a href="https://github.com/benzjeremy/docklite/releases" target="_blank" rel="noopener">Releases & Changelog</a> · 
-      <a href="https://github.com/benzjeremy/docklite/issues" target="_blank" rel="noopener">Issues</a> · 
-      <a href="https://benzjeremy.github.io/impressum.html">Impressum</a> · 
-      <a href="https://benzjeremy.github.io/datenschutz.html">Datenschutz</a> · 
-      <a href="https://benzjeremy.github.io/">benzjeremy.github.io</a>
-    </p>
+      <nav class="footer-links" aria-label="Footer Navigation">
+        <a href="https://benzjeremy.github.io/">Startseite</a>
+        <a href="https://benzjeremy.github.io/about.html">Über mich</a>
+        <a href="https://benzjeremy.github.io/kontakt.html">Kontakt</a>
+        <a href="wiki/">Wiki &amp; Doku</a>
+        <a href="https://github.com/benzjeremy/docklite/releases">Releases</a>
+        <a href="https://benzjeremy.github.io/impressum.html">Impressum</a>
+        <a href="https://benzjeremy.github.io/datenschutz.html">Datenschutz</a>
+        <a href="https://github.com/benzjeremy/docklite" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+    </div>
   </footer>
 
   <script>
-    function copyInstallCmd(btn) {
-      const code = "go install github.com/benzjeremy/docklite@latest\ndocklite --port 8080";
+    // Copy Command
+    function copyInstallCmd() {
+      const code = document.getElementById('goInstallCmd').textContent;
+      const btnText = document.getElementById('copyBtnText');
+      const btn = document.getElementById('copy-cmd-btn');
       navigator.clipboard.writeText(code).then(() => {
-        const orig = btn.textContent;
-        btn.textContent = '✓ Kopiert!';
-        setTimeout(() => { btn.textContent = orig; }, 2000);
+        btnText.textContent = 'Kopiert! ✓';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btnText.textContent = 'Kopieren';
+          btn.classList.remove('copied');
+        }, 2200);
       });
     }
 
-    function setLang(lang) {
-      document.querySelectorAll('[data-lang]').forEach(el => {
-        el.classList.toggle('visible', el.getAttribute('data-lang') === lang);
-      });
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
-      });
-      document.documentElement.lang = lang;
-      try { localStorage.setItem('pref_lang', lang); } catch(e) {}
-    }
-
-    // Restore language preference
-    try {
-      const saved = localStorage.getItem('pref_lang');
-      if (saved && (saved === 'de' || saved === 'en')) {
-        setLang(saved);
-      }
-    } catch(e) {}
-
-    // Mobile Navigation Toggle
+    // Mobile Drawer Toggle
     const mobileToggle = document.getElementById('mobile-toggle');
     const mainNav = document.getElementById('main-nav');
     if (mobileToggle && mainNav) {
       mobileToggle.addEventListener('click', () => {
         const isOpen = mainNav.classList.toggle('open');
         mobileToggle.setAttribute('aria-expanded', isOpen);
-        mobileToggle.innerHTML = isOpen ? '✕' : '☰';
-      });
-
-      mainNav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          if (mainNav.classList.contains('open')) {
-            mainNav.classList.remove('open');
-            mobileToggle.setAttribute('aria-expanded', 'false');
-            mobileToggle.innerHTML = '☰';
-          }
-        });
-      });
-
-      document.addEventListener('click', (e) => {
-        if (mainNav.classList.contains('open') && !mainNav.contains(e.target) && !mobileToggle.contains(e.target)) {
-          mainNav.classList.remove('open');
-          mobileToggle.setAttribute('aria-expanded', 'false');
-          mobileToggle.innerHTML = '☰';
-        }
       });
     }
+
+    // Language Toggle
+    function setLang(lang) {
+      document.querySelectorAll('[data-lang]').forEach(el => {
+        if (el.getAttribute('data-lang') === lang) {
+          el.classList.add('visible');
+        } else {
+          el.classList.remove('visible');
+        }
+      });
+      document.querySelectorAll('.lang-de').forEach(el => el.style.display = lang === 'de' ? '' : 'none');
+      document.querySelectorAll('.lang-en').forEach(el => el.style.display = lang === 'en' ? '' : 'none');
+      
+      const btnDe = document.getElementById('btn-lang-de');
+      const btnEn = document.getElementById('btn-lang-en');
+      if (btnDe && btnEn) {
+        btnDe.classList.toggle('active', lang === 'de');
+        btnEn.classList.toggle('active', lang === 'en');
+      }
+      try { localStorage.setItem('site_lang', lang); } catch (e) {}
+    }
+
+    try {
+      const saved = localStorage.getItem('site_lang');
+      if (saved === 'en' || saved === 'de') setLang(saved);
+    } catch (e) {}
   </script>
 </body>
 </html>
