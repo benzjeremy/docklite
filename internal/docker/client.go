@@ -462,3 +462,183 @@ func (c *Client) ListNetworks(ctx context.Context) ([]map[string]interface{}, er
 	return res, nil
 }
 
+// DialRaw connects directly to the Docker socket.
+func (c *Client) DialRaw(ctx context.Context) (net.Conn, error) {
+	return dialContext(ctx, c.host)
+}
+
+// CreateExec creates an exec instance in a container.
+func (c *Client) CreateExec(ctx context.Context, id string, cmd []string) (string, error) {
+	if len(cmd) == 0 {
+		cmd = []string{"/bin/sh"}
+	}
+	bodyData := map[string]interface{}{
+		"AttachStdin":  true,
+		"AttachStdout": true,
+		"AttachStderr": true,
+		"Tty":          true,
+		"Cmd":          cmd,
+	}
+	b, err := json.Marshal(bodyData)
+	if err != nil {
+		return "", err
+	}
+	resp, err := c.doRequest(ctx, http.MethodPost, "/containers/"+url.PathEscape(id)+"/exec", bytes.NewReader(b))
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode >= 400 {
+		return "", fmt.Errorf("failed to create exec: status %d", resp.StatusCode)
+	}
+	var res struct {
+		ID string `json:"Id"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return "", err
+	}
+	return res.ID, nil
+}
+
+// StartExecHijack starts an exec instance and hijacks the raw connection for bidirectional streaming.
+func (c *Client) StartExecHijack(ctx context.Context, execID string) (net.Conn, *bufio.Reader, error) {
+	conn, err := c.DialRaw(ctx)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	payload := `{"Detach":false,"Tty":true}`
+	req := fmt.Sprintf("POST /exec/%s/start HTTP/1.1\r\nHost: docker\r\nContent-Type: application/json\r\nUpgrade: tcp\r\nConnection: Upgrade\r\nContent-Length: %d\r\n\r\n%s",
+		url.PathEscape(execID), len(payload), payload)
+
+	if _, err := conn.Write([]byte(req)); err != nil {
+		conn.Close()
+		return nil, nil, err
+	}
+
+	br := bufio.NewReader(conn)
+	resp, err := http.ReadResponse(br, nil)
+	if err != nil {
+		conn.Close()
+		return nil, nil, fmt.Errorf("failed to read start exec response: %w", err)
+	}
+
+	if resp.StatusCode != http.StatusSwitchingProtocols && resp.StatusCode != http.StatusOK {
+		conn.Close()
+		return nil, nil, fmt.Errorf("unexpected status code starting exec: %d", resp.StatusCode)
+	}
+
+	return conn, br, nil
+}
+
+// ResizeExec resizes the PTY of an exec process.
+func (c *Client) ResizeExec(ctx context.Context, execID string, height, width int) error {
+	path := fmt.Sprintf("/exec/%s/resize?h=%d&w=%d", url.PathEscape(execID), height, width)
+	resp, err := c.doRequest(ctx, http.MethodPost, path, nil)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	return nil
+}
+
+// PruneVolumes removes unused Docker volumes.
+func (c *Client) PruneVolumes(ctx context.Context) (map[string]interface{}, error) {
+	resp, err := c.doRequest(ctx, http.MethodPost, "/volumes/prune", nil)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	var res map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+// PruneNetworks removes unused Docker networks.
+func (c *Client) PruneNetworks(ctx context.Context) (map[string]interface{}, error) {
+	resp, err := c.doRequest(ctx, http.MethodPost, "/networks/prune", nil)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	var res map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+// GetComposeStacks inspects all containers and groups them into Compose projects.
+func (c *Client) GetComposeStacks(ctx context.Context) ([]ComposeStack, error) {
+	containers, err := c.ListContainers(ctx, true)
+	if err != nil {
+		return nil, err
+	}
+
+	projectMap := make(map[string][]CleanContainer)
+	for _, cnt := range containers {
+		project := cnt.Labels["com.docker.compose.project"]
+		if project == "" {
+			project = cnt.Labels["com.docker.stack.namespace"]
+		}
+		if project == "" {
+			continue
+		}
+		projectMap[project] = append(projectMap[project], cnt)
+	}
+
+	var stacks []ComposeStack
+	for name, cnts := range projectMap {
+		running := 0
+		for _, cnt := range cnts {
+			if cnt.State == "running" {
+				running++
+			}
+		}
+
+		status := "stopped"
+		if running == len(cnts) && len(cnts) > 0 {
+			status = "running"
+		} else if running > 0 {
+			status = "partially_running"
+		}
+
+		stacks = append(stacks, ComposeStack{
+			Name:            name,
+			TotalServices:   len(cnts),
+			RunningServices: running,
+			Status:          status,
+			Containers:      cnts,
+		})
+	}
+
+	return stacks, nil
+}
+
+// StackAction performs restart or stop on all containers in a Compose stack.
+func (c *Client) StackAction(ctx context.Context, stackName string, action string) error {
+	stacks, err := c.GetComposeStacks(ctx)
+	if err != nil {
+		return err
+	}
+
+	var targetStack *ComposeStack
+	for _, s := range stacks {
+		if s.Name == stackName {
+			targetStack = &s
+			break
+		}
+	}
+
+	if targetStack == nil {
+		return fmt.Errorf("stack %s not found", stackName)
+	}
+
+	for _, cnt := range targetStack.Containers {
+		_ = c.ContainerAction(ctx, cnt.ID, action)
+	}
+	return nil
+}
+

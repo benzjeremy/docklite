@@ -69,6 +69,8 @@ func (s *Server) registerRoutes() {
 		s.writeError(w, http.StatusMethodNotAllowed, "GET required")
 	})
 
+	s.mux.HandleFunc("/api/v1/volumes/prune", s.handleVolumesPrune)
+
 	s.mux.HandleFunc("/api/v1/networks", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
 			s.handleNetworks(w, r)
@@ -76,6 +78,11 @@ func (s *Server) registerRoutes() {
 		}
 		s.writeError(w, http.StatusMethodNotAllowed, "GET required")
 	})
+
+	s.mux.HandleFunc("/api/v1/networks/prune", s.handleNetworksPrune)
+
+	s.mux.HandleFunc("/api/v1/stacks", s.handleStacks)
+	s.mux.HandleFunc("/api/v1/stacks/", s.handleStackAction)
 
 	s.mux.HandleFunc("/api/v1/system/prune", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
@@ -115,6 +122,9 @@ func (s *Server) registerRoutes() {
 
 		if len(parts) == 2 {
 			switch parts[1] {
+			case "exec":
+				s.handleContainerExec(w, r, parts[0])
+				return
 			case "stats":
 				if r.Method == http.MethodGet {
 					s.handleContainerStats(w, r)

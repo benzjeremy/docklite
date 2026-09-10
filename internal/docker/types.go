@@ -155,3 +155,12 @@ type ImageSummary struct {
 	Labels      map[string]string `json:"Labels"`
 	Containers  int64             `json:"Containers"`
 }
+
+// ComposeStack represents a grouped multi-container Docker Compose project.
+type ComposeStack struct {
+	Name            string           `json:"name"`
+	TotalServices   int              `json:"totalServices"`
+	RunningServices int              `json:"runningServices"`
+	Status          string           `json:"status"` // "running", "partially_running", "stopped"
+	Containers      []CleanContainer `json:"containers"`
+}

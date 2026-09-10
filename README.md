@@ -24,11 +24,14 @@ Portainer ist für einfache Server- und Homelab-Setups maßlos überdimensionier
 **Docklite löst genau dieses Problem:**
 - ⚡ **Minimalistischer Footprint:** Nur ca. **10–15 MB RAM** im laufenden Betrieb.
 - ⚡ **Single Standalone Binary:** Die komplette Astro-Weboberfläche ist per `go:embed` fest in der Go-Binary einkompiliert. Keine externen Node.js- oder Webserver-Abhängigkeiten!
+- ⚡ **In-Browser Container Exec:** Interaktives Terminal via WebSockets direkt in jeden laufenden Container (`/bin/sh`, `/bin/bash`) mit PTY-Window-Resize-Sync.
+- ⚡ **Docker Compose Stack Inspector:** Automatische Erkennung und Gruppierung von Compose-Projekten (`com.docker.compose.project`) mit 1-Klick Stack-Restart und Stop.
+- ⚡ **Volume & Network Management:** Bereinigung verwaister Volumes und Netzwerke (`POST /api/v1/volumes/prune`, `/networks/prune`).
 - ⚡ **Direkter Docker-Socket:** Kommuniziert nativ über HTTP-over-Unix-Socket (`/var/run/docker.sock`) auf Linux oder Named Pipe (`//./pipe/docker_engine`) auf Windows.
 - ⚡ **Echtzeit-Monitoring:** Live CPU %, Memory (mit cgroup v1/v2 Cache-Bereinigung), Netzwerk Rx/Tx und Block-I/O via Server-Sent Events (SSE).
 - ⚡ **Volle Kontrolle:** Starten, Stoppen, Neustarten, Pausieren, Löschen, Live-Logs und interaktiver Inspector auf Knopfdruck.
 - ⚡ **REST API:** Entwicklerfreundliche Endpunkte für eigene Automatisierungs-Skripte und Monitoring-Tools.
-- 🛡️ **Security by Design:** Host-Header-Validierung (Anti-DNS-Rebinding), Anti-CSRF, strikte CSP- & Security-Header, optionales Token (`--token`).
+- 🛡️ **Security by Design:** Host-Header-Validierung (Anti-DNS-Rebinding), Anti-CSRF, Anti-CSWSH, strikte CSP- & Security-Header, optionales Token (`--token`).
 
 ---
 
