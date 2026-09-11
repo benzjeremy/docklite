@@ -103,6 +103,7 @@ function initSSE() {
       if (payload.containers) {
         containers = payload.containers;
         renderContainers();
+        updateTelemetryData();
       }
     } catch (e) {
       console.error('SSE parse error:', e);
@@ -131,6 +132,7 @@ async function fetchData() {
     if (contRes.ok) {
       containers = await contRes.json();
       renderContainers();
+      updateTelemetryData();
     }
   } catch (err) {
     console.error('Fetch error:', err);
@@ -287,6 +289,10 @@ function renderContainers() {
             }
           </div>
           <div class="action-group">
+            <button class="btn btn-sm btn-terminal" onclick="openTerminal('${c.id}', '${c.name}')" title="Interaktives Terminal öffnen" ${!isRunning ? 'disabled style="opacity:0.35; cursor:not-allowed;"' : ''}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+              Exec
+            </button>
             <button class="btn btn-sm" onclick="openLogs('${c.id}', '${c.name}')" title="Live-Logs anzeigen">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
               Logs
@@ -340,6 +346,9 @@ function renderContainers() {
                 Start
               </button>`
             }
+            <button class="btn btn-sm btn-terminal" onclick="openTerminal('${c.id}', '${c.name}')" title="Terminal öffnen" ${!isRunning ? 'disabled style="opacity:0.35; cursor:not-allowed;"' : ''}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+            </button>
             <button class="btn btn-sm" onclick="openLogs('${c.id}', '${c.name}')" title="Logs anzeigen">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg>
               Logs
@@ -1161,7 +1170,465 @@ document.getElementById('btnRefresh').onclick = () => {
   showToast('✓ Daten aktualisiert', 'info');
 };
 
+// ==========================================
+// 60 FPS Cybernetic Live Telemetry Wave Canvas
+// ==========================================
+const telemetryCanvas = document.getElementById('telemetryCanvas');
+let telemetryCtx = null;
+let telemetryHistory = [];
+const MAX_TELEMETRY_POINTS = 50;
+
+function initTelemetryCanvas() {
+  if (!telemetryCanvas) return;
+  telemetryCtx = telemetryCanvas.getContext('2d');
+  resizeTelemetryCanvas();
+  window.addEventListener('resize', resizeTelemetryCanvas);
+
+  for (let i = 0; i < MAX_TELEMETRY_POINTS; i++) {
+    telemetryHistory.push({ cpu: 0, mem: 0 });
+  }
+
+  requestAnimationFrame(renderTelemetryFrame);
+}
+
+function resizeTelemetryCanvas() {
+  if (!telemetryCanvas) return;
+  const rect = telemetryCanvas.parentElement.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  telemetryCanvas.width = rect.width * dpr;
+  telemetryCanvas.height = rect.height * dpr;
+  if (telemetryCtx) {
+    telemetryCtx.scale(dpr, dpr);
+  }
+}
+
+function updateTelemetryData() {
+  let totalCpu = 0;
+  let totalMemBytes = 0;
+
+  containers.forEach(c => {
+    if (c.state === 'running' && c.stats) {
+      totalCpu += (c.stats.cpu_percent || 0);
+      totalMemBytes += (c.stats.memory_usage || 0);
+    }
+  });
+
+  const cpuEl = document.getElementById('telemetryCpuVal');
+  const memEl = document.getElementById('telemetryMemVal');
+  if (cpuEl) cpuEl.textContent = totalCpu.toFixed(1) + '%';
+  if (memEl) memEl.textContent = formatBytes(totalMemBytes);
+
+  telemetryHistory.push({
+    cpu: Math.min(totalCpu, 100),
+    mem: totalMemBytes
+  });
+  if (telemetryHistory.length > MAX_TELEMETRY_POINTS) {
+    telemetryHistory.shift();
+  }
+}
+
+let wavePhase = 0;
+function renderTelemetryFrame() {
+  if (!telemetryCanvas || !telemetryCtx) return;
+  const width = telemetryCanvas.parentElement.clientWidth;
+  const height = telemetryCanvas.parentElement.clientHeight;
+
+  telemetryCtx.clearRect(0, 0, width, height);
+  wavePhase += 0.03;
+
+  // Grid Lines
+  telemetryCtx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+  telemetryCtx.lineWidth = 1;
+  for (let y = height / 4; y < height; y += height / 4) {
+    telemetryCtx.beginPath();
+    telemetryCtx.moveTo(0, y);
+    telemetryCtx.lineTo(width, y);
+    telemetryCtx.stroke();
+  }
+
+  const stepX = width / (MAX_TELEMETRY_POINTS - 1);
+
+  // 1. Draw Memory Wave (Emerald)
+  let maxMem = 1024 * 1024 * 1024; // baseline 1 GB
+  telemetryHistory.forEach(h => { if (h.mem > maxMem) maxMem = h.mem * 1.2; });
+
+  telemetryCtx.beginPath();
+  telemetryCtx.moveTo(0, height);
+  for (let i = 0; i < telemetryHistory.length; i++) {
+    const x = i * stepX;
+    const ratio = telemetryHistory[i].mem / maxMem;
+    const wave = Math.sin(wavePhase + i * 0.2) * 3;
+    const y = height - (ratio * (height - 24) + 12) + wave;
+    telemetryCtx.lineTo(x, y);
+  }
+  telemetryCtx.lineTo(width, height);
+  telemetryCtx.closePath();
+
+  const emeraldGrad = telemetryCtx.createLinearGradient(0, 0, 0, height);
+  emeraldGrad.addColorStop(0, 'rgba(16, 185, 129, 0.22)');
+  emeraldGrad.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
+  telemetryCtx.fillStyle = emeraldGrad;
+  telemetryCtx.fill();
+
+  // Emerald Stroke
+  telemetryCtx.beginPath();
+  for (let i = 0; i < telemetryHistory.length; i++) {
+    const x = i * stepX;
+    const ratio = telemetryHistory[i].mem / maxMem;
+    const wave = Math.sin(wavePhase + i * 0.2) * 3;
+    const y = height - (ratio * (height - 24) + 12) + wave;
+    if (i === 0) telemetryCtx.moveTo(x, y);
+    else telemetryCtx.lineTo(x, y);
+  }
+  telemetryCtx.strokeStyle = 'rgba(16, 185, 129, 0.8)';
+  telemetryCtx.lineWidth = 1.5;
+  telemetryCtx.stroke();
+
+  // 2. Draw CPU Wave (Cyan)
+  telemetryCtx.beginPath();
+  telemetryCtx.moveTo(0, height);
+  for (let i = 0; i < telemetryHistory.length; i++) {
+    const x = i * stepX;
+    const ratio = telemetryHistory[i].cpu / 100;
+    const wave = Math.cos(wavePhase * 1.2 + i * 0.25) * 4;
+    const y = height - (ratio * (height - 24) + 12) + wave;
+    telemetryCtx.lineTo(x, y);
+  }
+  telemetryCtx.lineTo(width, height);
+  telemetryCtx.closePath();
+
+  const cyanGrad = telemetryCtx.createLinearGradient(0, 0, 0, height);
+  cyanGrad.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
+  cyanGrad.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
+  telemetryCtx.fillStyle = cyanGrad;
+  telemetryCtx.fill();
+
+  // Cyan Stroke
+  telemetryCtx.beginPath();
+  for (let i = 0; i < telemetryHistory.length; i++) {
+    const x = i * stepX;
+    const ratio = telemetryHistory[i].cpu / 100;
+    const wave = Math.cos(wavePhase * 1.2 + i * 0.25) * 4;
+    const y = height - (ratio * (height - 24) + 12) + wave;
+    if (i === 0) telemetryCtx.moveTo(x, y);
+    else telemetryCtx.lineTo(x, y);
+  }
+  telemetryCtx.strokeStyle = '#38bdf8';
+  telemetryCtx.lineWidth = 2;
+  telemetryCtx.stroke();
+
+  requestAnimationFrame(renderTelemetryFrame);
+}
+
+// ==========================================
+// Interactive WebSocket Exec Terminal (v1.3)
+// ==========================================
+const terminalModal = document.getElementById('terminalModal');
+const terminalLines = document.getElementById('terminalLines');
+const terminalInput = document.getElementById('terminalInput');
+const terminalScreen = document.getElementById('terminalScreen');
+const terminalContainerName = document.getElementById('terminalContainerName');
+const terminalStatusBadge = document.getElementById('terminalStatusBadge');
+const terminalShellSelect = document.getElementById('terminalShellSelect');
+
+let terminalWs = null;
+let currentTerminalContainerId = null;
+let currentTerminalContainerName = null;
+let cmdHistory = [];
+let cmdHistoryIdx = -1;
+
+window.openTerminal = function(containerId, name) {
+  currentTerminalContainerId = containerId;
+  currentTerminalContainerName = name;
+  if (terminalContainerName) terminalContainerName.textContent = name;
+  if (terminalLines) terminalLines.innerHTML = '';
+  if (terminalModal) terminalModal.classList.add('active');
+  connectTerminalWs();
+  if (terminalInput) {
+    terminalInput.value = '';
+    terminalInput.focus();
+  }
+};
+
+function connectTerminalWs() {
+  if (terminalWs) {
+    terminalWs.close();
+    terminalWs = null;
+  }
+
+  if (terminalStatusBadge) {
+    terminalStatusBadge.textContent = 'Verbinde...';
+    terminalStatusBadge.className = 'state-pill state-paused';
+  }
+
+  const shell = (terminalShellSelect && terminalShellSelect.value) ? terminalShellSelect.value : '/bin/sh';
+  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  const wsUrl = proto + '//' + location.host + '/api/v1/containers/' + currentTerminalContainerId + '/exec?cmd=' + encodeURIComponent(shell);
+
+  try {
+    terminalWs = new WebSocket(wsUrl);
+    terminalWs.binaryType = 'arraybuffer';
+
+    terminalWs.onopen = () => {
+      if (terminalStatusBadge) {
+        terminalStatusBadge.textContent = 'Aktiv (PTY)';
+        terminalStatusBadge.className = 'state-pill state-running';
+      }
+      appendTerminalOutput('\x1b[36m⚡ Verbunden mit Container "' + currentTerminalContainerName + '" (' + shell + ')\x1b[0m\r\n');
+      sendTerminalResize();
+    };
+
+    terminalWs.onmessage = (evt) => {
+      let text = '';
+      if (typeof evt.data === 'string') {
+        text = evt.data;
+      } else if (evt.data instanceof ArrayBuffer) {
+        text = new TextDecoder('utf-8').decode(evt.data);
+      }
+      appendTerminalOutput(text);
+    };
+
+    terminalWs.onclose = () => {
+      if (terminalStatusBadge) {
+        terminalStatusBadge.textContent = 'Getrennt';
+        terminalStatusBadge.className = 'state-pill state-stopped';
+      }
+      appendTerminalOutput('\r\n\x1b[33m⚠️ Terminal-Verbindung geschlossen.\x1b[0m\r\n');
+    };
+
+    terminalWs.onerror = () => {
+      if (terminalStatusBadge) {
+        terminalStatusBadge.textContent = 'Fehler';
+        terminalStatusBadge.className = 'state-pill state-danger';
+      }
+      appendTerminalOutput('\r\n\x1b[31m✕ WebSocket Fehler beim Verbinden mit Container PTY.\x1b[0m\r\n');
+    };
+  } catch (err) {
+    if (terminalStatusBadge) terminalStatusBadge.textContent = 'Fehler';
+    appendTerminalOutput('\r\n\x1b[31m✕ Fehler: ' + err + '\x1b[0m\r\n');
+  }
+}
+
+function appendTerminalOutput(rawText) {
+  if (!terminalLines) return;
+  let html = rawText
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\x1b\[31m/g, '<span style="color:#f87171;">')
+    .replace(/\x1b\[32m/g, '<span style="color:#34d399;">')
+    .replace(/\x1b\[33m/g, '<span style="color:#fde047;">')
+    .replace(/\x1b\[34m/g, '<span style="color:#60a5fa;">')
+    .replace(/\x1b\[35m/g, '<span style="color:#c084fc;">')
+    .replace(/\x1b\[36m/g, '<span style="color:#38bdf8;">')
+    .replace(/\x1b\[1m/g, '<span style="font-weight:700;">')
+    .replace(/\x1b\[0m/g, '</span>')
+    .replace(/\r\n/g, '<br>')
+    .replace(/\n/g, '<br>')
+    .replace(/\r/g, '');
+
+  const span = document.createElement('span');
+  span.innerHTML = html;
+  terminalLines.appendChild(span);
+  if (terminalScreen) terminalScreen.scrollTop = terminalScreen.scrollHeight;
+}
+
+function sendTerminalInput(cmd) {
+  if (!terminalWs || terminalWs.readyState !== WebSocket.OPEN) {
+    showToast('Terminal nicht verbunden!', 'error');
+    return;
+  }
+  terminalWs.send(cmd);
+}
+
+function sendTerminalResize() {
+  if (!terminalWs || terminalWs.readyState !== WebSocket.OPEN || !terminalScreen) return;
+  const cols = Math.max(80, Math.floor(terminalScreen.clientWidth / 9));
+  const rows = Math.max(24, Math.floor(terminalScreen.clientHeight / 18));
+  terminalWs.send(JSON.stringify({ type: 'resize', cols: cols, rows: rows }));
+}
+
+if (terminalInput) {
+  terminalInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const val = terminalInput.value;
+      if (val.trim()) {
+        cmdHistory.push(val);
+        cmdHistoryIdx = cmdHistory.length;
+      }
+      sendTerminalInput(val + '\n');
+      terminalInput.value = '';
+    } else if (e.key === 'ArrowUp') {
+      if (cmdHistoryIdx > 0) {
+        cmdHistoryIdx--;
+        terminalInput.value = cmdHistory[cmdHistoryIdx];
+      }
+      e.preventDefault();
+    } else if (e.key === 'ArrowDown') {
+      if (cmdHistoryIdx < cmdHistory.length - 1) {
+        cmdHistoryIdx++;
+        terminalInput.value = cmdHistory[cmdHistoryIdx];
+      } else {
+        cmdHistoryIdx = cmdHistory.length;
+        terminalInput.value = '';
+      }
+      e.preventDefault();
+    } else if (e.ctrlKey && e.key.toLowerCase() === 'c') {
+      sendTerminalInput('\x03');
+      e.preventDefault();
+    } else if (e.ctrlKey && e.key.toLowerCase() === 'l') {
+      if (terminalLines) terminalLines.innerHTML = '';
+      e.preventDefault();
+    }
+  });
+}
+
+// Quick CMD Buttons
+document.querySelectorAll('.btn-quick-cmd').forEach(btn => {
+  btn.onclick = () => {
+    const cmd = btn.getAttribute('data-cmd');
+    if (cmd) sendTerminalInput(cmd);
+    if (terminalInput) terminalInput.focus();
+  };
+});
+
+const btnCloseTerminal = document.getElementById('btnCloseTerminal');
+if (btnCloseTerminal) {
+  btnCloseTerminal.onclick = () => {
+    if (terminalWs) {
+      terminalWs.close();
+      terminalWs = null;
+    }
+    terminalModal.classList.remove('active');
+  };
+}
+
+const btnTerminalClear = document.getElementById('btnTerminalClear');
+if (btnTerminalClear) {
+  btnTerminalClear.onclick = () => {
+    if (terminalLines) terminalLines.innerHTML = '';
+  };
+}
+
+const btnTerminalReconnect = document.getElementById('btnTerminalReconnect');
+if (btnTerminalReconnect) {
+  btnTerminalReconnect.onclick = () => connectTerminalWs();
+}
+
+if (terminalShellSelect) {
+  terminalShellSelect.onchange = () => connectTerminalWs();
+}
+
+// ==========================================
+// Docker Compose Stacks Inspector (v1.3)
+// ==========================================
+const stacksModal = document.getElementById('stacksModal');
+const stacksList = document.getElementById('stacksList');
+const stacksCountBadge = document.getElementById('stacksCountBadge');
+const btnStacks = document.getElementById('btnStacks');
+const btnCloseStacks = document.getElementById('btnCloseStacks');
+const btnRefreshStacks = document.getElementById('btnRefreshStacks');
+
+async function loadStacks() {
+  if (!stacksList) return;
+  stacksList.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><p>Lade Compose Stacks...</p></div>';
+
+  try {
+    const res = await fetch('/api/v1/stacks');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const stacks = await res.json();
+
+    const count = Object.keys(stacks || {}).length;
+    if (stacksCountBadge) stacksCountBadge.textContent = count + ' Stacks';
+
+    if (!stacks || count === 0) {
+      stacksList.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><p style="color:var(--text-muted);">Keine Docker Compose Stacks gefunden (Label com.docker.compose.project).</p></div>';
+      return;
+    }
+
+    let html = '';
+    for (const [stackName, stackContainers] of Object.entries(stacks)) {
+      const runningCount = stackContainers.filter(c => c.state === 'running').length;
+      const allRunning = runningCount === stackContainers.length;
+      const statusClass = allRunning ? 'state-running' : runningCount > 0 ? 'state-paused' : 'state-stopped';
+      const statusText = runningCount + '/' + stackContainers.length + ' running';
+
+      const servicesHtml = stackContainers.map(c => `
+        <div class="stack-service-row">
+          <div style="display:flex; align-items:center; gap:0.4rem;">
+            <span class="pulse-dot" style="background:${c.state === 'running' ? 'var(--success)' : 'var(--danger)'}; width:6px; height:6px;"></span>
+            <strong style="color:#fff;">${c.name}</strong>
+            <span style="color:var(--text-muted); font-size:0.75rem;">(${c.image})</span>
+          </div>
+          <span class="state-pill state-${c.state}" style="font-size:0.68rem; padding:0.15rem 0.4rem;">${c.state}</span>
+        </div>
+      `).join('');
+
+      html += `
+        <div class="stack-card">
+          <div class="stack-head">
+            <div class="stack-name">
+              <span>🗂️</span> ${stackName}
+            </div>
+            <span class="state-pill ${statusClass}">${statusText}</span>
+          </div>
+          <div class="stack-services-list">
+            ${servicesHtml}
+          </div>
+          <div class="stack-actions">
+            <button class="btn btn-sm" onclick="triggerStackAction('${stackName}', 'restart')" title="Alle Services im Stack neu starten">
+              🔄 Restart Stack
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="triggerStackAction('${stackName}', 'stop')" title="Alle Services im Stack stoppen">
+              ⏹️ Stop Stack
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    stacksList.innerHTML = html;
+  } catch (err) {
+    stacksList.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><p style="color:#f87171;">Fehler beim Laden der Stacks: ' + err.message + '</p></div>';
+  }
+}
+
+window.triggerStackAction = function(stackName, action) {
+  showConfirm(
+    'Stack: ' + stackName,
+    'Möchtest du wirklich alle Services des Stacks "' + stackName + '" ' + (action === 'restart' ? 'neu starten' : 'stoppen') + '?',
+    async () => {
+      try {
+        const res = await fetch('/api/v1/stacks/' + encodeURIComponent(stackName) + '/' + action, { method: 'POST' });
+        if (res.ok) {
+          showToast('✓ Stack ' + stackName + ' ' + (action === 'restart' ? 'neu gestartet' : 'gestoppt') + '!', 'success');
+          loadStacks();
+          fetchData();
+        } else {
+          showToast('Fehler bei Stack-Aktion: HTTP ' + res.status, 'error');
+        }
+      } catch (e) {
+        showToast('Netzwerkfehler: ' + e, 'error');
+      }
+    }
+  );
+};
+
+if (btnStacks) {
+  btnStacks.onclick = () => {
+    stacksModal.classList.add('active');
+    loadStacks();
+  };
+}
+if (btnCloseStacks) {
+  btnCloseStacks.onclick = () => stacksModal.classList.remove('active');
+}
+if (btnRefreshStacks) {
+  btnRefreshStacks.onclick = () => loadStacks();
+}
+
 // Start
 fetchData();
 initSSE();
+initTelemetryCanvas();
 

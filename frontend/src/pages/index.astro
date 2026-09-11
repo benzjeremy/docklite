@@ -1,5 +1,6 @@
 ---
-// Docklite v1.1 - Ultra-lightweight Docker Resource Monitor & Dashboard
+import '../styles/tokens.css';
+// Docklite v1.3 - Cybernetic-Dark Docker Resource Monitor & Dashboard
 // Designed for high performance, zero memory bloat, and sleek modern aesthetics.
 ---
 
@@ -8,8 +9,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Docklite · Lightweight Docker Monitor</title>
-  <meta name="description" content="Ultra-lightweight Portainer alternative in Go and Astro. Real-time Docker resource monitoring directly from docker.sock." />
+  <title>Docklite · Cybernetic Docker Monitor · v1.3</title>
+  <meta name="description" content="Ultra-lightweight Portainer alternative in Go and Astro. Real-time Docker resource monitoring, PTY Exec Terminal, and Compose Stacks directly from docker.sock." />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f2fe' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='13 2 3 14 12 14 11 22 21 10 12 10 13 2'></polygon></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -970,6 +971,225 @@
     .quick-pull-preset:hover {
       color: #fff;
     }
+
+    /* Cybernetic-Dark Live Telemetrie Canvas (60 FPS Dual-Axis Wave) */
+    .telemetry-section {
+      margin-bottom: 1.5rem;
+    }
+    .telemetry-card {
+      background: var(--bg-card, #101623);
+      border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.07));
+      border-radius: 14px;
+      padding: 1rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      transition: border-color 0.2s ease;
+    }
+    .telemetry-card:hover {
+      border-color: var(--border-cyan, rgba(56, 189, 248, 0.35));
+    }
+    .telemetry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .telemetry-title {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .telemetry-legend {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .legend-dot.cyan {
+      background: var(--accent-cyan, #38bdf8);
+      box-shadow: 0 0 8px var(--accent-cyan, #38bdf8);
+    }
+    .legend-dot.emerald {
+      background: var(--accent-emerald, #10b981);
+      box-shadow: 0 0 8px var(--accent-emerald, #10b981);
+    }
+    .telemetry-canvas-wrap {
+      width: 100%;
+      height: 90px;
+      position: relative;
+    }
+    #telemetryCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* In-Browser Exec Terminal (Cybernetic-Dark) */
+    .terminal-quick-bar {
+      background: #080c14;
+      padding: 0.45rem 1.5rem;
+      border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.07));
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+    }
+    .btn-quick-cmd {
+      background: #111827;
+      border: 1px solid #1f2937;
+      color: #38bdf8;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-quick-cmd:hover {
+      background: #1e293b;
+      border-color: #38bdf8;
+      color: #fff;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+    }
+    .cyber-terminal-screen {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      overflow-y: auto;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      line-height: 1.5;
+      background: var(--bg-terminal, #05070a);
+      outline: none;
+      display: flex;
+      flex-direction: column;
+    }
+    .terminal-lines {
+      flex: 1;
+      word-break: break-all;
+      white-space: pre-wrap;
+    }
+    .terminal-line {
+      min-height: 1.3em;
+    }
+    .terminal-input-row {
+      display: flex;
+      align-items: center;
+      margin-top: 0.4rem;
+      position: relative;
+    }
+    .terminal-prompt {
+      color: var(--accent-cyan, #38bdf8);
+      font-weight: 700;
+      user-select: none;
+      margin-right: 0.4rem;
+    }
+    .terminal-real-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      caret-color: var(--accent-cyan, #38bdf8);
+    }
+    .terminal-glow-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 15px;
+      background: var(--accent-cyan, #38bdf8);
+      box-shadow: 0 0 10px var(--accent-cyan, #38bdf8);
+      animation: cursorBlink 1s infinite steps(2);
+      vertical-align: middle;
+      margin-left: 2px;
+    }
+    @keyframes cursorBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Stacks Grid & Cards */
+    .stacks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+    .stack-card {
+      background: var(--bg-card, #101623);
+      border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.07));
+      border-radius: 12px;
+      padding: 1.2rem;
+      transition: all 0.2s var(--spring-bounce, cubic-bezier(0.16, 1, 0.3, 1));
+    }
+    .stack-card:hover {
+      border-color: var(--border-cyan, rgba(56, 189, 248, 0.35));
+      transform: translateY(-2px);
+    }
+    .stack-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.07));
+    }
+    .stack-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .stack-services-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .stack-service-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0.6rem;
+      background: rgba(0,0,0,0.25);
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+    .stack-actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+    .btn-terminal {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+    }
+    .btn-terminal:hover {
+      background: rgba(56, 189, 248, 0.25);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    }
   </style>
 </head>
 <body>
@@ -1003,6 +1223,11 @@
         📥 Pull Image
       </button>
 
+      <button class="btn btn-sm" id="btnStacks" title="Docker Compose Stacks (v1.3)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        Stacks
+      </button>
+
       <button class="btn btn-sm" id="btnImages" title="Lokale Docker Images">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
         Images
@@ -1026,6 +1251,25 @@
   </header>
 
   <main>
+    <!-- Cybernetic Live Telemetry Canvas (60 FPS Dual-Axis Wave) -->
+    <section class="telemetry-section">
+      <div class="telemetry-card">
+        <div class="telemetry-header">
+          <div class="telemetry-title">
+            <span class="pulse-dot" style="background:var(--accent-cyan, #38bdf8); box-shadow:0 0 10px var(--accent-cyan, #38bdf8);"></span>
+            <span>Echtzeit-Telemetrie (60 FPS Dual-Axis Wave)</span>
+          </div>
+          <div class="telemetry-legend">
+            <span class="legend-item"><span class="legend-dot cyan"></span> CPU Gesamt: <strong id="telemetryCpuVal" style="color:var(--accent-cyan, #38bdf8); margin-left:2px;">0.0%</strong></span>
+            <span class="legend-item"><span class="legend-dot emerald"></span> RAM Gesamt: <strong id="telemetryMemVal" style="color:var(--accent-emerald, #10b981); margin-left:2px;">0 MB</strong></span>
+          </div>
+        </div>
+        <div class="telemetry-canvas-wrap">
+          <canvas id="telemetryCanvas" height="85"></canvas>
+        </div>
+      </div>
+    </section>
+
     <!-- Top System Metrics Cards -->
     <section class="stats-overview">
       <div class="stat-card">
@@ -1374,6 +1618,71 @@
           <div style="background:#03060a; padding:0.75rem; border-radius:6px; border:1px solid #1e293b;">
             <strong style="color:var(--accent);">GET /api/v1/live</strong>
             <div style="color:var(--text-muted); margin-top:0.25rem;">Server-Sent Events (SSE) Live Stream aller Container & Stats alle 2s</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive WebSocket Exec Terminal Modal (v1.3 Cybernetic Dark) -->
+  <div class="modal-overlay" id="terminalModal">
+    <div class="modal-window" style="max-width: 1080px; height: 85vh; display:flex; flex-direction:column;">
+      <div class="modal-header">
+        <div class="modal-title" style="display:flex; align-items:center; gap:0.6rem;">
+          <span>💻 Exec Terminal:</span>
+          <span id="terminalContainerName" style="color:var(--accent-cyan, #38bdf8); font-family:var(--font-mono); font-weight:700;">-</span>
+          <span class="state-pill state-running" id="terminalStatusBadge">Bereit</span>
+        </div>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <select id="terminalShellSelect" class="btn btn-sm" style="background:#0a0e17; border:1px solid rgba(56,189,248,0.3); color:#38bdf8; padding:0.25rem 0.6rem;">
+            <option value="/bin/sh" selected>/bin/sh</option>
+            <option value="/bin/bash">/bin/bash</option>
+            <option value="sh">sh</option>
+          </select>
+          <button class="btn btn-sm" id="btnTerminalClear" title="Terminal leeren (Ctrl+L)">Clear</button>
+          <button class="btn btn-sm" id="btnTerminalReconnect" title="Neu verbinden">Neu verbinden</button>
+          <button class="btn btn-sm btn-danger" id="btnCloseTerminal">✕ Schließen</button>
+        </div>
+      </div>
+      <div class="terminal-quick-bar">
+        <span style="font-size:0.75rem; color:var(--text-muted); margin-right:4px;">Quick CMDs:</span>
+        <button class="btn-quick-cmd" data-cmd="ls -la\n">ls -la</button>
+        <button class="btn-quick-cmd" data-cmd="ps aux\n">ps aux</button>
+        <button class="btn-quick-cmd" data-cmd="top -b -n 1\n">top</button>
+        <button class="btn-quick-cmd" data-cmd="env\n">env</button>
+        <button class="btn-quick-cmd" data-cmd="cat /etc/os-release\n">os-release</button>
+        <button class="btn-quick-cmd" data-cmd="df -h\n">df -h</button>
+      </div>
+      <div class="modal-body terminal-body" style="padding:0; flex:1; display:flex; flex-direction:column; background:var(--bg-terminal, #05070a); overflow:hidden;">
+        <div id="terminalScreen" class="cyber-terminal-screen" tabindex="0">
+          <div id="terminalLines" class="terminal-lines"></div>
+          <div class="terminal-input-row">
+            <span class="terminal-prompt" id="terminalPrompt"># </span>
+            <input type="text" id="terminalInput" class="terminal-real-input" autocomplete="off" spellcheck="false" placeholder="Befehl eingeben..." />
+            <span class="terminal-glow-cursor"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Docker Compose Stacks Inspector Modal (v1.3) -->
+  <div class="modal-overlay" id="stacksModal">
+    <div class="modal-window" style="max-width: 1040px; max-height: 85vh; display:flex; flex-direction:column;">
+      <div class="modal-header">
+        <div class="modal-title" style="display:flex; align-items:center; gap:0.6rem;">
+          <span>🗂️ Docker Compose Stacks</span>
+          <span class="id-pill" id="stacksCountBadge">0 Stacks</span>
+        </div>
+        <div style="display:flex; gap:0.5rem;">
+          <button class="btn btn-sm btn-primary" id="btnRefreshStacks">Aktualisieren</button>
+          <button class="btn btn-sm btn-danger" id="btnCloseStacks">✕ Schließen</button>
+        </div>
+      </div>
+      <div class="modal-body" style="flex:1; overflow-y:auto; padding:1.25rem;">
+        <div id="stacksList" class="stacks-grid">
+          <div class="empty-state" style="grid-column: 1/-1;">
+            <p>Lade Docker Compose Stacks...</p>
           </div>
         </div>
       </div>
