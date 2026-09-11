@@ -6,11 +6,11 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self';" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <title>docklite · Schlanke Portainer-Alternative in Go &amp; Astro · v1.2.1</title>
-  <meta name="description" content="Offizielle Website für docklite: Die radikal schlanke Portainer-Alternative in Go und Astro. Standalone Single-Binary, direkte docker.sock Kommunikation, ~12 MB RAM und Awesome-Go gelistet.">
+  <title>docklite · Schlanke Portainer-Alternative in Go &amp; Astro · v1.3</title>
+  <meta name="description" content="Offizielle Website für docklite: Die radikal schlanke Portainer-Alternative in Go und Astro. Standalone Single-Binary, direkte docker.sock Kommunikation, ~12 MB RAM, Exec Terminal, Compose Stacks und Awesome-Go gelistet.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="docklite · Schlanke Portainer-Alternative in Go &amp; Astro">
-  <meta property="og:description" content="Single-Binary Docker Management in Go & Astro. Direkte docker.sock Kommunikation, ~12 MB RAM und Live SSE Metriken.">
+  <meta property="og:description" content="Single-Binary Docker Management in Go & Astro. Direkte docker.sock Kommunikation, ~12 MB RAM, WebSocket Exec Terminal und Live SSE Metriken.">
   <meta property="og:url" content="https://benzjeremy.github.io/docklite/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="docklite · Go Docker Monitor">
@@ -31,7 +31,7 @@
           <img src="favicon.svg" alt="docklite" class="brand-logo" width="36" height="36">
           <div class="brand-info">
             <span class="brand-name">docklite</span>
-            <span class="brand-ver">v1.2.1</span>
+            <span class="brand-ver">v1.3</span>
           </div>
         </a>
       </div>
@@ -39,6 +39,10 @@
       <button class="mobile-toggle" id="mobile-toggle" aria-label="Menü öffnen/schließen" aria-expanded="false">☰</button>
 
       <nav class="main-nav" id="main-nav">
+        <a href="#live-demo">
+          <span class="lang-de">Live-Demo</span>
+          <span class="lang-en" style="display:none;">Live Demo</span>
+        </a>
         <a href="#features">
           <span class="lang-de">Features</span>
           <span class="lang-en" style="display:none;">Features</span>
@@ -84,11 +88,11 @@
       <div class="hero-container">
         
         <div class="hero-badges">
-          <span class="hero-badge release-badge">🚀 Release v1.2.1 [DevOps]</span>
+          <span class="hero-badge release-badge">🚀 Release v1.3 [Major]</span>
           <a href="https://github.com/avelino/awesome-go#devops-tools" target="_blank" rel="noopener noreferrer" class="hero-badge awesome-badge" title="Gelistet in Awesome-Go (#6665 - DevOps Tools)">
             ★ In Awesome-Go gelistet (#6665)
           </a>
-          <span class="hero-badge perf-badge">⚡ ~10–15 MB RAM · Single Binary</span>
+          <span class="hero-badge perf-badge">⚡ ~12 MB RAM · Single Binary</span>
           <a href="https://github.com/benzjeremy/docklite/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="hero-badge license-pill">GNU GPL-3.0</a>
         </div>
 
@@ -98,7 +102,7 @@
             <span class="gradient-text">Portainer-Alternative in Go.</span>
           </h1>
           <p class="hero-subtitle">
-            Schluss mit 250 MB RAM-Verschwendung, trägen Webinterfaces und komplexer Container-im-Container-Schachtelung. <strong>docklite</strong> ist ein kompaktes Single-Binary Dashboard in <strong>Go &amp; Astro</strong>: Direkte <code>docker.sock</code> Unix-Streaming-Kommunikation, Live SSE-Metriken und sofortige Container-Kontrolle.
+            Schluss mit 250 MB RAM-Verschwendung, trägen Webinterfaces und komplexer Container-im-Container-Schachtelung. <strong>docklite</strong> ist ein kompaktes Single-Binary Dashboard in <strong>Go &amp; Astro</strong>: Direkte <code>docker.sock</code> Unix-Streaming-Kommunikation, integriertes WebSocket Exec-Terminal, Compose-Stacks und Live-SSE-Metriken.
           </p>
         </div>
 
@@ -108,25 +112,25 @@
             <span class="gradient-text">Portainer Alternative in Go.</span>
           </h1>
           <p class="hero-subtitle">
-            Say goodbye to 250 MB RAM overhead, sluggish web UIs, and container-inside-container nests. <strong>docklite</strong> is a compact standalone binary built in <strong>Go &amp; Astro</strong>: Direct <code>docker.sock</code> Unix streaming, live SSE metrics, and instant container management.
+            Say goodbye to 250 MB RAM overhead, sluggish web UIs, and container-inside-container nests. <strong>docklite</strong> is a compact standalone binary built in <strong>Go &amp; Astro</strong>: Direct <code>docker.sock</code> Unix streaming, in-browser WebSocket exec terminal, Compose stacks, and live SSE metrics.
           </p>
         </div>
 
         <!-- Download Action CTAs -->
         <div class="hero-cta-group" id="download">
-          <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.2.1" target="_blank" rel="noopener noreferrer" class="btn-primary">
+          <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.3" target="_blank" rel="noopener noreferrer" class="btn-primary">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
             <div>
               <span class="btn-main-text">Download für Linux</span>
-              <span class="btn-sub-text">v1.2.1 x86_64 (.tar.gz)</span>
+              <span class="btn-sub-text">v1.3 x86_64 (.tar.gz)</span>
             </div>
           </a>
 
-          <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.2.1" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+          <a href="https://github.com/benzjeremy/docklite/releases/tag/v1.3" target="_blank" rel="noopener noreferrer" class="btn-secondary">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
             <div>
               <span class="btn-main-text">Download für Windows</span>
-              <span class="btn-sub-text">v1.2.1 x86_64 (.zip)</span>
+              <span class="btn-sub-text">v1.3 x86_64 (.zip)</span>
             </div>
           </a>
         </div>
@@ -141,6 +145,86 @@
           </button>
         </div>
 
+      </div>
+    </section>
+
+    <!-- CYBERNETIC COCKPIT LIVE DEMO (v1.3) -->
+    <section class="demo-cockpit-section" id="live-demo">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-tag">
+            <span class="lang-de">Interaktive Live-Vorschau</span>
+            <span class="lang-en" style="display:none;">Interactive Live Showcase</span>
+          </span>
+          <h2 class="section-title">
+            <span class="lang-de">Cybernetic-Dark Cockpit &amp; Web-Terminal</span>
+            <span class="lang-en" style="display:none;">Cybernetic-Dark Cockpit &amp; Web Terminal</span>
+          </h2>
+          <p class="section-sub">
+            <span class="lang-de">Erlebe die 60 FPS Canvas-Telemetrie und teste das integrierte Exec-Terminal direkt im Browser.</span>
+            <span class="lang-en" style="display:none;">Experience 60 FPS canvas telemetry and test the built-in exec terminal right in your browser.</span>
+          </p>
+        </div>
+
+        <div class="cockpit-grid">
+          <!-- 1. Live Telemetry Wave Canvas Card -->
+          <div class="cockpit-card">
+            <div class="cockpit-head">
+              <div class="cockpit-title">
+                <span class="pulse-dot" style="background:var(--accent-primary); box-shadow:0 0 10px var(--accent-primary);"></span>
+                <span>Echtzeit-Telemetrie (60 FPS Dual-Axis Wave)</span>
+              </div>
+              <span class="id-pill" style="font-size:0.72rem; color:var(--accent-green); border-color:rgba(16,185,129,0.3);">SSE Aktiv</span>
+            </div>
+            <div class="telemetry-wave-wrap">
+              <div class="telemetry-stats-row">
+                <span style="color:var(--text-secondary);"><span style="color:var(--accent-primary);">●</span> Host CPU: <strong id="demoCpuVal" style="color:var(--accent-primary);">14.2%</strong></span>
+                <span style="color:var(--text-secondary);"><span style="color:var(--accent-green);">●</span> RAM Auslastung: <strong id="demoMemVal" style="color:var(--accent-green);">11.8 MB / 16 GB</strong></span>
+                <span style="color:var(--text-muted); font-size:0.75rem;">(Docklite Daemon)</span>
+              </div>
+              <div class="telemetry-canvas-container">
+                <canvas id="demoWaveCanvas" height="120"></canvas>
+              </div>
+              <p style="font-size:0.78rem; color:var(--text-muted); margin:0;">
+                Sub-Millisekunden-Streaming direkt via <code>/var/run/docker.sock</code>. Verbraucht im Leerlauf unter 0.1% CPU.
+              </p>
+            </div>
+          </div>
+
+          <!-- 2. In-Browser Exec Terminal Simulator Card -->
+          <div class="cockpit-card">
+            <div class="cockpit-head">
+              <div class="cockpit-title">
+                <span>💻 In-Browser Exec Terminal</span>
+                <span class="id-pill" style="font-size:0.72rem; color:var(--accent-primary); border-color:rgba(56,189,248,0.3);">WebSocket PTY</span>
+              </div>
+              <div class="demo-terminal-controls">
+                <span class="terminal-dot dot-red"></span>
+                <span class="terminal-dot dot-yellow"></span>
+                <span class="terminal-dot dot-green"></span>
+              </div>
+            </div>
+            <div class="demo-terminal">
+              <div class="demo-terminal-quick-btns">
+                <button type="button" class="demo-qbtn" onclick="runDemoCmd('docker ps')">docker ps</button>
+                <button type="button" class="demo-qbtn" onclick="runDemoCmd('stats')">stats</button>
+                <button type="button" class="demo-qbtn" onclick="runDemoCmd('stacks')">stacks</button>
+                <button type="button" class="demo-qbtn" onclick="runDemoCmd('cat /etc/os-release')">os-release</button>
+                <button type="button" class="demo-qbtn" onclick="runDemoCmd('help')">help</button>
+                <button type="button" class="demo-qbtn" onclick="clearDemoTerminal()">clear</button>
+              </div>
+              <div class="demo-terminal-body" id="demoTerminalBody">
+                <div class="demo-terminal-lines" id="demoTerminalLines">⚡ docklite v1.3 WebSocket PTY Session verbunden (sh)
+Tippe einen Befehl oder klicke auf die Quick-Buttons oben:</div>
+                <div class="demo-terminal-input-bar">
+                  <span class="demo-terminal-prompt">root@container:/#</span>
+                  <input type="text" class="demo-terminal-input" id="demoTerminalInput" placeholder="Befehl eingeben (z. B. stats, stacks, help)..." autocomplete="off" spellcheck="false" />
+                  <span class="demo-terminal-cursor"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -194,20 +278,30 @@
             <thead>
               <tr>
                 <th>Kriterium</th>
-                <th class="col-docklite">⚡ docklite v1.2.1</th>
+                <th class="col-docklite">⚡ docklite v1.3</th>
                 <th class="col-portainer">🐢 Portainer CE</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td><strong>RAM-Verbrauch</strong></td>
-                <td class="col-docklite">ca. 10–15 MB RAM</td>
+                <td class="col-docklite">ca. 10–12 MB RAM</td>
                 <td class="col-portainer">ca. 200–350 MB RAM</td>
               </tr>
               <tr>
                 <td><strong>Binary / Image Größe</strong></td>
-                <td class="col-docklite">ca. 16 MB Standalone Binary</td>
+                <td class="col-docklite">ca. 12 MB Standalone Binary</td>
                 <td class="col-portainer">ca. 280 MB Docker Image</td>
+              </tr>
+              <tr>
+                <td><strong>In-Browser Exec Terminal</strong></td>
+                <td class="col-docklite">✓ Integriertes WebSocket PTY Terminal</td>
+                <td class="col-portainer">Träges Iframe / Externes Plugin</td>
+              </tr>
+              <tr>
+                <td><strong>Docker Compose Stacks</strong></td>
+                <td class="col-docklite">✓ Automatische Gruppierung &amp; 1-Klick Stack Control</td>
+                <td class="col-portainer">Schwergewichtige Stack-Verwaltung</td>
               </tr>
               <tr>
                 <td><strong>Installation</strong></td>
@@ -266,26 +360,40 @@
 
           <!-- 3 -->
           <article class="feature-card">
+            <div class="f-card-icon">💻</div>
+            <h3>In-Browser Exec Terminal</h3>
+            <p>Vollwertige interaktive Shells (bash, sh) direkt im Container über echte RFC-6455 WebSockets und PTY-Streams mit Glow-Cursor und Farb-Highlights.</p>
+          </article>
+
+          <!-- 4 -->
+          <article class="feature-card">
+            <div class="f-card-icon">🗂️</div>
+            <h3>Compose Stacks Inspector</h3>
+            <p>Multi-Container-Stacks werden automatisch anhand von Docker-Labels gruppiert. 1-Klick Stack Restart und Stop für ganze Microservice-Verbünde.</p>
+          </article>
+
+          <!-- 5 -->
+          <article class="feature-card">
             <div class="f-card-icon">🎮</div>
             <h3>Volle Lifecycle-Kontrolle</h3>
             <p>Starte, stoppe, pausiere oder starte Container neu mit einem Klick. Automatischer Prune-Modus entfernt verwaiste Container und Images.</p>
           </article>
 
-          <!-- 4 -->
+          <!-- 6 -->
           <article class="feature-card">
             <div class="f-card-icon">📜</div>
             <h3>Live Log-Viewer</h3>
             <p>Echtzeit-Logstreaming mit Farbhervorhebung, Filterung und Autoscroll direkt im Webbrowser ohne Terminal-Blockaden.</p>
           </article>
 
-          <!-- 5 -->
+          <!-- 7 -->
           <article class="feature-card">
             <div class="f-card-icon">📦</div>
             <h3>Single Standalone Binary</h3>
-            <p>Backend in Go und Frontend in Astro sind in einer einzigen, statisch gelinkten Binary gebündelt. Keine externen Node.js Abhängigkeiten.</p>
+            <p>Backend in Go und Frontend in Astro sind in einer einzigen, statisch gelinkten 12 MB Binary gebündelt. Keine externen Node.js Abhängigkeiten.</p>
           </article>
 
-          <!-- 6 -->
+          <!-- 8 -->
           <article class="feature-card">
             <div class="f-card-icon">🏆</div>
             <h3>Awesome-Go Auszeichnung</h3>
@@ -489,6 +597,199 @@ chmod +x docklite
       const saved = localStorage.getItem('site_lang');
       if (saved === 'en' || saved === 'de') setLang(saved);
     } catch (e) {}
+
+    // =========================================================================
+    // Cybernetic-Dark 60 FPS Telemetry Wave Canvas Demo
+    // =========================================================================
+    const demoCanvas = document.getElementById('demoWaveCanvas');
+    if (demoCanvas) {
+      const ctx = demoCanvas.getContext('2d');
+      let wavePhase = 0;
+      const points = 40;
+      const history = [];
+
+      for (let i = 0; i < points; i++) {
+        history.push({
+          cpu: 10 + Math.random() * 8,
+          mem: 11.5 + Math.random() * 1.5
+        });
+      }
+
+      function resizeDemoCanvas() {
+        const rect = demoCanvas.parentElement.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        demoCanvas.width = rect.width * dpr;
+        demoCanvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+      }
+      resizeDemoCanvas();
+      window.addEventListener('resize', resizeDemoCanvas);
+
+      let tick = 0;
+      function animateWave() {
+        tick++;
+        if (tick % 45 === 0) {
+          const nextCpu = Math.max(8, Math.min(25, history[history.length - 1].cpu + (Math.random() - 0.48) * 4));
+          const nextMem = Math.max(10.5, Math.min(13.5, history[history.length - 1].mem + (Math.random() - 0.5) * 0.4));
+          history.push({ cpu: nextCpu, mem: nextMem });
+          history.shift();
+
+          const cpuVal = document.getElementById('demoCpuVal');
+          const memVal = document.getElementById('demoMemVal');
+          if (cpuVal) cpuVal.textContent = nextCpu.toFixed(1) + '%';
+          if (memVal) memVal.textContent = nextMem.toFixed(1) + ' MB / 16 GB';
+        }
+
+        const width = demoCanvas.parentElement.clientWidth;
+        const height = demoCanvas.parentElement.clientHeight;
+        ctx.clearRect(0, 0, width, height);
+        wavePhase += 0.025;
+
+        // Grid lines
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+        ctx.lineWidth = 1;
+        for (let y = height / 3; y < height; y += height / 3) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+
+        const stepX = width / (points - 1);
+
+        // 1. RAM Wave (Emerald)
+        ctx.beginPath();
+        ctx.moveTo(0, height);
+        for (let i = 0; i < points; i++) {
+          const x = i * stepX;
+          const ratio = (history[i].mem - 8) / 10;
+          const y = height - (ratio * (height - 30) + 10) + Math.sin(wavePhase + i * 0.22) * 4;
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(width, height);
+        ctx.closePath();
+
+        const gradEmerald = ctx.createLinearGradient(0, 0, 0, height);
+        gradEmerald.addColorStop(0, 'rgba(16, 185, 129, 0.25)');
+        gradEmerald.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
+        ctx.fillStyle = gradEmerald;
+        ctx.fill();
+
+        ctx.beginPath();
+        for (let i = 0; i < points; i++) {
+          const x = i * stepX;
+          const ratio = (history[i].mem - 8) / 10;
+          const y = height - (ratio * (height - 30) + 10) + Math.sin(wavePhase + i * 0.22) * 4;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // 2. CPU Wave (Cyan)
+        ctx.beginPath();
+        ctx.moveTo(0, height);
+        for (let i = 0; i < points; i++) {
+          const x = i * stepX;
+          const ratio = history[i].cpu / 35;
+          const y = height - (ratio * (height - 24) + 10) + Math.cos(wavePhase * 1.1 + i * 0.28) * 5;
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(width, height);
+        ctx.closePath();
+
+        const gradCyan = ctx.createLinearGradient(0, 0, 0, height);
+        gradCyan.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
+        gradCyan.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
+        ctx.fillStyle = gradCyan;
+        ctx.fill();
+
+        ctx.beginPath();
+        for (let i = 0; i < points; i++) {
+          const x = i * stepX;
+          const ratio = history[i].cpu / 35;
+          const y = height - (ratio * (height - 24) + 10) + Math.cos(wavePhase * 1.1 + i * 0.28) * 5;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        requestAnimationFrame(animateWave);
+      }
+      requestAnimationFrame(animateWave);
+    }
+
+    // =========================================================================
+    // In-Browser Exec Terminal Showcase Simulator
+    // =========================================================================
+    const demoTermLines = document.getElementById('demoTerminalLines');
+    const demoTermInput = document.getElementById('demoTerminalInput');
+    const demoTermBody = document.getElementById('demoTerminalBody');
+
+    const demoResponses = {
+      'docker ps': `CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS                    NAMES
+a4f91e8b2c11   nginx:alpine   "/docker-entrypoint.…"   2 hours ago     Up 2 hours     0.0.0.0:80->80/tcp       web-gateway
+7c2d0f3a4e99   redis:alpine   "docker-entrypoint.s…"   5 hours ago     Up 5 hours     0.0.0.0:6379->6379/tcp   cache-redis
+b819a5c3e012   postgres:16    "docker-entrypoint.s…"   1 day ago       Up 24 hours    0.0.0.0:5432->5432/tcp   prod-postgres`,
+      'stats': `NAME             CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O
+web-gateway      0.45%     8.4 MB / 16.0 GB      0.05%     1.2 MB / 840 KB   0 B / 4.1 kB
+cache-redis      0.12%     4.2 MB / 16.0 GB      0.03%     450 KB / 210 KB   0 B / 0 B
+prod-postgres    1.18%     42.1 MB / 16.0 GB     0.26%     3.4 MB / 8.2 MB   12 MB / 45 MB`,
+      'stacks': `🗂️  COMPOSE STACKS DETECTED (2 Projects):
+[Stack: production-core]  (3 Services)  Status: 🟢 ALL RUNNING
+  ├── web-gateway    (nginx:alpine)     Up 2 hours   :80->80
+  ├── cache-redis    (redis:alpine)     Up 5 hours   :6379->6379
+  └── prod-postgres  (postgres:16)      Up 24 hours  :5432->5432
+[Stack: local-monitoring] (1 Service)   Status: 🟢 RUNNING
+  └── docklite       (docklite:v1.3)    Up 4 hours   :8080->8080 (~11.8 MB RAM)`,
+      'cat /etc/os-release': `PRETTY_NAME="Alpine Linux v3.20"
+NAME="Alpine Linux"
+ID=alpine
+VERSION_ID=3.20.2
+HOME_URL="https://alpinelinux.org/"
+BUG_REPORT_URL="https://gitlab.alpinelinux.org/alpine/aports/-/issues"`,
+      'help': `Verfügbare Demo-Befehle:
+  • docker ps            - Laufende Container und Port-Mappings anzeigen
+  • stats                - Echtzeit CPU- und RAM-Metriken abrufen
+  • stacks               - Docker Compose Multi-Container Projekte inspizieren
+  • cat /etc/os-release  - Container Host-Informationen anzeigen
+  • clear                - Terminal leeren`,
+      'clear': '__CLEAR__'
+    };
+
+    function runDemoCmd(cmd) {
+      if (!demoTermLines) return;
+      cmd = cmd.trim();
+      if (!cmd) return;
+
+      if (cmd === 'clear') {
+        demoTermLines.textContent = '';
+        if (demoTermInput) demoTermInput.value = '';
+        return;
+      }
+
+      const inputEcho = '\nroot@container:/# ' + cmd + '\n';
+      const output = demoResponses[cmd] || `sh: ${cmd}: command not found. Tippe 'help' für verfügbare Demo-Befehle.`;
+      demoTermLines.textContent += inputEcho + output;
+      if (demoTermBody) demoTermBody.scrollTop = demoTermBody.scrollHeight;
+      if (demoTermInput) demoTermInput.value = '';
+    }
+
+    function clearDemoTerminal() {
+      if (demoTermLines) demoTermLines.textContent = '';
+      if (demoTermInput) demoTermInput.value = '';
+    }
+
+    if (demoTermInput) {
+      demoTermInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          runDemoCmd(demoTermInput.value);
+        }
+      });
+    }
   </script>
 </body>
 </html>
