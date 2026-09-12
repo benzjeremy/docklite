@@ -5,9 +5,15 @@
 [![CI](https://github.com/benzjeremy/docklite/actions/workflows/ci.yml/badge.svg)](https://github.com/benzjeremy/docklite/actions)
 [![Coverage](https://codecov.io/gh/benzjeremy/docklite/branch/main/graph/badge.svg)](https://app.codecov.io/gh/benzjeremy/docklite)
 [![Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go#devops-tools)
-[![Release](https://img.shields.io/badge/Release-Latest-emerald)](https://github.com/benzjeremy/docklite/releases/latest)
+[![Release](https://img.shields.io/badge/Release-Latest%20[Pre--Release]-emerald)](https://github.com/benzjeremy/docklite/releases/latest)
+[![Status: Pre-Release](https://img.shields.io/badge/Status-Pre--Release%20%2F%20WIP-orange.svg)](https://github.com/benzjeremy/docklite)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-lightgrey)](#installation)
+
+> [!IMPORTANT]
+> ### 🚧 Pre-Release / Active Development Notice
+> **This software is not yet finished and is under active development.**  
+> All releases and binaries are **Pre-Releases** (Work in Progress), even if originally tagged or announced without a pre-release flag. Features, UI components, and API behaviors are subject to continuous refinement.
 
 > **The radically lightweight, lightning-fast Portainer alternative written in Go & Astro.**  
 > A single native binary for Linux and Windows, direct communication with the Docker socket (`docker.sock`), approx. 10–15 MB RAM usage, and zero framework overhead.
