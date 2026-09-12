@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self';" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>Impressum – Docklite · Jeremy Benz</title>
+  <meta name="description" content="Gesetzliche Anbieterkennzeichnung und rechtliche Angaben gemäß § 5 DDG und § 18 MStV für das Open-Source-Projekt Docklite.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css?v=2.4.1">
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('site_theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="brand-area">
+        <a href="index.html" class="brand-link">
+          <div class="brand-icon">⚡</div>
+          <div class="brand-text">
+            <span class="brand-name">Docklite</span>
+            <span class="brand-badge">Impressum · Legal</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="main-nav">
+        <a href="index.html">
+          <span class="lang-de">Übersicht</span>
+          <span class="lang-en" style="display:none;">Overview</span>
+        </a>
+        <a href="wiki/">
+          <span class="lang-de">Wiki</span>
+          <span class="lang-en" style="display:none;">Wiki</span>
+        </a>
+        <a href="datenschutz.html">
+          <span class="lang-de">Datenschutz</span>
+          <span class="lang-en" style="display:none;">Privacy</span>
+        </a>
+        <a href="kontakt.html">
+          <span class="lang-de">Kontakt</span>
+          <span class="lang-en" style="display:none;">Contact</span>
+        </a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="lang-switch" role="group" aria-label="Sprachauswahl">
+          <button type="button" class="lang-btn active" id="btn-lang-de" onclick="setLang('de')">DE</button>
+          <button type="button" class="lang-btn" id="btn-lang-en" onclick="setLang('en')">EN</button>
+        </div>
+        <button type="button" class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="Theme wechseln">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding: 3rem 0;">
+    <div class="container" style="max-width: 860px;">
+      
+      <div style="margin-bottom: 2rem;">
+        <span class="hero-badge" style="margin-bottom: 0.75rem;">
+          <span class="lang-de">Rechtliche Pflichtangaben</span>
+          <span class="lang-en" style="display:none;">Statutory Disclosures</span>
+        </span>
+        <h1 style="font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem;">
+          <span class="lang-de">Impressum</span>
+          <span class="lang-en" style="display:none;">Legal Notice</span>
+        </h1>
+        <p style="color: var(--text-secondary); font-size: 1rem;">
+          <span class="lang-de">Anbieterkennzeichnung gemäß § 5 Digitale-Dienste-Gesetz (DDG) und § 18 Medienstaatsvertrag (MStV).</span>
+          <span class="lang-en" style="display:none;">Provider identification pursuant to § 5 DDG and § 18 MStV (German State Media Treaty).</span>
+        </p>
+      </div>
+
+      <div class="showcase-card" style="margin-bottom: 1.5rem; display: block; padding: 1.75rem;">
+        <h2 style="font-size: 1.25rem; color: var(--accent-primary); margin-bottom: 0.75rem;">
+          <span class="lang-de">1. Angaben gemäß § 5 DDG (Diensteanbieter)</span>
+          <span class="lang-en" style="display:none;">1. Provider Information pursuant to § 5 DDG</span>
+        </h2>
+        <div style="color: var(--text-secondary); line-height: 1.8; font-size: 0.95rem;">
+          <p><strong>Jeremy Benz (@benzjeremy)</strong></p>
+          <p><span class="lang-de">Software-Entwickler &amp; Open-Source Maintainer</span><span class="lang-en" style="display:none;">Software Developer &amp; Open-Source Maintainer</span></p>
+          <p><span class="lang-de">Standort: Nordrhein-Westfalen (NRW), Deutschland</span><span class="lang-en" style="display:none;">Location: North Rhine-Westphalia (NRW), Germany</span></p>
+          <p>E-Mail: <a href="mailto:benzjeremy@pm.me" style="color: var(--accent-primary);">benzjeremy@pm.me</a></p>
+          <p>Web: <a href="https://benzjeremy.github.io" style="color: var(--accent-primary);">https://benzjeremy.github.io</a></p>
+        </div>
+      </div>
+
+      <div class="showcase-card" style="margin-bottom: 1.5rem; display: block; padding: 1.75rem;">
+        <h2 style="font-size: 1.25rem; color: var(--accent-primary); margin-bottom: 0.75rem;">
+          <span class="lang-de">2. Redaktionell verantwortlich (§ 18 Abs. 2 MStV)</span>
+          <span class="lang-en" style="display:none;">2. Editorial Responsibility (§ 18 (2) MStV)</span>
+        </h2>
+        <div style="color: var(--text-secondary); line-height: 1.8; font-size: 0.95rem;">
+          <p>Jeremy Benz</p>
+          <p><span class="lang-de">Nordrhein-Westfalen (NRW), Deutschland</span><span class="lang-en" style="display:none;">North Rhine-Westphalia (NRW), Germany</span></p>
+          <p>E-Mail: <a href="mailto:benzjeremy@pm.me" style="color: var(--accent-primary);">benzjeremy@pm.me</a></p>
+        </div>
+      </div>
+
+      <div class="showcase-card" style="margin-bottom: 1.5rem; display: block; padding: 1.75rem;">
+        <h2 style="font-size: 1.25rem; color: var(--accent-primary); margin-bottom: 0.75rem;">
+          <span class="lang-de">3. Rein private Open-Source-Software</span>
+          <span class="lang-en" style="display:none;">3. Purely Private Open-Source Software</span>
+        </h2>
+        <div style="color: var(--text-secondary); line-height: 1.8; font-size: 0.95rem;">
+          <p class="lang-de">Docklite ist ein rein privates, nicht-kommerzielles Open-Source-Projekt zur schlanken Docker-Verwaltung. Es verfolgt keinerlei Gewinnerzielungsabsicht, enthält keine Werbung, kein Tracking und keine Paywalls.</p>
+          <p class="lang-en" style="display:none;">Docklite is a purely private, non-commercial open-source project providing lightweight Docker management. It pursues zero commercial profit, features zero advertising, zero tracking, and no paywalls.</p>
+        </div>
+      </div>
+
+      <div class="showcase-card" style="margin-bottom: 1.5rem; display: block; padding: 1.75rem;">
+        <h2 style="font-size: 1.25rem; color: var(--accent-primary); margin-bottom: 0.75rem;">
+          <span class="lang-de">4. Lizenz &amp; Quellcode (GNU GPL-3.0)</span>
+          <span class="lang-en" style="display:none;">4. License &amp; Source Code (GNU GPL-3.0)</span>
+        </h2>
+        <div style="color: var(--text-secondary); line-height: 1.8; font-size: 0.95rem;">
+          <p class="lang-de">Der gesamte Quellcode von Docklite (Go-Daemon und Web-UI) steht unter der <strong>GNU General Public License v3.0 (GPL-3.0)</strong>.</p>
+          <p class="lang-en" style="display:none;">The entire codebase of Docklite (Go daemon and Web UI) is published under the <strong>GNU General Public License v3.0 (GPL-3.0)</strong>.</p>
+          <p style="margin-top: 0.5rem;">
+            GitHub: <a href="https://github.com/benzjeremy/docklite" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">https://github.com/benzjeremy/docklite</a>
+          </p>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="index.html" class="btn-primary" style="display: inline-block;">
+          <span class="lang-de">← Zurück zur Hauptseite</span>
+          <span class="lang-en" style="display:none;">← Back to Main Page</span>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>Docklite</strong> &bull; © 2026 Jeremy Benz &bull; GNU GPL-3.0
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Docklite</a>
+        <a href="wiki/">Wiki</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="kontakt.html">Kontakt</a>
+        <a href="https://github.com/benzjeremy/docklite" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function setLang(lang) {
+      const isDe = lang === 'de';
+      document.querySelectorAll('.lang-de').forEach(el => el.style.display = isDe ? '' : 'none');
+      document.querySelectorAll('.lang-en').forEach(el => el.style.display = isDe ? 'none' : '');
+      document.getElementById('btn-lang-de').classList.toggle('active', isDe);
+      document.getElementById('btn-lang-en').classList.toggle('active', !isDe);
+      try { localStorage.setItem('site_lang', lang); } catch (e) {}
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('site_theme', next); } catch (e) {}
+      document.getElementById('themeToggle').textContent = next === 'dark' ? '🌙' : '☀️';
+    }
+
+    (function() {
+      const savedLang = localStorage.getItem('site_lang') || 'de';
+      setLang(savedLang);
+      const savedTheme = localStorage.getItem('site_theme') || 'dark';
+      document.getElementById('themeToggle').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+    })();
+  </script>
+</body>
+</html>

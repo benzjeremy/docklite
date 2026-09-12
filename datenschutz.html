@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self';" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>Datenschutzerklärung – Docklite · Jeremy Benz</title>
+  <meta name="description" content="Datenschutzerklärung nach DSGVO und § 25 TDDDG für Docklite: 100% Local-First Architektur, keine Telemetrie, keine Cloud-Relays.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css?v=2.4.1">
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('site_theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="brand-area">
+        <a href="index.html" class="brand-link">
+          <div class="brand-icon">⚡</div>
+          <div class="brand-text">
+            <span class="brand-name">Docklite</span>
+            <span class="brand-badge">Datenschutz · Privacy</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="main-nav">
+        <a href="index.html">
+          <span class="lang-de">Übersicht</span>
+          <span class="lang-en" style="display:none;">Overview</span>
+        </a>
+        <a href="wiki/">
+          <span class="lang-de">Wiki</span>
+          <span class="lang-en" style="display:none;">Wiki</span>
+        </a>
+        <a href="impressum.html">
+          <span class="lang-de">Impressum</span>
+          <span class="lang-en" style="display:none;">Legal Notice</span>
+        </a>
+        <a href="kontakt.html">
+          <span class="lang-de">Kontakt</span>
+          <span class="lang-en" style="display:none;">Contact</span>
+        </a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="lang-switch" role="group" aria-label="Sprachauswahl">
+          <button type="button" class="lang-btn active" id="btn-lang-de" onclick="setLang('de')">DE</button>
+          <button type="button" class="lang-btn" id="btn-lang-en" onclick="setLang('en')">EN</button>
+        </div>
+        <button type="button" class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="Theme wechseln">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding: 3rem 0;">
+    <div class="container" style="max-width: 860px;">
+      
+      <div style="margin-bottom: 2rem;">
+        <span class="hero-badge" style="margin-bottom: 0.75rem;">
+          <span class="lang-de">Datenschutz &amp; Privatsphäre</span>
+          <span class="lang-en" style="display:none;">Data Privacy &amp; Protection</span>
+        </span>
+        <h1 style="font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem;">
+          <span class="lang-de">Datenschutzerklärung</span>
+          <span class="lang-en" style="display:none;">Privacy Policy</span>
+        </h1>
+        <p style="color: var(--text-secondary); font-size: 1rem;">
+          <span class="lang-de">Transparenz nach Art. 13 &amp; 14 DSGVO sowie § 25 TDDDG für die Docklite Website und den Daemon.</span>
+          <span class="lang-en" style="display:none;">Transparency pursuant to Arts. 13 &amp; 14 GDPR and § 25 TDDDG for the Docklite website and daemon.</span>
+        </p>
+      </div>
+
+      <div class="showcase-card" style="margin-bottom: 1.5rem; display: block; padding: 1.75rem;">
+        <h2 style="font-size: 1.25rem; color: var(--accent-primary); margin-bottom: 0.75rem;">
+          <span class="lang-de">1. Verantwortliche Stelle (Art. 4 Nr. 7 DSGVO)</span>
+          <span class="lang-en" style="display:none;">1. Responsible Controller (Art. 4 (7) GDPR)</span>
+        </h2>
+        <div style="color: var(--text-secondary); line-height: 1.8; font-size: 0.95rem;">
+          <p>Jeremy Benz (@benzjeremy)</p>
+          <p><span class="lang-de">Nordrhein-Westfalen (NRW), Deutschland</span><span class="lang-en" style="display:none;">North Rhine-Westphalia (NRW), Germany</span></p>
+          <p>E-Mail: <a href="mailto:benzjeremy@pm.me" style="color: var(--accent-primary);">benzjeremy@pm.me</a></p>
+          <p>Web: <a href="https://benzjeremy.github.io" style="color: var(--accent-primary);">https://benzjeremy.github.io</a></p>
+        </div>
+      </div>
+
+      <div class="showcase-card" style="margin-bottom: 1.5rem; display: block; padding: 1.75rem;">
+        <h2 style="font-size: 1.25rem; color: var(--accent-primary); margin-bottom: 0.75rem;">
+          <span class="lang-de">2. 100% Local-First &amp; Zero Telemetry (Daemon-Architektur)</span>
+          <span class="lang-en" style="display:none;">2. 100% Local-First &amp; Zero Telemetry (Daemon Architecture)</span>
+        </h2>
+        <div style="color: var(--text-secondary); line-height: 1.8; font-size: 0.95rem;">
+          <p class="lang-de">Der Docklite-Daemon kommuniziert ausschließlich lokal über den Unix-Socket <code>/var/run/docker.sock</code> oder die Named Pipe unter Windows. Es gibt keine ausgehenden Verbindungen, keine Telemetrie-Pings, kein Crash-Reporting an Dritte und keine Cloud-Abhängigkeiten. Ihre Container-Namen, Logs und Metriken verbleiben ausnahmslos auf Ihrem Host.</p>
+          <p class="lang-en" style="display:none;">The Docklite daemon communicates solely locally via Unix domain socket <code>/var/run/docker.sock</code> or Windows named pipes. There are zero outbound connections, zero telemetry pings, zero third-party crash reporting, and zero cloud relays. All container names, logs, and metrics remain strictly on your host machine.</p>
+        </div>
+      </div>
+
+      <div class="showcase-card" style="margin-bottom: 1.5rem; display: block; padding: 1.75rem;">
+        <h2 style="font-size: 1.25rem; color: var(--accent-primary); margin-bottom: 0.75rem;">
+          <span class="lang-de">3. Website &amp; Hosting via GitHub Pages</span>
+          <span class="lang-en" style="display:none;">3. Website &amp; GitHub Pages Delivery</span>
+        </h2>
+        <div style="color: var(--text-secondary); line-height: 1.8; font-size: 0.95rem;">
+          <p class="lang-de">• <strong>Keine Cookies:</strong> Keine Session-, Werbe- oder Marketing-Cookies.</p>
+          <p class="lang-en" style="display:none;">• <strong>No Cookies:</strong> Zero session, advertisement, or tracking cookies.</p>
+          <p class="lang-de">• <strong>Keine Web-Analytics:</strong> Kein Google Analytics, Matomo oder Werbenetzwerke.</p>
+          <p class="lang-en" style="display:none;">• <strong>No Web Analytics:</strong> Zero Google Analytics, Matomo, or tracking pixels.</p>
+          <p class="lang-de">• <strong>Server-Logs:</strong> Die Auslieferung erfolgt über GitHub Pages (GitHub Inc., USA), wobei technisch unvermeidbare Server-Logs zur Bereitstellung verarbeitet werden.</p>
+          <p class="lang-en" style="display:none;">• <strong>Server Logs:</strong> Delivered via GitHub Pages (GitHub Inc., USA), processing technically necessary request metadata for delivery security.</p>
+        </div>
+      </div>
+
+      <div class="showcase-card" style="margin-bottom: 1.5rem; display: block; padding: 1.75rem;">
+        <h2 style="font-size: 1.25rem; color: var(--accent-primary); margin-bottom: 0.75rem;">
+          <span class="lang-de">4. Rechte der Nutzer (Art. 15–21 DSGVO)</span>
+          <span class="lang-en" style="display:none;">4. User Rights (Arts. 15–21 GDPR)</span>
+        </h2>
+        <div style="color: var(--text-secondary); line-height: 1.8; font-size: 0.95rem;">
+          <p class="lang-de">Sie haben jederzeit das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16) und Löschung (Art. 17). Da Docklite auf den eigenen Servern keinerlei Nutzerdaten erhebt oder speichert, behalten Sie die uneingeschränkte Datenhoheit.</p>
+          <p class="lang-en" style="display:none;">You hold complete rights of access (Art. 15), rectification (Art. 16), and erasure (Art. 17). Because Docklite processes zero remote telemetry, you maintain complete sovereignty over your data.</p>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="index.html" class="btn-primary" style="display: inline-block;">
+          <span class="lang-de">← Zurück zur Hauptseite</span>
+          <span class="lang-en" style="display:none;">← Back to Main Page</span>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>Docklite</strong> &bull; © 2026 Jeremy Benz &bull; GNU GPL-3.0
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Docklite</a>
+        <a href="wiki/">Wiki</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="kontakt.html">Kontakt</a>
+        <a href="https://github.com/benzjeremy/docklite" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function setLang(lang) {
+      const isDe = lang === 'de';
+      document.querySelectorAll('.lang-de').forEach(el => el.style.display = isDe ? '' : 'none');
+      document.querySelectorAll('.lang-en').forEach(el => el.style.display = isDe ? 'none' : '');
+      document.getElementById('btn-lang-de').classList.toggle('active', isDe);
+      document.getElementById('btn-lang-en').classList.toggle('active', !isDe);
+      try { localStorage.setItem('site_lang', lang); } catch (e) {}
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('site_theme', next); } catch (e) {}
+      document.getElementById('themeToggle').textContent = next === 'dark' ? '🌙' : '☀️';
+    }
+
+    (function() {
+      const savedLang = localStorage.getItem('site_lang') || 'de';
+      setLang(savedLang);
+      const savedTheme = localStorage.getItem('site_theme') || 'dark';
+      document.getElementById('themeToggle').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+    })();
+  </script>
+</body>
+</html>
