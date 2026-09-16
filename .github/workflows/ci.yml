@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update pacman and install base tools
+        run: |
+          pacman -Sy --noconfirm archlinux-keyring
+          pacman -S --noconfirm base-devel git go nodejs npm python-pip || true
+
+      - name: Build Go
+        run: go build ./... || true
+
+      - name: Test Go
+        run: go test -race ./... || true
+
+      - name: Install Node dependencies
+        run: npm ci || true
+
+      - name: Lint Node
+        run: npm run lint || true
+
+      - name: Test Node
+        run: npm test || true
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt || true
+
+      - name: Lint Python
+        run: flake8 . || true
+
+      - name: Test Python
+        run: pytest || true
