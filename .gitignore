@@ -17,4 +17,3 @@ frontend/dist/
 .idea/
 *.swp
 coverage.txt
-dist/
