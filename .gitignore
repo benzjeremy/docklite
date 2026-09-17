@@ -16,3 +16,4 @@ frontend/dist/
 .vscode/
 .idea/
 *.swp
+coverage.txt
