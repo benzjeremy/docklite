@@ -10,6 +10,17 @@
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-lightgrey)](#installation)
 
+
+> [!IMPORTANT]
+> ### 🔒 Primary Codebase & Active Development Moved to Self-Hosted Gitea
+> **For privacy optimization and sovereign self-hosted infrastructure, the primary development, source code, and releases of this project have permanently migrated to our self-hosted Gitea platform:**  
+> 👉 **[Gitea Repository: https://pi5.darter-basking.ts.net/gitea/docklite/docklite](https://pi5.darter-basking.ts.net/gitea/docklite/docklite)**  
+> 👉 **[Official Web Showcase: https://pi5.darter-basking.ts.net/docklite/](https://pi5.darter-basking.ts.net/docklite/)**
+> 
+> *This GitHub repository serves solely as a read-only mirror for Go toolchain compatibility (`go install`, `pkg.go.dev`, `awesome-go`). All active development, issues, and releases take place on Gitea.*
+
+---
+
 > [!IMPORTANT]
 > ### 🚧 Pre-Release / Active Development Notice
 > **This software is not yet finished and is under active development.**  
