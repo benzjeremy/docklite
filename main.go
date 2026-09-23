@@ -13,6 +13,7 @@ import (
 	"os/exec"
 	"os/signal"
 	"runtime"
+	"strings"
 	"syscall"
 	"time"
 
@@ -38,6 +39,7 @@ func main() {
 	portFlag := flag.Int("port", 8080, "Port for the HTTP web dashboard and REST API")
 	dockerSockFlag := flag.String("docker-host", "", "Docker socket path or URI (e.g. unix:///var/run/docker.sock or npipe:////./pipe/docker_engine)")
 	tokenFlag := flag.String("token", "", "Optional secret token for API authentication (X-Docklite-Token)")
+	allowedHostsFlag := flag.String("allowed-hosts", "", "Comma-separated list of additional allowed Host headers (e.g. pi5.darter-basking.ts.net)")
 	openBrowserFlag := flag.Bool("open", false, "Automatically open web browser on startup")
 	versionFlag := flag.Bool("version", false, "Show version and exit")
 	flag.Parse()
@@ -78,6 +80,20 @@ func main() {
 	allowedHosts := []string{"localhost", "127.0.0.1", "[::1]"}
 	if *hostFlag != "" && *hostFlag != "127.0.0.1" && *hostFlag != "0.0.0.0" {
 		allowedHosts = append(allowedHosts, *hostFlag)
+	}
+	if *allowedHostsFlag != "" {
+		for _, h := range strings.Split(*allowedHostsFlag, ",") {
+			if trimmed := strings.TrimSpace(h); trimmed != "" {
+				allowedHosts = append(allowedHosts, trimmed)
+			}
+		}
+	}
+	if envHosts := os.Getenv("DOCKLITE_ALLOWED_HOSTS"); envHosts != "" {
+		for _, h := range strings.Split(envHosts, ",") {
+			if trimmed := strings.TrimSpace(h); trimmed != "" {
+				allowedHosts = append(allowedHosts, trimmed)
+			}
+		}
 	}
 
 	secConfig := api.SecurityConfig{
