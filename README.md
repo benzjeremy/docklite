@@ -11,6 +11,7 @@
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-lightgrey)](#installation)
 
 > 🌐 **Official Website:** [https://pi5.darter-basking.ts.net/docklite/](https://pi5.darter-basking.ts.net/docklite/)
+> 📖 **Official Wiki & Documentation:** [https://pi5.darter-basking.ts.net/docklite/wiki/](https://pi5.darter-basking.ts.net/docklite/wiki/)
 
 > [!IMPORTANT]
 > ### 🚧 Pre-Release / Active Development Notice
@@ -131,6 +132,19 @@ cd ..
 # 3. Compile Go Standalone Binary
 go build -o docklite main.go
 ```
+
+---
+
+## 📚 Wiki & Documentation
+
+Detailed documentation, benchmarks, and API specifications are available in our official web wiki:  
+👉 **[Docklite Wiki: https://pi5.darter-basking.ts.net/docklite/wiki/](https://pi5.darter-basking.ts.net/docklite/wiki/)**
+
+- **Portainer Comparison**: [Architecture & Benchmarks](https://pi5.darter-basking.ts.net/docklite/wiki/#portainer-comparison)
+- **Core Features**: [Docker Socket & WebSocket Terminal](https://pi5.darter-basking.ts.net/docklite/wiki/#features)
+- **Installation & CLI**: [Options & Flags](https://pi5.darter-basking.ts.net/docklite/wiki/#installation)
+- **REST API & SSE**: [Endpoints & Events](https://pi5.darter-basking.ts.net/docklite/wiki/#api)
+- **Security**: [Anti-DNS-Rebinding & CSRF](https://pi5.darter-basking.ts.net/docklite/wiki/#security)
 
 ---
 
