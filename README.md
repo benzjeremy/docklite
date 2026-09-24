@@ -5,21 +5,12 @@
 [![CI](https://github.com/benzjeremy/docklite/actions/workflows/ci.yml/badge.svg)](https://github.com/benzjeremy/docklite/actions)
 [![Coverage](https://codecov.io/gh/benzjeremy/docklite/branch/main/graph/badge.svg)](https://app.codecov.io/gh/benzjeremy/docklite)
 [![Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go#devops-tools)
-[![Release](https://img.shields.io/badge/Release-Latest%20[Pre--Release]-emerald)](https://github.com/benzjeremy/docklite/releases/latest)
+[![Release](https://img.shields.io/github/v/release/benzjeremy/docklite)](https://github.com/benzjeremy/docklite/releases/latest)
 [![Status: Pre-Release](https://img.shields.io/badge/Status-Pre--Release%20%2F%20WIP-orange.svg)](https://github.com/benzjeremy/docklite)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-lightgrey)](#installation)
 
-
-> [!IMPORTANT]
-> ### 🔒 Primary Codebase & Active Development Moved to Self-Hosted Gitea
-> **For privacy optimization and sovereign self-hosted infrastructure, the primary development, source code, and releases of this project have permanently migrated to our self-hosted Gitea platform:**  
-> 👉 **[Gitea Repository: https://pi5.darter-basking.ts.net/gitea/docklite/docklite](https://pi5.darter-basking.ts.net/gitea/docklite/docklite)**  
-> 👉 **[Official Web Showcase: https://pi5.darter-basking.ts.net/docklite/](https://pi5.darter-basking.ts.net/docklite/)**
-> 
-> *This GitHub repository serves solely as a read-only mirror for Go toolchain compatibility (`go install`, `pkg.go.dev`, `awesome-go`). All active development, issues, and releases take place on Gitea.*
-
----
+> 🌐 **Official Website:** [https://pi5.darter-basking.ts.net/docklite/](https://pi5.darter-basking.ts.net/docklite/)
 
 > [!IMPORTANT]
 > ### 🚧 Pre-Release / Active Development Notice
@@ -147,4 +138,4 @@ go build -o docklite main.go
 
 - **Developer:** Jeremy Benz ([@benzjeremy](https://github.com/benzjeremy))
 - **License:** [GNU General Public License v3.0 (GPL-3.0)](LICENSE)
-- **Support & Issues:** Please use the GitHub Issues page on this repository.
+- **Support & Issues:** Please use the [GitHub Issues](https://github.com/benzjeremy/docklite/issues) page.
