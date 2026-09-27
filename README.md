@@ -10,8 +10,8 @@
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-lightgrey)](#installation)
 
-> 🌐 **Official Website:** [https://pi5.darter-basking.ts.net/docklite/](https://pi5.darter-basking.ts.net/docklite/)
-> 📖 **Official Wiki & Documentation:** [https://pi5.darter-basking.ts.net/docklite/wiki/](https://pi5.darter-basking.ts.net/docklite/wiki/)
+> 🌐 **Official Website:** [https://docklite.darter-basking.ts.net/](https://docklite.darter-basking.ts.net/)
+> 📖 **Official Wiki & Documentation:** [https://docklite.darter-basking.ts.net/wiki/](https://docklite.darter-basking.ts.net/wiki/)
 
 > [!IMPORTANT]
 > ### 🚧 Pre-Release / Active Development Notice
@@ -138,13 +138,13 @@ go build -o docklite main.go
 ## 📚 Wiki & Documentation
 
 Detailed documentation, benchmarks, and API specifications are available in our official web wiki:  
-👉 **[Docklite Wiki: https://pi5.darter-basking.ts.net/docklite/wiki/](https://pi5.darter-basking.ts.net/docklite/wiki/)**
+👉 **[Docklite Wiki: https://docklite.darter-basking.ts.net/wiki/](https://docklite.darter-basking.ts.net/wiki/)**
 
-- **Portainer Comparison**: [Architecture & Benchmarks](https://pi5.darter-basking.ts.net/docklite/wiki/#portainer-comparison)
-- **Core Features**: [Docker Socket & WebSocket Terminal](https://pi5.darter-basking.ts.net/docklite/wiki/#features)
-- **Installation & CLI**: [Options & Flags](https://pi5.darter-basking.ts.net/docklite/wiki/#installation)
-- **REST API & SSE**: [Endpoints & Events](https://pi5.darter-basking.ts.net/docklite/wiki/#api)
-- **Security**: [Anti-DNS-Rebinding & CSRF](https://pi5.darter-basking.ts.net/docklite/wiki/#security)
+- **Portainer Comparison**: [Architecture & Benchmarks](https://docklite.darter-basking.ts.net/wiki/#portainer-comparison)
+- **Core Features**: [Docker Socket & WebSocket Terminal](https://docklite.darter-basking.ts.net/wiki/#features)
+- **Installation & CLI**: [Options & Flags](https://docklite.darter-basking.ts.net/wiki/#installation)
+- **REST API & SSE**: [Endpoints & Events](https://docklite.darter-basking.ts.net/wiki/#api)
+- **Security**: [Anti-DNS-Rebinding & CSRF](https://docklite.darter-basking.ts.net/wiki/#security)
 
 ---
 
