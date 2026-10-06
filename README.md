@@ -2,7 +2,6 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/benzjeremy/docklite.svg)](https://pkg.go.dev/github.com/benzjeremy/docklite)
 [![Go Report Card](https://goreportcard.com/badge/github.com/benzjeremy/docklite.svg)](https://goreportcard.com/report/github.com/benzjeremy/docklite)
-[![CI](https://github.com/benzjeremy/docklite/actions/workflows/ci.yml/badge.svg)](https://github.com/benzjeremy/docklite/actions)
 [![Coverage](https://codecov.io/gh/benzjeremy/docklite/branch/main/graph/badge.svg)](https://app.codecov.io/gh/benzjeremy/docklite)
 [![Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go#devops-tools)
 [![Release](https://img.shields.io/github/v/release/benzjeremy/docklite)](https://github.com/benzjeremy/docklite/releases/latest)
