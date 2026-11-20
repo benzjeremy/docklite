@@ -1,6 +1,7 @@
 package api
 
 import (
+	"crypto/subtle"
 	"net"
 	"net/http"
 	"strings"
@@ -57,7 +58,7 @@ func (s *Server) securityMiddleware(next http.Handler) http.Handler {
 			if token == "" {
 				token = r.URL.Query().Get("token")
 			}
-			if token != s.config.Token {
+			if subtle.ConstantTimeCompare([]byte(token), []byte(s.config.Token)) != 1 {
 				http.Error(w, "Unauthorized: Invalid or missing API token", http.StatusUnauthorized)
 				return
 			}

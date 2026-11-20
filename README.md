@@ -1,5 +1,8 @@
 # ⚡ Docklite
 
+**Projekt eingestellt.** v1.3 ist die letzte offizielle Version. Forks und Weiterentwicklung sind unter der beiliegenden GPLv3 willkommen. [Downloadarchiv](https://downloads.benzjeremy.pp.ua/docklite/).
+
+
 [![Go Reference](https://pkg.go.dev/badge/github.com/benzjeremy/docklite.svg)](https://pkg.go.dev/github.com/benzjeremy/docklite)
 [![Go Report Card](https://goreportcard.com/badge/github.com/benzjeremy/docklite.svg)](https://goreportcard.com/report/github.com/benzjeremy/docklite)
 [![Coverage](https://codecov.io/gh/benzjeremy/docklite/branch/main/graph/badge.svg)](https://app.codecov.io/gh/benzjeremy/docklite)
